@@ -124,6 +124,8 @@ public class Game implements ApplicationListener
 		for( int i = 1; i < 100; ++i )
 			creeps.add( new Creep( 100, 32, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
 		
+		projectiles.add( new Projectile( new Vector2( 0, 0 ), new Vector2( 32, 32 ) ) );
+		
 		mapData.dispose();
 	}
 	
@@ -212,11 +214,12 @@ public class Game implements ApplicationListener
 		}
 		
 		// Draw the projectiles!
-		for ( Projectile projectile : projectiles ) {
-			final float proj_x = projectile.getCoordinates().x;
-			final float proj_y = projectile.getCoordinates().y;
-			// TODO: Change which sprite the projectile uses.
-			batch.draw( spriteSheet, proj_x*16, proj_y*16, 14*16, 0, 16, 16 );
+		for ( Projectile projectile : projectiles ) 
+		{
+			Vector2 projCoords = projectile.my_coords;
+			
+			// TODO: Change which sprite the projectile uses based on something in the projectile
+			batch.draw( spriteSheet, projCoords.x*16+8, projCoords.y*16+8, 0, 16*3, 16, 16 );
 		}
 		
 		// Draw the UI! (forgive me)
