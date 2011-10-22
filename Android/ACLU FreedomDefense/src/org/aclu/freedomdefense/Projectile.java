@@ -2,7 +2,7 @@ package org.aclu.freedomdefense;
 
 import com.badlogic.gdx.math.Vector2;
 
-public abstract class Projectile {
+public class Projectile {
 	
 	private boolean my_alive_state;
 	
