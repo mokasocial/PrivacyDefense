@@ -6,20 +6,31 @@ public class Tower {
 	int speed;
 	int splash;
 
+	public int x, y;
+	
 	// shoot, cost
 	public Tower() {
-		// @todo
+		// TODO Auto-generated method stub
 	}
 
 	void shoot() {
-		// @todo
+		// TODO Auto-generated method stub
 	}
 
 	void move() {
-		// @todo
+		// TODO Auto-generated method stub
 	}
 
 	public void update() {
+		// TODO Auto-generated method stub
+	}
+
+	public void draw() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void getCoords() {
 		// TODO Auto-generated method stub
 		
 	}

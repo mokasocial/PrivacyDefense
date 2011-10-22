@@ -4,6 +4,7 @@ public abstract class Creep {
 	CreepType m_type;
 	int Speed;
 	int Health;
+	int x, y;
 
 	public Creep(){
 		//@todo
@@ -29,5 +30,10 @@ public abstract class Creep {
 	public void update() {
 		// TODO Auto-generated method stub
 		
-	};
+	}
+
+	public void getCoords() {
+		// TODO Auto-generated method stub
+		
+	}
 }
