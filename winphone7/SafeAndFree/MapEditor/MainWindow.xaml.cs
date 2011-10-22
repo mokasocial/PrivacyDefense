@@ -139,5 +139,26 @@ namespace MapEditor
 
             bitmapSource.UnlockBits(bitmapPixels);
         }
+
+        private void map_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (null == tiles || 0 == tiles.Length)
+            {
+                // Tiles haven't been loaded.
+                return;
+            }
+
+            Point mousePos = e.GetPosition(map);
+            int column = (int)(mousePos.X / TileDimensions.X);
+            int row = (int)(mousePos.Y / TileDimensions.Y);
+
+            if (column < 0 || column > tiles.GetUpperBound(0) || row < 0 || row > tileImages.GetUpperBound(0))
+            {
+                // Out of bounds.
+                return;
+            }
+
+            tiles[column, row]++;
+        }
     }
 }

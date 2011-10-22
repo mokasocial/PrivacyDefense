@@ -10,7 +10,7 @@
         <StackPanel x:Name="tileList" Grid.Row="0" Orientation="Horizontal">
             <Image x:Name="drawnMap"/>
         </StackPanel>
-        <Canvas x:Name="map" Grid.Row="1">
+        <Canvas x:Name="map" Grid.Row="1" PreviewMouseDown="map_PreviewMouseDown">
         </Canvas>
     </Grid>
 </Window>
