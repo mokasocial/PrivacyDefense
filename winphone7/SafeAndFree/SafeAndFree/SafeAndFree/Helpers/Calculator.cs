@@ -42,7 +42,6 @@ namespace SafeAndFree.Helpers
             Connected = false;
             double xDiff = start.X - end.X;
             double yDiff = start.Y - end.Y;
-            
             return new Vector2((float)(start.X + (xDiff * movementPercent)), (float)(start.Y + (yDiff * movementPercent)));
         }
 
