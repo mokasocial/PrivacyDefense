@@ -4,36 +4,17 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class Projectile {
 	
-	public enum ProjectileType {
-		/**
-		 * Standard Projectile with 0.5f velocity.
-		 */
-		STANDARD(0.5f),
-		/**
-		 * Other Projectile with 1.0f velocity.
-		 */
-		OTHER(1.0f);
-		
-		private float velocity;
-		private ProjectileType(float the_velocity) {
-			velocity = the_velocity;
-		}
-		
-		public float getVelocity() {
-			return velocity;
-		}
-	}
-	
-	private final ProjectileType my_type;
-	
 	private boolean my_alive_state;
 	
-	Vector2 my_coords;
-	Vector2 my_direction;
+	private final Vector2 my_direction;
+
+	private final float my_velocity;
+
+	private Vector2 my_coords;
 	
 	public Projectile(final Vector2 the_starting_coord,
 					  final Vector2 the_firing_direction,
-					  final ProjectileType the_type) {
+					  final float the_velocity) {
 		if (the_starting_coord == null) {
 			throw new IllegalArgumentException("non-null starting coordinates required");
 		}
@@ -41,9 +22,8 @@ public abstract class Projectile {
 		if (the_firing_direction == null ) {
 			throw new IllegalArgumentException("non-null firing direction required");
 		}
-
+		my_velocity = the_velocity;
 		my_coords = the_starting_coord;
-		my_type = the_type;
 		my_direction = the_firing_direction;
 		my_alive_state = true;
 		
@@ -63,8 +43,8 @@ public abstract class Projectile {
 	private void move(final float dt){
 
 		// Trying to remember my math.
-		my_coords.x += (my_type.getVelocity() * my_direction.x) * dt;  
-	    my_coords.y += (my_type.getVelocity() * my_direction.y) * dt;
+		my_coords.x += (my_velocity * my_direction.x) * dt;  
+	    my_coords.y += (my_velocity * my_direction.y) * dt;
 		
 	}
 	
