@@ -48,6 +48,10 @@ public class Game implements ApplicationListener
 		projectiles = new ArrayList<Projectile>();
 		towers = new ArrayList<Tower>();
 		
+		towers.add(new Tower(TowerType.JUDGE, 6, 6));
+		towers.add(new Tower(TowerType.LAWSUIT, 12, 4));
+		towers.add(new Tower(TowerType.TEACHER, 20, 8));
+		
 		tiles = new int[30][20];
 		movementDirs = new char[30][20];
 		
