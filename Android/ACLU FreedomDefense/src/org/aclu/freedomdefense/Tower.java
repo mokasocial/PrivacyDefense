@@ -1,10 +1,9 @@
 package org.aclu.freedomdefense;
 
 public class Tower {
-
 	int m_x;
 	int m_y;
-	private TowerType m_type;
+	private final TowerType m_type;
 	private int m_speed;
 	private float m_timeToFire;
 
