@@ -24,5 +24,10 @@ public abstract class Creep {
 	
 	public void die(){
 		// @todo
+	}
+
+	public void update() {
+		// TODO Auto-generated method stub
+		
 	};
 }
