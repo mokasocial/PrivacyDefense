@@ -200,20 +200,19 @@ public class Game implements ApplicationListener, InputProcessor {
 			batch.draw(spriteSheet, proj_x * 16, proj_y * 16, 14 * 16, 0, 16, 16);
 		}
 
-		// Draw the UI! (forgive me)
-		String uiString = "Life: " + life + '\n' + "Money: " + money;
-
-		TextBounds uiBounds = mFont.getMultiLineBounds(uiString);
-
+		// Draw the UI!
+		// Background
 		TextureRegion blackBox = new TextureRegion(spriteSheet, 0, 2 * 16, 16, 16);
+		batch.draw(blackBox, 0, 0, 60, screenHeight);
 
-		// Draw a black rectangle behind the text
-		batch.draw(blackBox, screenWidth - uiBounds.width, screenHeight - uiBounds.height, uiBounds.width, uiBounds.height);
-
-		mFont.drawWrapped(batch, uiString, screenWidth - uiBounds.width, screenHeight, uiBounds.width);
+		// Text
+		String uiString = "+: " + life + '\n' + "$: " + money;
+		TextBounds uiBounds = mFont.getMultiLineBounds(uiString);
+		mFont.drawWrapped(batch, uiString, 3, uiBounds.height + 3, uiBounds.width);
+		
+		// Towers		
 
 		batch.end();
-
 		money++;
 	}
 
@@ -243,19 +242,16 @@ public class Game implements ApplicationListener, InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
