@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>assets</name>
-			<type>2</type>
-			<location>D:/PrivacyDefense/Android/ACLU_FD_Android/assets</location>
-		</link>
-	</linkedResources>
 </projectDescription>
