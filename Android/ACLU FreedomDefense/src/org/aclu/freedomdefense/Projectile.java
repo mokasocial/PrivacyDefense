@@ -2,7 +2,7 @@ package org.aclu.freedomdefense;
 
 import com.badlogic.gdx.math.Vector2;
 
-public abstract class Projectile {
+public class Projectile {
 	
 	private boolean my_alive_state;
 	
@@ -12,9 +12,14 @@ public abstract class Projectile {
 
 	private Vector2 my_coords;
 	
+<<<<<<< HEAD
+	public Projectile(final int[] the_starting_coord, final float[] the_firing_direction) 
+	{
+=======
 	public Projectile(final Vector2 the_starting_coord,
 					  final Vector2 the_firing_direction,
 					  final float the_velocity) {
+>>>>>>> 27609458b46fd0c067823cddbb4cbc4f5b0f1135
 		if (the_starting_coord == null) {
 			throw new IllegalArgumentException("non-null starting coordinates required");
 		}
