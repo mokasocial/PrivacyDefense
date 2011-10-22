@@ -136,7 +136,10 @@ public class Game implements ApplicationListener
 			}
 		}
 		
-		// Draw the towers!
+		// Draw the towers
+		for (Tower tower : towers) {
+			drawSprite(tower.getIconNum(), tower.m_x, tower.m_y);
+		}
 		
 		// Draw the creeps!
 		
@@ -156,6 +159,9 @@ public class Game implements ApplicationListener
 		batch.end();
 		
 		money++;
+	}
+	public void drawSprite(int iconNum, int x, int y) {
+		batch.draw( spriteSheet, x*16, y*16, iconNum*16, 0, 16, 16 );
 	}
 	
 	@Override
