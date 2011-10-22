@@ -27,6 +27,8 @@ namespace MapEditor
 
         private List<BitmapImage> tileTextures = new List<BitmapImage>();
 
+        public Point TileDimensions;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -54,6 +56,8 @@ namespace MapEditor
                         drawnMap.Source = newImg;
                         drawnMap.Width = newImg.Width;
                         drawnMap.Height = newImg.Height;
+
+                        TileDimensions = new Point(Int32.Parse(reader.GetAttribute("tileWidth")), Int32.Parse(reader.GetAttribute("tileHeight")));
                     }
                     else if (reader.Name.Equals("tile"))
                     {
@@ -127,8 +131,8 @@ namespace MapEditor
                     newImage.Source = tileImages[col, row];
                     newImage.Width = tileImages[col, row].Width;
                     newImage.Height = tileImages[col, row].Height;
-                    Canvas.SetLeft(newImage, col * 16);
-                    Canvas.SetTop(newImage, row * 16);
+                    Canvas.SetLeft(newImage, col * TileDimensions.X);
+                    Canvas.SetTop(newImage, row * TileDimensions.Y);
                     map.Children.Add(newImage);
                 }
             }

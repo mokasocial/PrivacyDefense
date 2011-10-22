@@ -43,6 +43,13 @@ namespace SafeAndFree
         /// </summary>
         private Vector2[][] paths;
 
+        public static Vector2 TileDimensions
+        {
+            get; private set;
+        }
+
+        public static Vector2 TileCenter;
+
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -95,6 +102,9 @@ namespace SafeAndFree
             }
         }
 
+        /// <summary>
+        /// Load the map information from xml.
+        /// </summary>
         private void LoadMap()
         {
             Texture2D mapDefinition = TextureLibrary.GetTexture(MEDIA_ID.MAP_0);
@@ -125,11 +135,14 @@ namespace SafeAndFree
             {
                 for (int j = 0; j <= mapTiles.GetUpperBound(1); j++)
                 {
-                    mapTiles[i, j] = new Tile(new Vector2(j * 16, i * 16), (MEDIA_ID)tileTextureIds[j, i]);
+                    mapTiles[i, j] = new Tile(new Vector2(j * Board.TileDimensions.X, i * Board.TileDimensions.Y), (MEDIA_ID)tileTextureIds[j, i]);
                 }
             }
         }
 
+        /// <summary>
+        /// Load the paths and waypoints information from xml.
+        /// </summary>
         private void LoadPaths()
         {
             StreamResourceInfo definitionsStream = Application.GetResourceStream(new Uri("/SafeAndFree;component/MapDefinitions.xml", UriKind.RelativeOrAbsolute));
@@ -144,7 +157,12 @@ namespace SafeAndFree
 
                 if (nodeType == XmlNodeType.Element)
                 {
-                    if (reader.Name.Equals("paths"))
+                    if (reader.Name.Equals("map"))
+                    {
+                        TileDimensions = new Vector2(Int32.Parse(reader.GetAttribute("tileWidth")), Int32.Parse(reader.GetAttribute("tileHeight")));
+                        TileCenter = new Vector2((int)(TileDimensions.X / 2), (int)(TileDimensions.Y / 2));
+                    }
+                    else if (reader.Name.Equals("paths"))
                     {
                         paths = new Vector2[Int32.Parse(reader.GetAttribute("numPaths"))][];
                     }
@@ -155,17 +173,20 @@ namespace SafeAndFree
                     }
                     else if (reader.Name.Equals("waypoint"))
                     {
-                        paths[lastPath][lastWaypoint++] = new Vector2(Int32.Parse(reader.GetAttribute("column")) * 16 + 8, Int32.Parse(reader.GetAttribute("row")) * 16 + 8);
+                        paths[lastPath][lastWaypoint++] = new Vector2(Int32.Parse(reader.GetAttribute("column")) * Board.TileDimensions.X + Board.TileCenter.X, Int32.Parse(reader.GetAttribute("row")) * Board.TileDimensions.Y + Board.TileCenter.Y);
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// Load creeps.
+        /// </summary>
         private void LoadCreeps()
         {
             // Hard-coded for now.
             creeps = new List<Creep>();
-            creeps.Add(new Creep(new Vector2(paths[0][0].X - 8, paths[0][0].Y - 8), MEDIA_ID.CREEP_0, 0, 0));
+            creeps.Add(new Creep(new Vector2(paths[0][0].X - Board.TileCenter.X, paths[0][0].Y - Board.TileCenter.Y), MEDIA_ID.CREEP_0, 0, 0));
         }
     }
 }

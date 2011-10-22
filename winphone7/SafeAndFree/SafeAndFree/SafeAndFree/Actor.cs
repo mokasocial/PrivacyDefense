@@ -13,7 +13,15 @@ namespace SafeAndFree
     {
         public bool IsDead { get; protected set; }
 
-        public Vector2 Position;
+        protected Vector2 _position;
+
+        public virtual Vector2 Position
+        {
+            get
+            {
+                return _position;
+            }
+        }
 
         public virtual void Update()
         {
