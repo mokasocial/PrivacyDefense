@@ -9,7 +9,7 @@ using SafeAndFree.Enumerations;
 
 namespace SafeAndFree
 {
-    class Creep : Actor
+    public class Creep : Actor
     {
         /// <summary>
         /// The center position of this instance.
@@ -136,6 +136,24 @@ namespace SafeAndFree
             return false;
         }
 
+        /// <summary>
+        /// Makes the creep take a projectile hit.
+        /// </summary>
+        /// <param name="bullet">The projectile that hits the creep</param>
+        /// <returns>true if the creep dies, false otherwise</returns>
+        public bool TakeHit(Projectile bullet)
+        {
+            Stats[CreepStats.Health] -= bullet.Stats.Damage;
+            if (bullet.Stats.Gift != null)
+            {
+
+            }
+            if (Stats[CreepStats.Health] <= 0)
+            {
+                return true;
+            }
+            return false;
+        }
         /// <summary>
         /// Get a CreepStat from this instance.
         /// </summary>

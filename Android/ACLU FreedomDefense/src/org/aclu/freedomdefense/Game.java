@@ -28,13 +28,16 @@ public class Game implements ApplicationListener
 	private BitmapFont mFont;
 	private int[][] tiles;			// Our base map (paths and whatnot)
 	public char[][] movementDirs;   // Our pathfinding, 'N' 'E' 'W' or 'S' (and can make different for flyers, woah!)
-	public int money;
-	public int life;
+	private int money;
+	private int life;
 	public ArrayList<Creep> creeps;
 	public ArrayList<Projectile> projectiles;
 	public ArrayList<Tower> towers;
-	int startingX, startingY;
-	int endingX, endingY;
+	
+	public int startingX;
+	public int startingY;
+	public int endingX;
+	public int endingY;
 	
 	// Circle sprites for tower ranges
 	HashMap<Float, Sprite> rangeSprites = new HashMap<Float,Sprite>();
@@ -53,10 +56,6 @@ public class Game implements ApplicationListener
 		creeps = new ArrayList<Creep>();
 		projectiles = new ArrayList<Projectile>();
 		towers = new ArrayList<Tower>();
-		
-		towers.add(new Tower(TowerType.JUDGE, 6, 6));
-		towers.add(new Tower(TowerType.LAWSUIT, 12, 4));
-		towers.add(new Tower(TowerType.TEACHER, 20, 8));
 		
 		tiles = new int[30][20];
 		movementDirs = new char[30][20];
@@ -129,12 +128,7 @@ public class Game implements ApplicationListener
 	{
 		float dt = Gdx.graphics.getDeltaTime();
 		
-		for (Projectile projectile : projectiles) 
-		{
-			projectile.update( dt );
-		}
-		
-		//ArrayList<Creep> livingCreeps = new ArrayList<Creep>();
+		ArrayList<Creep> livingCreeps = new ArrayList<Creep>();
 		
 		for (Creep creep : creeps) 
 		{
@@ -149,10 +143,13 @@ public class Game implements ApplicationListener
 			}
 		}
 		
-		//creeps = livingCreeps;
+		creeps = livingCreeps;
 		
-		for (Tower tower : towers) 
-		{
+		for (Projectile projectile : projectiles) {
+			projectile.update( dt );
+		}
+		
+		for (Tower tower : towers) {
 			tower.update( dt );
 		}
 	}
@@ -160,7 +157,7 @@ public class Game implements ApplicationListener
 	@Override
 	public void render()
 	{
-		// LibGDX you are a mystery to me
+		// uhh
 		update();
 		
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT ); // clear the screen
@@ -220,6 +217,8 @@ public class Game implements ApplicationListener
 		mFont.drawWrapped( batch, uiString, screenWidth - uiBounds.width, screenHeight, uiBounds.width );
 		
 		batch.end();
+		
+		money++;
 	}
 	public void drawSprite(int iconNum, int x, int y) {
 		batch.draw( spriteSheet, x*16, y*16, iconNum*16, 0, 16, 16 );

@@ -57,12 +57,6 @@ public class Creep {
 			--y;
 			yOffset = 0;
 		}
-		
-		if( x == Game.instance.endingX && y == Game.instance.endingY )
-		{
-			Game.instance.life--;
-			Health = 0;
-		}
 	};
 
 	public void update( float dt ) 
@@ -81,8 +75,7 @@ public class Creep {
 			direction = 'S';
 	};
 	
-	public void die()
-	{
-		Game.instance.money += Money;
+	public void die(){
+		// @todo
 	}
 }

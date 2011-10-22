@@ -1,47 +1,37 @@
 package org.aclu.freedomdefense;
 
+import com.badlogic.gdx.math.Vector2;
+
 public abstract class Projectile {
-	
-	public enum ProjectileType {
-		STANDARD(0.5f),
-		OTHER(1.0f);
-		
-		private float velocity;
-		private ProjectileType(float the_velocity) {
-			velocity = the_velocity;
-		}
-		
-		public float getVelocity() {
-			return velocity;
-		}
-	}
-	
-	private final ProjectileType my_type;
-	
-	private float my_x;
-	private float my_y;
-	
-	private float[] my_direction;
 	
 	private boolean my_alive_state;
 	
+	private final Vector2 my_direction;
+
+	private final float my_velocity;
+
+	private Vector2 my_coords;
 	
+<<<<<<< HEAD
 	public Projectile(final int[] the_starting_coord, final float[] the_firing_direction) 
 	{
+=======
+	public Projectile(final Vector2 the_starting_coord,
+					  final Vector2 the_firing_direction,
+					  final float the_velocity) {
+>>>>>>> 27609458b46fd0c067823cddbb4cbc4f5b0f1135
 		if (the_starting_coord == null) {
 			throw new IllegalArgumentException("non-null starting coordinates required");
 		}
+		
 		if (the_firing_direction == null ) {
 			throw new IllegalArgumentException("non-null firing direction required");
 		}
-		if (the_firing_direction.length < 2) {
-			throw new IllegalArgumentException("firing direction requires an x and y component");
-		}
-		my_x = the_starting_coord[0];
-		my_y = the_starting_coord[1];
-		my_type = ProjectileType.STANDARD;
+		my_velocity = the_velocity;
+		my_coords = the_starting_coord;
 		my_direction = the_firing_direction;
 		my_alive_state = true;
+		
 	}
 
 	/**
@@ -51,15 +41,15 @@ public abstract class Projectile {
 	 * Element 1: y coordinate
 	 * @return int array with coordinates.
 	 */
-	public float[] getCoordinates() {
-		return new float[] { my_x, my_y };
+	public Vector2 getCoordinates() {
+		return my_coords;
 	}
 	
 	private void move(final float dt){
 
 		// Trying to remember my math.
-		my_x += (my_type.getVelocity() * my_direction[0]) * dt;  
-	    my_y += (my_type.getVelocity() * my_direction[1]) * dt;
+		my_coords.x += (my_velocity * my_direction.x) * dt;  
+	    my_coords.y += (my_velocity * my_direction.y) * dt;
 		
 	}
 	
