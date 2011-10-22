@@ -9,7 +9,7 @@ using SafeAndFree.Enumerations;
 
 namespace SafeAndFree
 {
-    class Creep : Actor
+    public class Creep : Actor
     {
         /// <summary>
         /// The center position of this instance.
