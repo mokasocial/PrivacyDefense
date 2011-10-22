@@ -25,12 +25,13 @@ public class Game implements ApplicationListener
 	private BitmapFont mFont;
 	private int[][] tiles;			// Our base map (paths and whatnot)
 	public char[][] movementDirs;   // Our pathfinding, 'N' 'E' 'W' or 'S' (and can make different for flyers, woah!)
-	private int money;
-	private int life;
+	public int money;
+	public int life;
 	public ArrayList<Creep> creeps;
 	public ArrayList<Projectile> projectiles;
 	public ArrayList<Tower> towers;
 	int startingX, startingY;
+	int endingX, endingY;
 	
 	public static Game instance;
 	
@@ -100,6 +101,11 @@ public class Game implements ApplicationListener
 					startingX = x;
 					startingY = 19-y;
 				}
+				else if( b == 255 )
+				{
+					endingX = x;
+					endingY = 19-y;
+				}
 			}
 		}
 		
@@ -113,13 +119,30 @@ public class Game implements ApplicationListener
 	{
 		float dt = Gdx.graphics.getDeltaTime();
 		
-		for (Creep creep : creeps) {
-			creep.update( dt );
-		}
-		for (Projectile projectile : projectiles) {
+		for (Projectile projectile : projectiles) 
+		{
 			projectile.update( dt );
 		}
-		for (Tower tower : towers) {
+		
+		ArrayList<Creep> livingCreeps = new ArrayList<Creep>();
+		
+		for (Creep creep : creeps) 
+		{
+			if( creep.Health > 0 )
+			{
+				creep.update( dt );
+				livingCreeps.add( creep );
+			}
+			else
+			{
+				creep.die();
+			}
+		}
+		
+		creeps = livingCreeps;
+		
+		for (Tower tower : towers) 
+		{
 			tower.update( dt );
 		}
 	}
@@ -127,7 +150,7 @@ public class Game implements ApplicationListener
 	@Override
 	public void render()
 	{
-		// uhh
+		// LibGDX you are a mystery to me
 		update();
 		
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT ); // clear the screen
@@ -184,8 +207,6 @@ public class Game implements ApplicationListener
 		mFont.drawWrapped( batch, uiString, screenWidth - uiBounds.width, screenHeight, uiBounds.width );
 		
 		batch.end();
-		
-		money++;
 	}
 	public void drawSprite(int iconNum, int x, int y) {
 		batch.draw( spriteSheet, x*16, y*16, iconNum*16, 0, 16, 16 );
