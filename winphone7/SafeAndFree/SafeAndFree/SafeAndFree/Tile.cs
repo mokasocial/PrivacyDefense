@@ -3,10 +3,9 @@ using SafeAndFree.Data;
 
 namespace SafeAndFree
 {
-    class Tile
+    class Tile : Actor
     {
-        public Vector2 Position { get; set; }
-
+        // This won't be needed when blitting the bitmap.
         public MEDIA_ID TextureID;
 
         public Tile()
@@ -16,7 +15,7 @@ namespace SafeAndFree
 
         public Tile(Vector2 position, MEDIA_ID textureID)
         {
-            this.Position = position;
+            this._position = position;
             this.TextureID = textureID;
         }
     }

@@ -21,7 +21,7 @@ public class Tower {
 		// TODO Auto-generated method stub
 	}
 
-	public void update() {
+	public void update( float dt ) {
 		// TODO Auto-generated method stub
 	}
 

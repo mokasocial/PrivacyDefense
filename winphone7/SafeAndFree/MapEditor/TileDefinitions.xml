@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<definitions>
-  <map path="\\Content\\winphonemap.png"/>
-  <tile index="0" path="\\Content\\tile0.png"/>
-  <tile index="1" path="\\Content\\tile1.png"/>
-  <tile index="2" path="\\Content\\tile2.png"/>
-  <tile index="3" path="\\Content\\tile3.png"/>
-</definitions>

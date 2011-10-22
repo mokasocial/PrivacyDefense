@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SafeAndFree
 {
-    class Tower
+    class Tower : Actor
     {
     }
 }

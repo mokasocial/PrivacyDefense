@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SafeAndFree
 {
-    class Projectile
+    class Projectile : Actor
     {
     }
 }

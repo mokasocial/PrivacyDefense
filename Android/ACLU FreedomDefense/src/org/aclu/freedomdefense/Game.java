@@ -7,16 +7,24 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Game implements ApplicationListener {
+	private static int screenWidth = 480;
+	private static int screenHeight = 320;
+
 	private SpriteBatch batch;
 	private Texture spriteSheet;
 	private Texture mapData;
+	private BitmapFont mFont;
 	private int[][] tiles; // Our base map (paths and whatnot)
 	private char[][] movementDirs; // Our pathfinding, 'N' 'E' 'W' or 'S' (and
 									// can make different for flyers, woah!)
-
+	private int money;
+	private int life;
 	public Creep[] creeps;
 	public Projectile[] projectiles;
 	public Tower[] towers;
@@ -25,9 +33,15 @@ public class Game implements ApplicationListener {
 	public void create() {
 		batch = new SpriteBatch();
 		spriteSheet = new Texture(Gdx.files.internal("sprite_sheet.png"));
+		Pixmap mapData = new Pixmap(Gdx.files.internal("map.png"));
+
 		tiles = new int[30][20];
 		movementDirs = new char[30][20];
-		Pixmap mapData = new Pixmap(Gdx.files.internal("map.png"));
+		mFont = new BitmapFont(Gdx.files.internal("ostrich_sans_mellow.fnt"), Gdx.files.internal("ostrich_sans_mellow.png"), false);
+		mFont.setFixedWidthGlyphs("LifeMoney0123456789");
+
+		money = 100;
+		life = 100;
 
 		// Feel free to change this, it is confusing!
 		// Movement data is in the GREEN channel of the map:
@@ -73,27 +87,31 @@ public class Game implements ApplicationListener {
 					movementDirs[x][19 - y] = 'S';
 			}
 		}
-		
-		Tower[] towers = new Tower[]();
-		
+
+		projectiles = new Projectile[0];
+		creeps = new Creep[0];
+		Tower[] towers = new Tower[1];
+
 		Tower testTower = new Tower();
 		testTower.x = 3;
 		testTower.y = 4;
 
 		towers[0] = testTower;
-		
+
 		mapData.dispose();
 	}
 
 	public void update() {
+		float dt = Gdx.graphics.getDeltaTime();
+
 		for (Creep creep : creeps) {
-			creep.update();
+			creep.update(dt);
 		}
 		for (Projectile projectile : projectiles) {
-			projectile.update();
+			projectile.update(dt);
 		}
 		for (Tower tower : towers) {
-			tower.update();
+			tower.update(dt);
 		}
 	}
 
@@ -124,6 +142,24 @@ public class Game implements ApplicationListener {
 				}
 			}
 		}
+
+		// Draw the towers!
+
+		// Draw the creeps!
+
+		// Draw the UI! (forgive me)
+		// String newline = System.getProperty("line.separator");
+		String uiString = "Life: " + life + '\n' + "Money: " + money;
+
+		TextBounds uiBounds = mFont.getMultiLineBounds(uiString);
+
+		TextureRegion blackBox = new TextureRegion(spriteSheet, 0, 2 * 16, 16, 16);
+
+		// Draw a black rectangle behind the text
+		batch.draw(blackBox, screenWidth - uiBounds.width, screenHeight - uiBounds.height, uiBounds.width, uiBounds.height);
+
+		mFont.drawWrapped(batch, uiString, screenWidth - uiBounds.width, screenHeight, uiBounds.width);
+
 		batch.end();
 
 		for (Creep creep : creeps) {
@@ -133,6 +169,8 @@ public class Game implements ApplicationListener {
 		for (Tower tower : towers) {
 			batch.draw(spriteSheet, tower.x * 16, tower.y * 16, 14 * 16, 0, 16, 16);
 		}
+
+		money++;
 	}
 
 	@Override
