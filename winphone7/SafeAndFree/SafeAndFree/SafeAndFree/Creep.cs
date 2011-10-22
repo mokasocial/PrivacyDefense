@@ -18,6 +18,14 @@ namespace SafeAndFree
         private int _path = 0;
         private int _nextWaypoint = 0;
 
+        public override Vector2 Position
+        {
+            get
+            {
+                return new Vector2(CenterPosition.X - Board.TileCenter.X, CenterPosition.Y - Board.TileCenter.Y);
+            }
+        }
+
         public int Path
         {
             get
@@ -32,8 +40,7 @@ namespace SafeAndFree
 
         public Creep(Vector2 position, MEDIA_ID textureID)
         {
-            this.Position = position;
-            this.CenterPosition = new Vector2(this.Position.X + 8, this.Position.Y + 8);
+            this.CenterPosition = new Vector2(this.Position.X + Board.TileCenter.X, this.Position.Y + Board.TileCenter.Y);
             this.TextureID = textureID;
         }
 
@@ -51,12 +58,10 @@ namespace SafeAndFree
             {
                 if (ourPath[_nextWaypoint].X > this.CenterPosition.X)
                 {
-                    this.Position.X += _speed;
                     this.CenterPosition.X += _speed;
                 }
                 else if (ourPath[_nextWaypoint].X < this.CenterPosition.X)
                 {
-                    this.Position.X -= _speed;
                     this.CenterPosition.X -= _speed;
                 }
             }
@@ -64,12 +69,10 @@ namespace SafeAndFree
             {
                 if (ourPath[_nextWaypoint].Y > this.CenterPosition.Y)
                 {
-                    this.Position.Y += _speed;
                     this.CenterPosition.Y += _speed;
                 }
                 else if (ourPath[_nextWaypoint].Y < this.CenterPosition.Y)
                 {
-                    this.Position.Y -= _speed;
                     this.CenterPosition.Y -= _speed;
                 }
             }

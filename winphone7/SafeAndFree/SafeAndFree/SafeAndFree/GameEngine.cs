@@ -19,8 +19,15 @@ namespace SafeAndFree
     public class GameEngine : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
+
+        /// <summary>
+        /// Required to draw onto the screen.
+        /// </summary>
         SpriteBatch spriteBatch;
 
+        /// <summary>
+        /// The currently active game screen.
+        /// </summary>
         Screen currentGameScreen = null;
 
         public GameEngine()
@@ -41,10 +48,11 @@ namespace SafeAndFree
         /// related content.  Calling base.Initialize will enumerate through any components
         /// and initialize them as well.
         /// </summary>
+        /// <remarks>
+        /// We have no game components to load.
+        /// </remarks>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -57,11 +65,11 @@ namespace SafeAndFree
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // Give the TextureLibrary a reference to our ContentManager object.
             TextureLibrary.Content = this.Content;
+
+            // Load a new Board object.
             Load(new Board());
-
-
-            // TODO: use this.Content to load your game content here
         }
 
         /// <summary>
@@ -70,7 +78,7 @@ namespace SafeAndFree
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+            this.Content.Unload();
         }
 
         /// <summary>
@@ -87,8 +95,6 @@ namespace SafeAndFree
             if (null != currentGameScreen)
                 currentGameScreen.Update();
 
-            // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
 
@@ -100,6 +106,7 @@ namespace SafeAndFree
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            // Draw the current game screen, if one exists.
             if (null != currentGameScreen)
             {
                 spriteBatch.Begin();
@@ -112,6 +119,11 @@ namespace SafeAndFree
             base.Draw(gameTime);
         }
 
+        /// <summary>
+        /// Load a game screen to be the active one (drawn and updated every update loop).
+        /// Only one screen can be active at any time.
+        /// </summary>
+        /// <param name="screenToLoad">The screen to set as active.</param>
         public void Load(Screen screenToLoad)
         {
             currentGameScreen = screenToLoad;
