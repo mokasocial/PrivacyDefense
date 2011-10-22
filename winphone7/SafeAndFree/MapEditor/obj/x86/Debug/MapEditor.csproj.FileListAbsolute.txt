@@ -15,3 +15,16 @@ D:\aclu\privacydefense\winphone7\bin\Debug\MapEditor.exe
 D:\aclu\privacydefense\winphone7\bin\Debug\MapEditor.pdb
 D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\MapEditor.exe
 D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\MapEditor.pdb
+C:\Repo\ACLUPD\winphone7\SafeAndFree\MapEditor\obj\x86\Debug\MapEditor.exe
+C:\Repo\ACLUPD\winphone7\SafeAndFree\MapEditor\obj\x86\Debug\MapEditor.pdb
+C:\Repo\ACLUPD\winphone7\SafeAndFree\bin\Debug\MapEditor.exe
+C:\Repo\ACLUPD\winphone7\SafeAndFree\bin\Debug\MapEditor.pdb
+C:\Repo\ACLUPD\winphone7\SafeAndFree\MapEditor\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Repo\ACLUPD\winphone7\SafeAndFree\MapEditor\obj\x86\Debug\MainWindow.baml
+C:\Repo\ACLUPD\winphone7\SafeAndFree\MapEditor\obj\x86\Debug\MainWindow.g.cs
+C:\Repo\ACLUPD\winphone7\SafeAndFree\MapEditor\obj\x86\Debug\App.g.cs
+C:\Repo\ACLUPD\winphone7\SafeAndFree\MapEditor\obj\x86\Debug\MapEditor_MarkupCompile.cache
+C:\Repo\ACLUPD\winphone7\SafeAndFree\MapEditor\obj\x86\Debug\MapEditor.g.resources
+C:\Repo\ACLUPD\winphone7\SafeAndFree\MapEditor\obj\x86\Debug\MapEditor.Properties.Resources.resources
+C:\Repo\ACLUPD\winphone7\SafeAndFree\MapEditor\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Repo\ACLUPD\winphone7\SafeAndFree\MapEditor\obj\x86\Debug\GenerateResource.write.1.tlog
