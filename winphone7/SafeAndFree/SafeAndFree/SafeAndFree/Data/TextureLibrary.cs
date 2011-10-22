@@ -11,7 +11,7 @@ namespace SafeAndFree.Data
     /// <summary>
     /// 
     /// </summary>
-    enum MEDIA_ID
+   public enum MEDIA_ID
     {
         TILE_0,
         TILE_1,

@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,7 +15,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 
-public class Game implements ApplicationListener
+public class Game implements ApplicationListener, InputProcessor
 {
 	public static int screenWidth = 480;
 	public static int screenHeight = 320;
@@ -25,12 +26,12 @@ public class Game implements ApplicationListener
 	private BitmapFont mFont;
 	private int[][] tiles;			// Our base map (paths and whatnot)
 	public char[][] movementDirs;   // Our pathfinding, 'N' 'E' 'W' or 'S' (and can make different for flyers, woah!)
-	int money;
-	int life;
+	public int money;
+	public int life;
 	public ArrayList<Creep> creeps;
 	public ArrayList<Projectile> projectiles;
 	public ArrayList<Tower> towers;
-	int startingX, startingY;
+	public int startingX, startingY;
 	
 	public static Game instance;
 	
@@ -39,6 +40,8 @@ public class Game implements ApplicationListener
 	{
 		instance = this;
 		
+		InputProcessor john = new InputProcessor();
+		
 		batch = new SpriteBatch();
 		spriteSheet = new Texture( Gdx.files.internal( "sprite_sheet.png" ));
 		Pixmap mapData = new Pixmap( Gdx.files.internal( "map.png" ) );
@@ -46,10 +49,6 @@ public class Game implements ApplicationListener
 		creeps = new ArrayList<Creep>();
 		projectiles = new ArrayList<Projectile>();
 		towers = new ArrayList<Tower>();
-		
-		towers.add(new Tower(TowerType.JUDGE, 6, 6));
-		towers.add(new Tower(TowerType.LAWSUIT, 12, 4));
-		towers.add(new Tower(TowerType.TEACHER, 20, 8));
 		
 		tiles = new int[30][20];
 		movementDirs = new char[30][20];
@@ -217,5 +216,53 @@ public class Game implements ApplicationListener
 	public void dispose()
 	{
 		
+	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int x, int y, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int x, int y, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int x, int y, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchMoved(int x, int y) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
