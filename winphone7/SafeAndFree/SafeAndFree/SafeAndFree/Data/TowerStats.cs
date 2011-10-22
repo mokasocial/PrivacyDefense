@@ -5,7 +5,17 @@ using System.Text;
 
 namespace SafeAndFree.Data
 {
-    class TowerStats
+    public struct TowerStats
     {
+        public int Delay { get; private set; }
+        public int Range { get; private set; }
+        public int CostToNext { get; private set; }
+
+        public TowerStats(int delay, int range, int costToNext) : this()
+        {
+            Delay = delay;
+            Range = range;
+            CostToNext = costToNext;
+        }
     }
 }
