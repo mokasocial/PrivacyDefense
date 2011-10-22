@@ -68,8 +68,11 @@ public class Creep {
 
 	public void getNextDestinationCoordinate()
 	{
+		// Creeps always come from North (for now)
 		if( x >= 0 && x < Game.screenWidth / 16 && y >= 0 && y < Game.screenHeight / 16 )
 			direction = Game.instance.movementDirs[x][y];
+		else
+			direction = 'S';
 	};
 	
 	public void die(){

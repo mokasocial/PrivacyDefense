@@ -103,6 +103,9 @@ public class Game implements ApplicationListener
 			}
 		}
 		
+		for( int i = 1; i < 100; ++i )
+			creeps.add( new Creep( 100, 32, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
+		
 		mapData.dispose();
 	}
 	
@@ -119,9 +122,6 @@ public class Game implements ApplicationListener
 		for (Tower tower : towers) {
 			tower.update( dt );
 		}
-		
-		// Add creeps!
-		creeps.add( new Creep( 100, 32, 20, startingX, startingY, 0, 15, CreepType.PETTY ) );
 	}
 	
 	@Override
