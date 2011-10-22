@@ -23,6 +23,8 @@ namespace MapEditor
     public partial class MainWindow : Window
     {
         private int[,] tiles;
+        private Image[,] visualTiles;
+
         private BitmapSource[,] tileImages;
 
         private List<BitmapImage> tileTextures = new List<BitmapImage>();
@@ -159,6 +161,8 @@ namespace MapEditor
             }
 
             tiles[column, row]++;
+
+
         }
     }
 }
