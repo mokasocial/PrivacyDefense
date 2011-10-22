@@ -11,7 +11,8 @@ public class Game implements ApplicationListener
 {
 	private SpriteBatch batch;
 	private Texture spriteSheet;
-	private int[][] tiles;
+	private int[][] tiles;			// Our base map (paths and whatnot)
+	private int[][] movementDirs;   // Our pathfinding, each tile is seriously just a value from 0 to 3 (N,E,W,S) of the direction to move until the creep hits the next tile
 	
 	public void create()
 	{
