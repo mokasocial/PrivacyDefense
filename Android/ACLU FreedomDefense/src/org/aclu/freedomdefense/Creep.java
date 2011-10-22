@@ -42,20 +42,20 @@ public class Creep {
 			++x;
 			xOffset = 0;
 		}
-		if( xOffset < 0 )
+		if( xOffset < -15 )
 		{
 			--x;
-			xOffset = 15;
+			xOffset = 0;
 		}
 		if( yOffset > 15 )
 		{
 			++y;
 			yOffset = 0;
 		}
-		if( yOffset < 0 )
+		if( yOffset < -15 )
 		{
 			--y;
-			yOffset = 15;
+			yOffset = 0;
 		}
 	};
 
