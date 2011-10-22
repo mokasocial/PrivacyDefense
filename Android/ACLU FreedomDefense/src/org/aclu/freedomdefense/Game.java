@@ -74,7 +74,7 @@ public class Game implements ApplicationListener {
 			}
 		}
 		
-		towers = Tower[2]();
+		Tower[] towers = new Tower[]();
 		
 		Tower testTower = new Tower();
 		testTower.x = 3;
