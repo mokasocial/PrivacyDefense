@@ -68,10 +68,11 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Data\TextureLibrary.cs" />
-    <Compile Include="Data\CreepStats.cs" />
+    <Compile Include="Data\Creep.cs" />
     <Compile Include="Data\Debuff.cs" />
     <Compile Include="Data\TowerStats.cs" />
     <Compile Include="Data\WeaponStats.cs" />
+    <Compile Include="Enumerations\CreepStats.cs" />
     <Compile Include="Exceptions\ContentNotDefinedException.cs" />
     <Compile Include="Game States\Board.cs" />
     <Compile Include="Creep.cs" />
@@ -108,6 +109,7 @@
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

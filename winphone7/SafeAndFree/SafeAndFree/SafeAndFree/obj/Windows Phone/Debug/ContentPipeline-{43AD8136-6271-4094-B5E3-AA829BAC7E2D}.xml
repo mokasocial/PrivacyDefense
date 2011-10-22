@@ -7,8 +7,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\tile0.xnb</Output>
-      <Time>2011-10-22T01:28:29.2097268-07:00</Time>
+      <Output>C:\Repo\ACLUPD\winphone7\SafeAndFree\bin\Debug\Content\tile0.xnb</Output>
+      <Time>2011-10-22T11:07:25.6702448-07:00</Time>
     </Item>
     <Item>
       <Source>tile1.png</Source>
@@ -16,8 +16,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\tile1.xnb</Output>
-      <Time>2011-10-22T01:28:29.2117272-07:00</Time>
+      <Output>C:\Repo\ACLUPD\winphone7\SafeAndFree\bin\Debug\Content\tile1.xnb</Output>
+      <Time>2011-10-22T11:07:25.6712448-07:00</Time>
     </Item>
     <Item>
       <Source>tile2.png</Source>
@@ -25,8 +25,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\tile2.xnb</Output>
-      <Time>2011-10-22T01:28:29.2127274-07:00</Time>
+      <Output>C:\Repo\ACLUPD\winphone7\SafeAndFree\bin\Debug\Content\tile2.xnb</Output>
+      <Time>2011-10-22T11:07:25.6712448-07:00</Time>
     </Item>
     <Item>
       <Source>tile3.png</Source>
@@ -34,8 +34,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\tile3.xnb</Output>
-      <Time>2011-10-22T01:28:29.2137276-07:00</Time>
+      <Output>C:\Repo\ACLUPD\winphone7\SafeAndFree\bin\Debug\Content\tile3.xnb</Output>
+      <Time>2011-10-22T11:07:25.6722449-07:00</Time>
     </Item>
     <Item>
       <Source>winphonemap.png</Source>
@@ -43,8 +43,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\winphonemap.xnb</Output>
-      <Time>2011-10-22T03:48:01.7088601-07:00</Time>
+      <Output>C:\Repo\ACLUPD\winphone7\SafeAndFree\bin\Debug\Content\winphonemap.xnb</Output>
+      <Time>2011-10-22T11:07:25.6722449-07:00</Time>
     </Item>
     <Item>
       <Source>creep0.png</Source>
@@ -52,8 +52,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>D:\aclu\PrivacyDefense\WinPhone7\SafeAndFree\bin\Debug\Content\creep0.xnb</Output>
-      <Time>2011-10-22T11:10:54.5968174-07:00</Time>
+      <Output>C:\Repo\ACLUPD\winphone7\SafeAndFree\bin\Debug\Content\creep0.xnb</Output>
+      <Time>2011-10-22T12:59:08.5898368-07:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
@@ -62,10 +62,10 @@
       <TargetProfile>Reach</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>D:\aclu\PrivacyDefense\WinPhone7\SafeAndFree\SafeAndFree\SafeAndFreeContent\</RootDirectory>
-      <LoggerRootDirectory>D:\aclu\PrivacyDefense\WinPhone7\SafeAndFree\SafeAndFree\SafeAndFree\</LoggerRootDirectory>
-      <IntermediateDirectory>D:\aclu\PrivacyDefense\WinPhone7\SafeAndFree\SafeAndFree\SafeAndFree\obj\Windows Phone\Debug\</IntermediateDirectory>
-      <OutputDirectory>D:\aclu\PrivacyDefense\WinPhone7\SafeAndFree\bin\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Repo\ACLUPD\winphone7\SafeAndFree\SafeAndFree\SafeAndFreeContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Repo\ACLUPD\winphone7\SafeAndFree\SafeAndFree\SafeAndFree\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Repo\ACLUPD\winphone7\SafeAndFree\SafeAndFree\SafeAndFree\obj\Windows Phone\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Repo\ACLUPD\winphone7\SafeAndFree\bin\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
@@ -93,8 +93,8 @@
         <Value>2011-09-01T16:22:30-07:00</Value>
       </Assembly>
       <Assembly>
-        <Key>C:\Windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
-        <Value>2011-10-21T23:22:09.0322115-07:00</Value>
+        <Key>C:\windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
+        <Value>2011-10-22T12:49:56.7992762-07:00</Value>
       </Assembly>
     </Assemblies>
   </Asset>

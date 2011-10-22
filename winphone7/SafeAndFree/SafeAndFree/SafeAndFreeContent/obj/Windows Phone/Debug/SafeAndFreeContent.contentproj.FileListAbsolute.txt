@@ -1,1 +1,2 @@
 D:\aclu\privacydefense\winphone7\SafeAndFree\SafeAndFree\SafeAndFreeContent\obj\Windows Phone\Debug\ResolveAssemblyReference.cache
+C:\Repo\ACLUPD\winphone7\SafeAndFree\SafeAndFree\SafeAndFreeContent\obj\Windows Phone\Debug\ResolveAssemblyReference.cache
