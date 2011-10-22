@@ -5,13 +5,16 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 
 
 public class Game implements ApplicationListener
@@ -32,6 +35,9 @@ public class Game implements ApplicationListener
 	public ArrayList<Tower> towers;
 	int startingX, startingY;
 	int endingX, endingY;
+	
+	// Circle sprites for tower ranges
+	HashMap<Float, Sprite> rangeSprites = new HashMap<Float,Sprite>();
 	
 	public static Game instance;
 	
@@ -128,14 +134,14 @@ public class Game implements ApplicationListener
 			projectile.update( dt );
 		}
 		
-		ArrayList<Creep> livingCreeps = new ArrayList<Creep>();
+		//ArrayList<Creep> livingCreeps = new ArrayList<Creep>();
 		
 		for (Creep creep : creeps) 
 		{
 			if( creep.Health > 0 )
 			{
 				creep.update( dt );
-				livingCreeps.add( creep );
+				//livingCreeps.add( creep );
 			}
 			else
 			{
@@ -143,7 +149,7 @@ public class Game implements ApplicationListener
 			}
 		}
 		
-		creeps = livingCreeps;
+		//creeps = livingCreeps;
 		
 		for (Tower tower : towers) 
 		{
@@ -187,8 +193,12 @@ public class Game implements ApplicationListener
 		}
 		
 		// Draw the towers
-		for (Tower tower : towers) {
+		for (Tower tower : towers) 
+		{
 			drawSprite(tower.getIconNum(), tower.m_x, tower.m_y);
+			
+			// Debugging
+			//drawCircle( tower.radius, new Color(0.0f, 1.0f, 0.0f, 0.5f), new Vector2( tower.m_x * 16 + 8, tower.m_y * 16 + 8) );
 		}
 		
 		// Draw the creeps!
@@ -198,7 +208,6 @@ public class Game implements ApplicationListener
 		}
 		
 		// Draw the UI! (forgive me)
-		//String newline = System.getProperty("line.separator");
 		String uiString = "Life: " + life + '\n' + "Money: " + money;
 		
 		TextBounds uiBounds = mFont.getMultiLineBounds( uiString );
@@ -238,5 +247,47 @@ public class Game implements ApplicationListener
 	public void dispose()
 	{
 		
+	}
+	
+	public void drawCircle( float radius, Color color, Vector2 position )
+	{
+		if( rangeSprites.containsKey( radius  ) )
+		{
+			Sprite rangedSprite = rangeSprites.get( radius );
+			
+			rangedSprite.setPosition( position.x - rangedSprite.getWidth()/2, position.y - rangedSprite.getHeight()/2 );
+			
+			rangedSprite.draw( batch );
+			
+			return;
+		}
+		
+		// The Pixmap's width+height needs to be a power of 2, so
+		// calculate the next power of 2 based on the tower Range
+		// * 2 (tower range goes both ways)
+		int powof2 = 1;
+		int shotRange = (int)Math.ceil( radius * 2 );
+		while( powof2 < shotRange) powof2 <<= 1;
+		 
+		// Create a new pixmap with the appropriate size
+		Pixmap p = new Pixmap(powof2, powof2, Pixmap.Format.RGBA8888);
+		p.setColor( color );
+		
+		// Tell the pixmap to create a circle with the middle point
+		// shotRange / 2 (x and y), and a radius of shotRange / 2
+		p.fillCircle( powof2/2, powof2/2, (int)radius );
+		 
+		// Make a texture out of the pixmap, and use that to create
+		// a Sprite
+		Sprite uiTowerRangeCircle = new Sprite(new Texture(p));
+		 
+		// We can now dispose the pixmap to free up its resources
+		p.dispose();
+		
+		rangeSprites.put( radius, uiTowerRangeCircle );
+		
+		// Set the coordinates and draw the sprite
+		uiTowerRangeCircle.setPosition( position.x - powof2/2, position.y - powof2/2);
+		uiTowerRangeCircle.draw( batch );
 	}
 }

@@ -3,7 +3,7 @@ package org.aclu.freedomdefense;
 public class Creep {
 	CreepType m_type;
 	float Health, Speed, Money;
-	int x, y;
+	public int x, y;
 	float xOffset, yOffset;
 	char direction;
 

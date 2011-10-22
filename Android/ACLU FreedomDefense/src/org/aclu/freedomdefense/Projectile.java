@@ -26,7 +26,8 @@ public abstract class Projectile {
 	private boolean my_alive_state;
 	
 	
-	public Projectile(final int[] the_starting_coord, final float[] the_firing_direction) {
+	public Projectile(final int[] the_starting_coord, final float[] the_firing_direction) 
+	{
 		if (the_starting_coord == null) {
 			throw new IllegalArgumentException("non-null starting coordinates required");
 		}
