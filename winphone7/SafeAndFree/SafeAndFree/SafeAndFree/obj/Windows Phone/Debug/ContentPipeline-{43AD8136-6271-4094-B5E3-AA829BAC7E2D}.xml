@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline">
+  <Asset Type="Pipeline:BuildItemCollection">
+    <Item>
+      <Source>tile0.png</Source>
+      <Name>tile0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\tile0.xnb</Output>
+      <Time>2011-10-22T01:28:29.2097268-07:00</Time>
+    </Item>
+    <Item>
+      <Source>tile1.png</Source>
+      <Name>tile1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\tile1.xnb</Output>
+      <Time>2011-10-22T01:28:29.2117272-07:00</Time>
+    </Item>
+    <Item>
+      <Source>tile2.png</Source>
+      <Name>tile2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\tile2.xnb</Output>
+      <Time>2011-10-22T01:28:29.2127274-07:00</Time>
+    </Item>
+    <Item>
+      <Source>tile3.png</Source>
+      <Name>tile3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\tile3.xnb</Output>
+      <Time>2011-10-22T01:28:29.2137276-07:00</Time>
+    </Item>
+    <Item>
+      <Source>winphonemap.png</Source>
+      <Name>winphonemap</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\winphonemap.xnb</Output>
+      <Time>2011-10-22T03:48:01.7088601-07:00</Time>
+    </Item>
+    <BuildSuccessful>true</BuildSuccessful>
+    <Settings>
+      <ContentProjectGUID>{43AD8136-6271-4094-B5E3-AA829BAC7E2D}</ContentProjectGUID>
+      <TargetPlatform>WindowsPhone</TargetPlatform>
+      <TargetProfile>Reach</TargetProfile>
+      <BuildConfiguration>Debug</BuildConfiguration>
+      <CompressContent>false</CompressContent>
+      <RootDirectory>D:\aclu\privacydefense\winphone7\SafeAndFree\SafeAndFree\SafeAndFreeContent\</RootDirectory>
+      <LoggerRootDirectory>D:\aclu\privacydefense\winphone7\SafeAndFree\SafeAndFree\SafeAndFree\</LoggerRootDirectory>
+      <IntermediateDirectory>D:\aclu\privacydefense\winphone7\SafeAndFree\SafeAndFree\SafeAndFree\obj\Windows Phone\Debug\</IntermediateDirectory>
+      <OutputDirectory>D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\</OutputDirectory>
+    </Settings>
+    <Assemblies>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll</Key>
+        <Value>2011-09-01T16:22:30-07:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.VideoImporters.dll</Key>
+        <Value>2011-09-01T16:22:30-07:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll</Key>
+        <Value>2011-09-01T16:22:30-07:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll</Key>
+        <Value>2011-09-01T16:22:30-07:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll</Key>
+        <Value>2011-09-01T16:22:30-07:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.dll</Key>
+        <Value>2011-09-01T16:22:30-07:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
+        <Value>2011-10-21T23:22:09.0322115-07:00</Value>
+      </Assembly>
+    </Assemblies>
+  </Asset>
+</XnaContent>
