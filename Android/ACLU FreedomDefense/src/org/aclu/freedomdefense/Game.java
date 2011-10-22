@@ -81,7 +81,7 @@ public class Game implements ApplicationListener
 		for (Projectile projectile : projectiles) {
 			projectile.update();
 		}
-		for (Tower tower : tower) {
+		for (Tower tower : towers) {
 			tower.update();
 		}
 	}
