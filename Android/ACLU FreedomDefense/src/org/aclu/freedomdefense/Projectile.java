@@ -2,6 +2,8 @@ package org.aclu.freedomdefense;
 
 public abstract class Projectile {
 
+	public int x, y;
+	
 	public void draw(){
 		// @todo
 	};
@@ -22,5 +24,10 @@ public abstract class Projectile {
 	public void update( float dt ) {
 		// TODO Auto-generated method stub
 		
-	};
+	}
+
+	public void getCoords() {
+		// TODO Auto-generated method stub
+		
+	}
 }

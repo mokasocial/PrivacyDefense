@@ -8,7 +8,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -104,9 +103,10 @@ public class Game implements ApplicationListener
 			}
 		}
 		
-		mapData.dispose();
+		for( int i = 1; i < 100; ++i )
+			creeps.add( new Creep( 100, 32, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
 		
-		creeps.add( new Creep( 100, 32, 20, startingX, startingY, 0, 15, CreepType.PETTY ) );
+		mapData.dispose();
 	}
 	
 	public void update()

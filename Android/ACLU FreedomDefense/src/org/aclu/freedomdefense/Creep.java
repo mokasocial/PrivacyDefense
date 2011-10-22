@@ -42,20 +42,20 @@ public class Creep {
 			++x;
 			xOffset = 0;
 		}
-		if( xOffset < 0 )
+		if( xOffset < -15 )
 		{
 			--x;
-			xOffset = 15;
+			xOffset = 0;
 		}
 		if( yOffset > 15 )
 		{
 			++y;
 			yOffset = 0;
 		}
-		if( yOffset < 0 )
+		if( yOffset < -15 )
 		{
 			--y;
-			yOffset = 15;
+			yOffset = 0;
 		}
 	};
 
@@ -68,8 +68,11 @@ public class Creep {
 
 	public void getNextDestinationCoordinate()
 	{
+		// Creeps always come from North (for now)
 		if( x >= 0 && x < Game.screenWidth / 16 && y >= 0 && y < Game.screenHeight / 16 )
 			direction = Game.instance.movementDirs[x][y];
+		else
+			direction = 'S';
 	};
 	
 	public void die(){
