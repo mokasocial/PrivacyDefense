@@ -1,33 +1,78 @@
 package org.aclu.freedomdefense;
 
-public abstract class Creep {
+public class Creep {
 	CreepType m_type;
-	int Speed;
-	int Health;
+	float Health, Speed, Money;
+	int x, y;
+	float xOffset, yOffset;
+	char direction;
 
-	public Creep(){
-		//@todo
+	public Creep( float Health, float Speed, float Money, int x, int y, float xOffset, float yOffset, CreepType creepType )
+	{
+		this.m_type = creepType;
+		this.Health = Health;
+		this.Speed = Speed;
+		this.Money = Money;
+		this.x = x;
+		this.y = y;
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
 	}
-	
-	public void draw(){
-		// @todo
+
+	public void move( float dt )
+	{
+		switch( direction )
+		{
+		case 'N':
+			yOffset += dt * Speed;
+			break;
+		case 'E':
+			xOffset += dt * Speed;
+			break;
+		case 'W':
+			xOffset -= dt * Speed;
+			break;
+		case 'S':
+			yOffset -= dt * Speed;
+			break;
+		}
+		
+		if( xOffset > 15 )
+		{
+			++x;
+			xOffset = 0;
+		}
+		if( xOffset < 0 )
+		{
+			--x;
+			xOffset = 15;
+		}
+		if( yOffset > 15 )
+		{
+			++y;
+			yOffset = 0;
+		}
+		if( yOffset < 0 )
+		{
+			--y;
+			yOffset = 15;
+		}
 	};
 
-	public void move(){
-		// @todo
+	public void update( float dt ) 
+	{
+		getNextDestinationCoordinate();
+		
+		move( dt );
 	};
 
-	public int[][] getNextDestinationCoordinate(){
-		return null;
-		// @todo
+	public void getNextDestinationCoordinate()
+	{
+		if( x >= 0 && x < Game.screenWidth / 16 && y >= 0 && y < Game.screenHeight / 16 )
+			direction = Game.instance.movementDirs[x][y];
 	};
 	
 	public void die(){
 		// @todo
 	}
-
-	public void update( float dt ) {
-		// TODO Auto-generated method stub
-		
-	};
 }

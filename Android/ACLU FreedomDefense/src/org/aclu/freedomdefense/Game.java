@@ -1,5 +1,6 @@
 package org.aclu.freedomdefense;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.badlogic.gdx.ApplicationListener;
@@ -16,30 +17,41 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Game implements ApplicationListener
 {
-	private static int screenWidth = 480;
-	private static int screenHeight = 320;
+	public static int screenWidth = 480;
+	public static int screenHeight = 320;
 	
 	private SpriteBatch batch;
 	private Texture spriteSheet;
 	private Texture mapData;
 	private BitmapFont mFont;
 	private int[][] tiles;			// Our base map (paths and whatnot)
-	private char[][] movementDirs;   // Our pathfinding, 'N' 'E' 'W' or 'S' (and can make different for flyers, woah!)
+	public char[][] movementDirs;   // Our pathfinding, 'N' 'E' 'W' or 'S' (and can make different for flyers, woah!)
 	private int money;
 	private int life;
-	public Creep[] creeps;
-	public Projectile[] projectiles;
-	public Tower[] towers;
+	public ArrayList<Creep> creeps;
+	public ArrayList<Projectile> projectiles;
+	public ArrayList<Tower> towers;
+	int startingX, startingY;
+	
+	public static Game instance;
 	
 	@Override
 	public void create()
 	{
+		instance = this;
+		
 		batch = new SpriteBatch();
 		spriteSheet = new Texture( Gdx.files.internal( "sprite_sheet.png" ));
 		Pixmap mapData = new Pixmap( Gdx.files.internal( "map.png" ) );
 		
+		creeps = new ArrayList<Creep>();
+		projectiles = new ArrayList<Projectile>();
+		towers = new ArrayList<Tower>();
+		
 		tiles = new int[30][20];
 		movementDirs = new char[30][20];
+		
+		
 		mFont = new BitmapFont(Gdx.files.internal( "ostrich_sans_mellow.fnt" ), Gdx.files.internal( "ostrich_sans_mellow.png" ), false );
 		mFont.setFixedWidthGlyphs("LifeMoney0123456789");
 		
@@ -83,10 +95,18 @@ public class Game implements ApplicationListener
 					movementDirs[x][19-y] = cToMoveDir.get( g );
 				else
 					movementDirs[x][19-y] = 'S';
+				
+				if( b == 100 )
+				{
+					startingX = x;
+					startingY = 19-y;
+				}
 			}
 		}
 		
 		mapData.dispose();
+		
+		creeps.add( new Creep( 100, 32, 20, startingX, startingY, 0, 15, CreepType.PETTY ) );
 	}
 	
 	public void update()
@@ -107,6 +127,9 @@ public class Game implements ApplicationListener
 	@Override
 	public void render()
 	{
+		// uhh
+		update();
+		
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT ); // clear the screen
 		batch.begin();
 		
@@ -118,7 +141,7 @@ public class Game implements ApplicationListener
 				batch.draw( spriteSheet, x*16, y*16, tiles[x][y]*16, 0, 16, 16 );
 
 				// Temporary, copy pasta
-				switch( movementDirs[x][y] )
+				/*switch( movementDirs[x][y] )
 				{
 				case 'N':
 					batch.draw( spriteSheet, x*16, y*16, 11*16, 0, 16, 16 );
@@ -132,13 +155,17 @@ public class Game implements ApplicationListener
 				case 'S':
 					batch.draw( spriteSheet, x*16, y*16, 14*16, 0, 16, 16 );
 					break;
-				}
+				}*/
 			}
 		}
 		
 		// Draw the towers!
 		
 		// Draw the creeps!
+		for( Creep creep : creeps )
+		{
+			batch.draw( spriteSheet, creep.x * 16 + creep.xOffset, creep.y * 16 + creep.yOffset, 0, 16, 16, 16 );
+		}
 		
 		// Draw the UI! (forgive me)
 		//String newline = System.getProperty("line.separator");
