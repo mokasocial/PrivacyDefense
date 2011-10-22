@@ -1,27 +1,56 @@
 package org.aclu.freedomdefense;
 
 public class Tower {
-	TowerType m_type;
-	int damage;
-	int speed;
-	int splash;
 
-	// shoot, cost
-	public Tower() {
-		// @todo
-	}
+	int m_x;
+	int m_y;
+	private TowerType m_type;
+	private int m_speed;
+	private float m_timeToFire;
 
-	void shoot() {
-		// @todo
-	}
-
-	void move() {
-		// @todo
-	}
-
-	public void update( float dt ) {
-		// TODO Auto-generated method stub
+	public Tower(TowerType type, int x, int y) {
+		m_type = type;
+		m_x = x;
+		m_y = y;
 		
+		if (type.equals(TowerType.JUDGE))
+			m_speed = 5;
+		else if (type.equals(TowerType.FIREWALL))
+			m_speed = 6;
+		else if (type.equals(TowerType.TEACHER))
+			m_speed = 7;
+		else 
+			m_speed = 8;
+		
+		m_timeToFire = m_speed;
 	}
 
+	public void move(int x, int y) {
+		m_x = x;
+		m_y = y;
+	}
+	public int getIconNum() {
+		if (m_type.equals(TowerType.JUDGE))
+			return 0;
+		else if (m_type.equals(TowerType.FIREWALL))
+			return 2;
+		else if (m_type.equals(TowerType.TEACHER))
+			return 1;
+		else 
+			return 3;
+	}
+	
+	//	public void update(Projectile[] projectiles, float deltaTime) {
+	public void update(float deltaTime) {
+		float k = m_timeToFire - deltaTime;
+		if (k < 0) {
+			
+			/* Shoot */
+			//Projectile p = new Projectile(m_type);
+			//projectiles.add(p);
+			
+			m_timeToFire = m_speed;
+		} else
+			m_timeToFire = k;
+	}
 }

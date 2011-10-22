@@ -15,7 +15,7 @@ namespace SafeAndFree
 
         public Tile(Vector2 position, MEDIA_ID textureID)
         {
-            this.Position = position;
+            this._position = position;
             this.TextureID = textureID;
         }
     }
