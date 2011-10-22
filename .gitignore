@@ -10,3 +10,7 @@ gen/
 
 # Local configuration file (sdk path, etc)
 local.properties
+
+# Map editor obj files
+mapeditor/obj
+safeandfree/bin

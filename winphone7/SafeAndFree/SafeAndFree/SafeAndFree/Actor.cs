@@ -9,7 +9,7 @@ namespace SafeAndFree
     /// <summary>
     /// 
     /// </summary>
-    abstract class Actor
+    public abstract class Actor
     {
         public bool IsDead { get; protected set; }
 
