@@ -69,11 +69,13 @@ public class Tower {
 			
 			for( int i = 0; i < Game.instance.creeps.size(); ++i )
 			{
-				float dist2 = (float) (Math.pow( Game.instance.creeps.get(i).x - Game.instance.endingX, 2) + Math.pow( Game.instance.creeps.get(i).y, 2));
+				float dist2 = (float) (Math.pow( Game.instance.endingX - Game.instance.creeps.get(i).x, 2) + Math.pow( Game.instance.endingY - Game.instance.creeps.get(i).y, 2));
 				
 				if( dist2 < closestDist2 )
 					closestIndex = 0;
 			}
+			
+			// Fire something @ Game.instance.creeps.get(index)!
 			
 			// Reset the cooldown for next frame
 			m_timeToFire = m_speed;

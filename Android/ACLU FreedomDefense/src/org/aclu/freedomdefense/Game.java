@@ -28,8 +28,8 @@ public class Game implements ApplicationListener
 	private BitmapFont mFont;
 	private int[][] tiles;			// Our base map (paths and whatnot)
 	public char[][] movementDirs;   // Our pathfinding, 'N' 'E' 'W' or 'S' (and can make different for flyers, woah!)
-	private int money;
-	private int life;
+	public int money;
+	public int life;
 	public ArrayList<Creep> creeps;
 	public ArrayList<Projectile> projectiles;
 	public ArrayList<Tower> towers;
@@ -57,9 +57,12 @@ public class Game implements ApplicationListener
 		projectiles = new ArrayList<Projectile>();
 		towers = new ArrayList<Tower>();
 		
+		towers.add(  new Tower(TowerType.JUDGE, 6, 6) );
+		towers.add( new Tower(TowerType.LAWSUIT, 12, 4 ) );
+		towers.add( new Tower(TowerType.TEACHER, 20, 8));
+		
 		tiles = new int[30][20];
 		movementDirs = new char[30][20];
-		
 		
 		mFont = new BitmapFont(Gdx.files.internal( "ostrich_sans_mellow.fnt" ), Gdx.files.internal( "ostrich_sans_mellow.png" ), false );
 		mFont.setFixedWidthGlyphs("LifeMoney0123456789");
@@ -128,6 +131,13 @@ public class Game implements ApplicationListener
 	{
 		float dt = Gdx.graphics.getDeltaTime();
 		
+			
+		for (Projectile projectile : projectiles) 
+		{
+			projectile.update( dt );
+		}
+		
+		// Handle projectile collision, creep update, creep death
 		ArrayList<Creep> livingCreeps = new ArrayList<Creep>();
 		
 		for (Creep creep : creeps) 
@@ -135,7 +145,7 @@ public class Game implements ApplicationListener
 			if( creep.Health > 0 )
 			{
 				creep.update( dt );
-				//livingCreeps.add( creep );
+				livingCreeps.add( creep );
 			}
 			else
 			{
@@ -145,11 +155,8 @@ public class Game implements ApplicationListener
 		
 		creeps = livingCreeps;
 		
-		for (Projectile projectile : projectiles) {
-			projectile.update( dt );
-		}
-		
-		for (Tower tower : towers) {
+		for (Tower tower : towers) 
+		{
 			tower.update( dt );
 		}
 	}
@@ -157,7 +164,7 @@ public class Game implements ApplicationListener
 	@Override
 	public void render()
 	{
-		// uhh
+		// LibGDX you are a MY-STERY TO ME
 		update();
 		
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT ); // clear the screen
