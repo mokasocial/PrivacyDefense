@@ -22,7 +22,14 @@ namespace SafeAndFree.Helpers
             return Math.Sqrt(Math.Pow(pos1.X - pos2.X, 2) + Math.Pow(pos1.Y - pos2.Y, 2));
         }
 
-
+        /// <summary>
+        /// TODO: Is this necessary?
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="speed"></param>
+        /// <param name="Connected"></param>
+        /// <returns></returns>
         public static Vector2 MovementTowardsPoint(Vector2 start, Vector2 end, int speed, out bool Connected)
         {
             double totalDistance = GetDistance(start, end);

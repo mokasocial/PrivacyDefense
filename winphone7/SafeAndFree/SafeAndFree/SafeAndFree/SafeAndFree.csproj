@@ -68,7 +68,6 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Data\TextureLibrary.cs" />
-    <Compile Include="Data\Creep.cs" />
     <Compile Include="Data\Debuff.cs" />
     <Compile Include="Data\TowerStats.cs" />
     <Compile Include="Data\WeaponStats.cs" />

@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Resources;
 using Microsoft.Xna.Framework.Input;
+using SafeAndFree.Enumerations;
 
 namespace SafeAndFree
 {
@@ -56,9 +57,7 @@ namespace SafeAndFree
         public Board()
         {
             LoadMap();
-
             LoadPaths();
-
             LoadCreeps();
         }
 
@@ -86,15 +85,6 @@ namespace SafeAndFree
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            // Draw all tiles.
-            for (int i = 0; i <= mapTiles.GetUpperBound(0); i++)
-            {
-                for (int j = 0; j <= mapTiles.GetUpperBound(1); j++)
-                {
-                    spriteBatch.Draw(TextureLibrary.GetTexture(mapTiles[i, j].TextureID), mapTiles[i, j].Position, Color.White);
-                }
-            }
-
             // Draw all creeps.
             foreach (Creep c in creeps)
             {
@@ -186,7 +176,11 @@ namespace SafeAndFree
         {
             // Hard-coded for now.
             creeps = new List<Creep>();
-            creeps.Add(new Creep(new Vector2(paths[0][0].X - Board.TileCenter.X, paths[0][0].Y - Board.TileCenter.Y), MEDIA_ID.CREEP_0, 0, 0));
+            Dictionary<CreepStats, int> basicStats = new Dictionary<CreepStats, int>();
+            basicStats.Add(CreepStats.Health, 50);
+            basicStats.Add(CreepStats.Speed, 3);
+
+            creeps.Add(new Creep(basicStats, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_0, 0, 0));
         }
     }
 }
