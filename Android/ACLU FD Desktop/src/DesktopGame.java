@@ -1,3 +1,5 @@
+import org.aclu.freedomdefense.Game;
+
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 
 public class DesktopGame
