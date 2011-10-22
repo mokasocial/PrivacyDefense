@@ -30,3 +30,5 @@ D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\tile0.png
 D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\tile1.png
 D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\tile2.png
 D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\winphonemap.png
+D:\PrivacyDefense\winphone7\SafeAndFree\SafeAndFree\SafeAndFree\obj\Windows Phone\Debug\SafeAndFree.dll
+D:\PrivacyDefense\winphone7\SafeAndFree\SafeAndFree\SafeAndFree\obj\Windows Phone\Debug\SafeAndFree.pdb
