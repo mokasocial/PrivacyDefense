@@ -1,9 +1,14 @@
 package org.aclu.freedomdefense;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
@@ -11,34 +16,59 @@ public class Game implements ApplicationListener
 {
 	private SpriteBatch batch;
 	private Texture spriteSheet;
-	private int[][] tiles;
+	private Texture mapData;
+	private int[][] tiles;			// Our base map (paths and whatnot)
+	private char[][] movementDirs;   // Our pathfinding, 'N' 'E' 'W' or 'S' (and can make different for flyers, woah!)
 	
 	public void create()
 	{
 		batch = new SpriteBatch();
 		spriteSheet = new Texture( Gdx.files.internal( "sprite_sheet.png" ));
 		tiles = new int[30][20];
+		movementDirs = new char[30][20];
+		Pixmap mapData = new Pixmap( Gdx.files.internal( "map.png" ) );
+		
+		// Feel free to change this, it is confusing!
+		// Movement data is in the GREEN channel of the map:
+		HashMap<Integer,Character> cToMoveDir = new HashMap<Integer,Character>();
+		cToMoveDir.put( 132, 'S' );
+		cToMoveDir.put( 164, 'E' );
+		cToMoveDir.put( 196, 'N' );
+		cToMoveDir.put( 228, 'W' );
+		
+		// Tile data is in the RED channel of the map:
+		HashMap<Integer,Integer> cToTileNumber = new HashMap<Integer,Integer>();
+		cToTileNumber.put( 0, 4 );
+		cToTileNumber.put( 32, 5 );
+		cToTileNumber.put( 64, 8 );
+		cToTileNumber.put( 96, 6 );
+		cToTileNumber.put( 128, 7 );
+		cToTileNumber.put( 160, 9 );
+		cToTileNumber.put( 192, 10 );
 		
 		for( int x = 0; x < 30; ++x )
+		{
 			for( int y = 0; y < 20; ++y )
-				tiles[x][y] = 4;
-		
-		for( int y = 19; y >= 0; y-- )
-			tiles[1][y] = 5;
-		
-		tiles[1][0] = 8;
-		
-		for( int x = 2; x < 6; ++x )
-		{
-			tiles[x][0] = 6;
+			{
+				int col = mapData.getPixel( x, y );
+				
+				int r = ( col & 0xFF000000 ) >>> 24;
+				int g = ( col & 0x00FF0000 ) >>> 16;
+				int b = ( col & 0x0000FF00 ) >>> 8; // Currently have 100 for 1 below enemy spawn (so they spawn offscreen), 255 player base
+			
+				if( cToTileNumber.containsKey( r ) )
+					tiles[x][19-y] = cToTileNumber.get( r ); // Flip the Y so what we're photoshopping matches the game
+				else
+					tiles[x][19-y] = 4;
+				
+				if( cToMoveDir.containsKey( g ) )
+					movementDirs[x][19-y] = cToMoveDir.get( g );
+				else
+					movementDirs[x][19-y] = 'S';
+			}
 		}
 		
-		tiles[5][0] = 7;
-		
-		for( int y = 1; y < 18; ++y )
-		{
-			tiles[5][y] = 5;
-		}
+		mapData.dispose();
 	}
 	
 	public void render()
@@ -51,6 +81,23 @@ public class Game implements ApplicationListener
 			for( int y = 0; y < 20; ++y )
 			{
 				batch.draw( spriteSheet, x*16, y*16, tiles[x][y]*16, 0, 16, 16 );
+				
+				// Temporary, copy pasta
+				switch( movementDirs[x][y] )
+				{
+				case 'N':
+					batch.draw( spriteSheet, x*16, y*16, 11*16, 0, 16, 16 );
+					break;
+				case 'E':
+					batch.draw( spriteSheet, x*16, y*16, 12*16, 0, 16, 16 );
+					break;
+				case 'W':
+					batch.draw( spriteSheet, x*16, y*16, 13*16, 0, 16, 16 );
+					break;
+				case 'S':
+					batch.draw( spriteSheet, x*16, y*16, 14*16, 0, 16, 16 );
+					break;
+				}
 			}
 		}
 		batch.end();
