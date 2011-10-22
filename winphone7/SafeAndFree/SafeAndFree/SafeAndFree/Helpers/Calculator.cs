@@ -23,12 +23,19 @@ namespace SafeAndFree.Helpers
         }
 
 
-        public static Vector2 MovementTowardsPoint(Vector2 start, Vector2 end, Vector2 nextTarget, int speed)
+        public static Vector2 MovementTowardsPoint(Vector2 start, Vector2 end, int speed, out bool Connected)
         {
             double totalDistance = GetDistance(start, end);
             double movementPercent = (double)speed * totalDistance;
+            if (movementPercent >= 1)
+            {
+                Connected = true;
+                return end;
+            }
+            Connected = false;
             double xDiff = start.X - end.X;
             double yDiff = start.Y - end.Y;
+            
             return new Vector2((float)(start.X + (xDiff * movementPercent)), (float)(start.Y + (yDiff * movementPercent)));
         }
 
