@@ -28,6 +28,16 @@ public class Tower {
 		m_x = x;
 		m_y = y;
 	}
+	public int getIconNum() {
+		if (m_type.equals(TowerType.JUDGE))
+			return 0;
+		else if (m_type.equals(TowerType.FIREWALL))
+			return 2;
+		else if (m_type.equals(TowerType.TEACHER))
+			return 1;
+		else 
+			return 3;
+	}
 	
 	//	public void update(Projectile[] projectiles, float deltaTime) {
 	public void update(float deltaTime) {
