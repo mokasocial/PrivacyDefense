@@ -90,11 +90,9 @@ public class Game implements ApplicationListener {
 
 		projectiles = new Projectile[0];
 		creeps = new Creep[0];
-		Tower[] towers = new Tower[1];
+		towers = new Tower[1];
 
-		Tower testTower = new Tower();
-		testTower.x = 3;
-		testTower.y = 4;
+		Tower testTower = new Tower(TowerType.FIREWALL, 3, 4);
 
 		towers[0] = testTower;
 
@@ -144,9 +142,18 @@ public class Game implements ApplicationListener {
 		}
 
 		// Draw the towers!
-
+		for (Tower tower : towers) {
+			batch.draw(spriteSheet, tower.m_x * 16, tower.m_y * 16, 14 * 16, 0, 16, 16);
+		}
+		
 		// Draw the creeps!
-
+		for (Creep creep : creeps) {
+		}
+		
+		// Draw the projectiles!
+		for (Projectile projectile : projectiles) {
+		}
+		
 		// Draw the UI! (forgive me)
 		// String newline = System.getProperty("line.separator");
 		String uiString = "Life: " + life + '\n' + "Money: " + money;
@@ -161,14 +168,6 @@ public class Game implements ApplicationListener {
 		mFont.drawWrapped(batch, uiString, screenWidth - uiBounds.width, screenHeight, uiBounds.width);
 
 		batch.end();
-
-		for (Creep creep : creeps) {
-		}
-		for (Projectile projectile : projectiles) {
-		}
-		for (Tower tower : towers) {
-			batch.draw(spriteSheet, tower.x * 16, tower.y * 16, 14 * 16, 0, 16, 16);
-		}
 
 		money++;
 	}
