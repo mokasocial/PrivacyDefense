@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("tiledefinitions.xml")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("mapdefinitions.xml")]
 
 

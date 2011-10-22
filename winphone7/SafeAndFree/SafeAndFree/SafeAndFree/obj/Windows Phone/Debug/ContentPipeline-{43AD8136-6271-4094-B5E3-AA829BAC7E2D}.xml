@@ -46,6 +46,15 @@
       <Output>D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\winphonemap.xnb</Output>
       <Time>2011-10-22T03:48:01.7088601-07:00</Time>
     </Item>
+    <Item>
+      <Source>creep0.png</Source>
+      <Name>creep0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\aclu\PrivacyDefense\WinPhone7\SafeAndFree\bin\Debug\Content\creep0.xnb</Output>
+      <Time>2011-10-22T11:10:54.5968174-07:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <ContentProjectGUID>{43AD8136-6271-4094-B5E3-AA829BAC7E2D}</ContentProjectGUID>
@@ -53,10 +62,10 @@
       <TargetProfile>Reach</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>D:\aclu\privacydefense\winphone7\SafeAndFree\SafeAndFree\SafeAndFreeContent\</RootDirectory>
-      <LoggerRootDirectory>D:\aclu\privacydefense\winphone7\SafeAndFree\SafeAndFree\SafeAndFree\</LoggerRootDirectory>
-      <IntermediateDirectory>D:\aclu\privacydefense\winphone7\SafeAndFree\SafeAndFree\SafeAndFree\obj\Windows Phone\Debug\</IntermediateDirectory>
-      <OutputDirectory>D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\</OutputDirectory>
+      <RootDirectory>D:\aclu\PrivacyDefense\WinPhone7\SafeAndFree\SafeAndFree\SafeAndFreeContent\</RootDirectory>
+      <LoggerRootDirectory>D:\aclu\PrivacyDefense\WinPhone7\SafeAndFree\SafeAndFree\SafeAndFree\</LoggerRootDirectory>
+      <IntermediateDirectory>D:\aclu\PrivacyDefense\WinPhone7\SafeAndFree\SafeAndFree\SafeAndFree\obj\Windows Phone\Debug\</IntermediateDirectory>
+      <OutputDirectory>D:\aclu\PrivacyDefense\WinPhone7\SafeAndFree\bin\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
