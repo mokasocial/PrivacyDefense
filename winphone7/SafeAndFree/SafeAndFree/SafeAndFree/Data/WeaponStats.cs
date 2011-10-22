@@ -5,7 +5,9 @@ using System.Text;
 
 namespace SafeAndFree.Data
 {
-    class WeaponStats
+    public class WeaponStats
     {
+        int Damage;
+        int Splash;
     }
 }

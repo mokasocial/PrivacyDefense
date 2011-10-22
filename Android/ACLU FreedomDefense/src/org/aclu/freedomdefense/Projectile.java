@@ -1,14 +1,7 @@
 package org.aclu.freedomdefense;
 
-public abstract class Creep {
-	CreepType m_type;
-	int Speed;
-	int Health;
+public abstract class Projectile {
 
-	public Creep(){
-		//@todo
-	}
-	
 	public void draw(){
 		// @todo
 	};

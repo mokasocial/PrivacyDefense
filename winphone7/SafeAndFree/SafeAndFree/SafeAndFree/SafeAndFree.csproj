@@ -59,12 +59,14 @@
     <Reference Include="Microsoft.Xna.Framework.Input.Touch" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
+    <Reference Include="System.Windows, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actor.cs" />
     <Compile Include="Data\TextureLibrary.cs" />
     <Compile Include="Data\CreepStats.cs" />
     <Compile Include="Data\Debuff.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="Exceptions\ContentNotDefinedException.cs" />
     <Compile Include="Game States\Board.cs" />
     <Compile Include="Creep.cs" />
+    <Compile Include="Helpers\Calculator.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Game States\Screen.cs" />
@@ -89,6 +92,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
+    <Resource Include="MapDefinitions.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="PhoneGameThumb.png">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </Content>

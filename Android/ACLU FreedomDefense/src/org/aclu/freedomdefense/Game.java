@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -28,7 +27,11 @@ public class Game implements ApplicationListener
 	private char[][] movementDirs;   // Our pathfinding, 'N' 'E' 'W' or 'S' (and can make different for flyers, woah!)
 	private int money;
 	private int life;
+	public Creep[] creeps;
+	public Projectile[] projectiles;
+	public Tower[] towers;
 	
+	@Override
 	public void create()
 	{
 		batch = new SpriteBatch();
@@ -86,6 +89,22 @@ public class Game implements ApplicationListener
 		mapData.dispose();
 	}
 	
+	public void update()
+	{
+		float dt = Gdx.graphics.getDeltaTime();
+		
+		for (Creep creep : creeps) {
+			creep.update( dt );
+		}
+		for (Projectile projectile : projectiles) {
+			projectile.update( dt );
+		}
+		for (Tower tower : towers) {
+			tower.update( dt );
+		}
+	}
+	
+	@Override
 	public void render()
 	{
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT ); // clear the screen
@@ -97,7 +116,7 @@ public class Game implements ApplicationListener
 			for( int y = 0; y < 20; ++y )
 			{
 				batch.draw( spriteSheet, x*16, y*16, tiles[x][y]*16, 0, 16, 16 );
-				
+
 				// Temporary, copy pasta
 				switch( movementDirs[x][y] )
 				{
@@ -139,21 +158,25 @@ public class Game implements ApplicationListener
 		money++;
 	}
 	
+	@Override
 	public void resize( int width, int height )
 	{
 		
 	}
 	
+	@Override
 	public void pause()
 	{
 		
 	}
 	
+	@Override
 	public void resume()
 	{
 		
 	}
 	
+	@Override
 	public void dispose()
 	{
 		

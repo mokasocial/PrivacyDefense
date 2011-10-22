@@ -38,7 +38,7 @@ namespace MapEditor
 
         private void GrabData()
         {
-            XmlTextReader reader = new XmlTextReader(Environment.CurrentDirectory + "\\TileDefinitions.xml");
+            XmlTextReader reader = new XmlTextReader(Environment.CurrentDirectory + "\\Content\\MapDefinitions.xml");
 
             while (reader.Read())
             {

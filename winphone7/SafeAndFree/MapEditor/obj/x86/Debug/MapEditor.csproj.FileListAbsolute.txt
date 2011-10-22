@@ -15,5 +15,3 @@ D:\aclu\privacydefense\winphone7\bin\Debug\MapEditor.exe
 D:\aclu\privacydefense\winphone7\bin\Debug\MapEditor.pdb
 D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\MapEditor.exe
 D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\MapEditor.pdb
-D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\TileDefinitions.xml
-D:\aclu\privacydefense\winphone7\SafeAndFree\MapEditor\obj\x86\Debug\MapEditor_Content.g.cs

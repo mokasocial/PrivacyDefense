@@ -5,14 +5,23 @@ public class Tower {
 	int damage;
 	int speed;
 	int splash;
-	
-	
-	
-	//shoot, cost
+
+	// shoot, cost
 	public Tower() {
+		// @todo
+	}
+
+	void shoot() {
+		// @todo
+	}
+
+	void move() {
+		// @todo
+	}
+
+	public void update( float dt ) {
+		// TODO Auto-generated method stub
 		
 	}
-	
-	
 
 }
