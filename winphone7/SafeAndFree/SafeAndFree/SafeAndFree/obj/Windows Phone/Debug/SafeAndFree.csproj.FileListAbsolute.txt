@@ -30,6 +30,10 @@ D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\tile0.png
 D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\tile1.png
 D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\tile2.png
 D:\aclu\privacydefense\winphone7\SafeAndFree\bin\Debug\Content\winphonemap.png
+<<<<<<< HEAD
+D:\PrivacyDefense\winphone7\SafeAndFree\SafeAndFree\SafeAndFree\obj\Windows Phone\Debug\SafeAndFree.dll
+D:\PrivacyDefense\winphone7\SafeAndFree\SafeAndFree\SafeAndFree\obj\Windows Phone\Debug\SafeAndFree.pdb
+=======
 D:\aclu\PrivacyDefense\WinPhone7\SafeAndFree\bin\Debug\Content\creep0.xnb
 D:\aclu\PrivacyDefense\WinPhone7\SafeAndFree\SafeAndFree\SafeAndFree\obj\Windows Phone\Debug\SafeAndFree.g.resources
 D:\aclu\PrivacyDefense\WinPhone7\SafeAndFree\SafeAndFree\SafeAndFree\..\..\bin\Debug\SafeAndFree.xap
@@ -38,3 +42,4 @@ D:\aclu\PrivacyDefense\WinPhone7\SafeAndFree\SafeAndFree\SafeAndFree\..\..\bin\D
 D:\aclu\PrivacyDefense\WinPhone7\SafeAndFree\SafeAndFree\SafeAndFree\obj\Windows Phone\Debug\WMAppManifest.xml.g
 D:\aclu\PrivacyDefense\WinPhone7\SafeAndFree\SafeAndFree\SafeAndFree\obj\Windows Phone\Debug\WMAppManifest.xml
 ..\..\bin\Debug\
+>>>>>>> d1d18a9851faadac0ff3bb50c3203e103ec0c1a2

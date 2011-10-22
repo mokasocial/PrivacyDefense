@@ -19,7 +19,7 @@ public abstract class Projectile {
 		// @todo
 	}
 
-	public void update() {
+	public void update( float dt ) {
 		// TODO Auto-generated method stub
 		
 	};
