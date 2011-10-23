@@ -14,12 +14,15 @@ namespace SafeAndFree
         /// <summary>
         /// The center position of this instance.
         /// </summary>
-        private Vector2 CenterPosition;
+        public Vector2 CenterPosition;
+
         private List<Debuff> CurrentDebuffs;
+
         public new bool IsDead
         {
             get { return Stats[CreepStats.Health] <= 0; }
         }
+
         /// <summary>
         /// The index of the path to follow.
         /// </summary>
@@ -38,7 +41,7 @@ namespace SafeAndFree
         {
             get
             {
-                return new Vector2(CenterPosition.X - Board.TileCenter.X, CenterPosition.Y - Board.TileCenter.Y);
+                return new Vector2(CenterPosition.X - (int)GetStat(CreepStats.Width) / 2, CenterPosition.Y - (int)GetStat(CreepStats.Height) / 2);
             }
         }
 
@@ -75,6 +78,7 @@ namespace SafeAndFree
                             newStats[cd.Target] = Math.Min(newStats[cd.Target], stats[cd.Target] - cd.Amount);
                         }
                     });
+
                     return newStats;
                 } 
                 return stats;
@@ -88,13 +92,18 @@ namespace SafeAndFree
         /// <param name="stats">A dictionary of stats for this instance.</param>
         /// <param name="position">The spawning position.</param>
         /// <param name="textureID">The MEDIA_ID for this creep's texture.</param>
-        public Creep(Dictionary<CreepStats, int> stats, Vector2 position, MEDIA_ID textureID)
+        public Creep(CreepTypeData creepData, Vector2 position, MEDIA_ID textureID)
         {
             CurrentDebuffs = new List<Debuff>();
             this.CenterPosition = new Vector2(position.X , position.Y);
             this.TextureID = textureID;
 
-            this.Stats = stats;
+            this.stats = new Dictionary<CreepStats, int>();
+            this.stats.Add(CreepStats.Width, creepData.Width);
+            this.stats.Add(CreepStats.Height, creepData.Height);
+            this.stats.Add(CreepStats.Health, creepData.Health);
+            this.stats.Add(CreepStats.DamageToPlayer, creepData.DamageToPlayer);
+            this.stats.Add(CreepStats.Speed, creepData.Speed);
         }
 
         /// <summary>
@@ -105,8 +114,8 @@ namespace SafeAndFree
         /// <param name="textureID">The MEDIA_ID for this creep's texture.</param>
         /// <param name="path">The index of the path to follow.</param>
         /// <param name="startingWaypoint">The waypoint to spawn at.</param>
-        public Creep(Dictionary<CreepStats, int> stats, Vector2 position, MEDIA_ID textureID, int path, int startingWaypoint)
-            : this(stats, position, textureID)
+        public Creep(CreepTypeData creepData, Vector2 position, MEDIA_ID textureID, int path, int startingWaypoint)
+            : this(creepData, position, textureID)
         {
             this._path = path;
             this._nextWaypoint = startingWaypoint;

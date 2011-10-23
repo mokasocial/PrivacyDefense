@@ -45,7 +45,7 @@ namespace MapEditor
 
         private unsafe void LoadTileTexture()
         {
-            Uri path = new Uri(Environment.CurrentDirectory + "/Tileset32.bmp", UriKind.RelativeOrAbsolute);
+            Uri path = new Uri(Environment.CurrentDirectory + "/Tileset.bmp", UriKind.RelativeOrAbsolute);
             tileTexture = new BitmapImage(path);
 
             int numTiles = (int)Math.Round(tileTexture.Width / 32);
