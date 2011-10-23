@@ -48,7 +48,7 @@ namespace MapEditor
             Uri path = new Uri(Environment.CurrentDirectory + "/Tileset.bmp", UriKind.RelativeOrAbsolute);
             tileTexture = new BitmapImage(path);
 
-            int numTiles = (int)Math.Round(tileTexture.Width / 32);
+            int numTiles = (int)Math.Round(tileTexture.Width / TileDimensions.X);
             cachedTileFrames = new System.Drawing.Bitmap[numTiles];
             for (int i = 0; i < numTiles; i++)
             {
@@ -91,36 +91,14 @@ namespace MapEditor
 
                         ImageSource loadedImage = null;
 
-                        try
-                        {
-                            loadedImage = new BitmapImage(path);
-                        }
-                        catch (Exception e)
-                        {
-                            System.Drawing.Bitmap newImage = new System.Drawing.Bitmap(25, 15);
-                            loadedImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(newImage.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                        }
-                        finally
-                        {
-                            drawnMap.Source = loadedImage;
-                        }
+                        loadedImage = new BitmapImage(path);
+                        drawnMap.Source = loadedImage;
 
                         drawnMap.Width = drawnMap.Source.Width;
                         drawnMap.Height = drawnMap.Source.Height;
 
                         TileDimensions = new Point(Int32.Parse(reader.GetAttribute("tileWidth")), Int32.Parse(reader.GetAttribute("tileHeight")));
-                    }/*
-                    else if (reader.Name.Equals("tile"))
-                    {
-                        Uri path = new Uri(Environment.CurrentDirectory + reader.GetAttribute("path"), UriKind.Absolute);
-                        BitmapImage newImg = new BitmapImage(path);
-
-                        Image imageVisual = new Image();
-                        imageVisual.Source = newImg;
-                        imageVisual.Width = newImg.Width;
-                        imageVisual.Height = newImg.Height;
-                        tileList.Children.Add(imageVisual);
-                    }*/
+                    }
                 }
             }
         }
@@ -165,8 +143,6 @@ namespace MapEditor
 
             tiles = new int[imageWidth, imageHeight];
             visualTiles = new Image[imageWidth, imageHeight];
-            //visualBitmaps = new System.Drawing.Bitmap[imageWidth, imageHeight];
-            //tileImages = new BitmapSource[imageWidth, imageHeight];
 
             System.Drawing.Rectangle imageRectangle = new System.Drawing.Rectangle(0, 0, imageWidth, imageHeight);
 
@@ -183,15 +159,12 @@ namespace MapEditor
                     System.Drawing.Color savedColor = System.Drawing.Color.FromArgb(scanline[column]);
 
                     tiles[column, row] = savedColor.R;
-                    //tileImages[column, row] = tileTextures[tiles[column, row]];
 
                     Image newImage = new Image();
                     newImage.Source = _bitmapToSource(cachedTileFrames[tiles[column, row]]);
                     newImage.Width = cachedTileFrames[tiles[column, row]].Width;
                     newImage.Height = cachedTileFrames[tiles[column, row]].Height;
                     visualTiles[column, row] = newImage;
-
-                    //visualBitmaps[column, row] = _bitmapFromSource(tileTextures[tiles[column, row]]);
 
                     Canvas.SetLeft(newImage, column * TileDimensions.X);
                     Canvas.SetTop(newImage, row * TileDimensions.Y);
@@ -234,7 +207,7 @@ namespace MapEditor
             visualTiles[column, row].Source = _bitmapToSource(cachedTileFrames[tiles[column, row]]);
         }
 
-        private int ColorToInt(Color color)
+        private int ColorToInt(System.Drawing.Color color)
         {
             return (int)((color.A << 24) | (color.R << 16) |
                           (color.G << 8) | (color.B << 0));
@@ -292,7 +265,27 @@ namespace MapEditor
 
                 newMap.UnlockBits(newMapData);
 
+                int saveWidth = tiles.GetUpperBound(0) + 1;
+                int saveHeight = tiles.GetUpperBound(1) + 1;
+
+                System.Drawing.Bitmap newSave = new System.Drawing.Bitmap(saveWidth, saveHeight);
+
+                BitmapData saveBitmapData = newSave.LockBits(new System.Drawing.Rectangle(0, 0, saveWidth, saveHeight), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+                for (int row = 0; row < saveHeight; row++)
+                {
+                    int* saveScanline = (int*)saveBitmapData.Scan0 + (row * saveWidth);
+
+                    for (int column = 0; column < saveWidth; column++)
+                    {
+                        saveScanline[column] = ColorToInt(System.Drawing.Color.FromArgb(255, tiles[column, row], 0, 0));
+                    }
+                }
+
+                newSave.UnlockBits(saveBitmapData);
+
                 newMap.Save(dialog.FileName);
+                newSave.Save(Environment.CurrentDirectory + "/__newMap.png");
             }
         }
     }

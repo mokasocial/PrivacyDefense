@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <definitions>
-  <map path="\\Content\\winphonemap.png" tileWidth="32" tileHeight="32"/>
+  <map path="\\Content\\winphone.png" tileWidth="48" tileHeight="48"/>
   <creepDefinition width="16" height="16" health="50" speed="2" damageToPlayer="1"/>
   <creepDefinition width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
   <creepDefinition width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
