@@ -66,7 +66,26 @@ namespace SafeAndFree
                 NextFire--;
             }
         }
-
+        public void GetLevelInfo(out int currAtk, out int currRange, out int currAtkDelay, out int cost,
+            out int nextAtk, out int nextRange, out int nextAtkDelay)
+        {
+            currRange = towerStats[Level].Range;
+            currAtkDelay = towerStats[Level].Delay;
+            currAtk = weaponStats[Level].Damage;
+            cost = towerStats[Level].CostToNext; 
+            if (cost != -1)
+            {
+                nextRange = -1;
+                nextAtk = -1;
+                nextAtkDelay = -1;
+            }
+            else
+            {
+                nextRange = towerStats[Level + 1].Range;
+                nextAtk = weaponStats[Level + 1].Damage;
+                nextAtkDelay = towerStats[Level + 1].Delay;
+            }
+        }
         public void LevelUp()
         {
             if(CanLevel)

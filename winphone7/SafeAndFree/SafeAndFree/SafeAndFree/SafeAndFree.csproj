@@ -80,6 +80,7 @@
     <Compile Include="Game States\ProjectileManager.cs" />
     <Compile Include="Helpers\Calculator.cs" />
     <Compile Include="Helpers\TowerFactory.cs" />
+    <Compile Include="InputHandlers\Button.cs" />
     <Compile Include="InputHandlers\TouchHandler.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Projectile.cs" />

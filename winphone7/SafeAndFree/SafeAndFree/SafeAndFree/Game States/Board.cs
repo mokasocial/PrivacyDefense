@@ -101,7 +101,7 @@ namespace SafeAndFree
                     CreepTypeData creepNormal = new CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 32, Width = 32, Speed = 3};
                     CreepTypeData creepFast = new CreepTypeData(){DamageToPlayer = 1, Health =(int)boost * 4, Height = 32, Width = 32, Speed = 5};
                     CreepTypeData creepVariant = new  CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 32, Width = 32, Speed = 4};
-                    CreepTypeData creepBoss = new CreepTypeData(){DamageToPlayer = 2, Health = (int)boost * 25, Height = 32, Width = 32, Speed = 3};
+                    CreepTypeData creepBoss = new CreepTypeData(){DamageToPlayer = 2, Health = (int)boost * 40, Height = 32, Width = 32, Speed = 3};
                     
                     // What is this?
                     int thing = waveManager.BonusWave % 4;
@@ -283,7 +283,7 @@ namespace SafeAndFree
             spriteBatch.DrawString(font, "Score: " + CurrentPlayer.Score, new Vector2(500, 0), Color.LightGreen);
             if (towers.ContainsKey(selectedTile))
             {
-                Button up = new Button(true);
+
                 spriteBatch.Draw(TextureLibrary.GetButtonTexture(BUTTON_MEDIA_ID.UPGRADE), new Rectangle(5, 20, 94, 90), Color.White);
             }
             else
@@ -294,6 +294,15 @@ namespace SafeAndFree
             }
         }
 
+        private void DrawUpgradeStuff()
+        {
+            var font = TextureLibrary.GetFont();
+            int cA, cR, cD, cC, nA, nR, nD;
+            this.towers[selectedTile].GetLevelInfo(out cA, out cR, out cD, out cC, out nA, out nR, out nD);
+            
+            spriteBatch.DrawString(font, "Level: " + (1 + waveManager.BonusWave), new Vector2(5, 120), Color.DarkCyan);
+
+        }
         /// <summary>
         /// Load the map information from xml.
         /// </summary>
