@@ -276,13 +276,6 @@ namespace SafeAndFree
         {
             // Hard-coded for now.
             creeps = new List<Creep>();
-<<<<<<< HEAD
-            Dictionary<CreepStats, int> basicStats = new Dictionary<CreepStats, int>();
-            basicStats.Add(CreepStats.Health, 50);
-            basicStats.Add(CreepStats.Speed, 3);
-            basicStats.Add(CreepStats.DamageToPlayer, 1);
-=======
->>>>>>> f24fab8ea664a0712626324e8e1ae0001b4347c3
 
             //creeps.Add(new Creep(basicStats, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_0, 0, 0));
         }
