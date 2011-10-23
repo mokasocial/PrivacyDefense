@@ -20,6 +20,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Game implements ApplicationListener {
 	public static int screenWidth = 480;
 	public static int screenHeight = 320;
+	public static int maxProjectiles = 1000;
 
 	private SpriteBatch batch;
 	private Texture spriteSheet;
@@ -31,7 +32,7 @@ public class Game implements ApplicationListener {
 	public int money;
 	public int life;
 	public ArrayList<Creep> creeps;
-	public ArrayList<Projectile> projectiles;
+	public Projectile projectiles[];
 	public ArrayList<Tower> towers;
 	public ArrayList<TowerType> free_towers; 
 	public int startingX, startingY;
@@ -63,7 +64,14 @@ public class Game implements ApplicationListener {
 		Pixmap mapData = new Pixmap(Gdx.files.internal("map.png"));
 
 		creeps = new ArrayList<Creep>();
-		projectiles = new ArrayList<Projectile>();
+		projectiles = new Projectile[maxProjectiles];
+		
+		for( int i = 0; i < 1000; ++i )
+		{
+			projectiles[i] = new Projectile( new Vector2( 0.0f, 0.0f ), new Vector2( 0.0f, 0.0f ), 0.0f );
+			projectiles[i].active = false;
+		}
+		
 		towers = new ArrayList<Tower>();
 
 		towers.add(new Tower(TowerType.JUDGE, 6, 6));
@@ -143,22 +151,19 @@ public class Game implements ApplicationListener {
 			}
 		}
 
-		for( int i = 1; i < 100; ++i )
+		for( int i = 1; i < 20; ++i )
 			creeps.add( new Creep( 100, 32, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
 		
 		mapData.dispose();
 	}
 
-	public void update() {
+	public void update() 
+	{
 		float dt = Gdx.graphics.getDeltaTime();
 
-		ArrayList<Projectile> livingProjectiles = new ArrayList<Projectile>();
-		
 		for (Projectile projectile : projectiles) 
 		{
-			boolean hit = false;
-			
-			if( projectile.my_coords.x > 0 && projectile.my_coords.y > 0 && projectile.my_coords.x * 16 < screenWidth && projectile.my_coords.y * 16 < screenHeight )
+			if( projectile.active && projectile.my_coords.x > 0 && projectile.my_coords.y > 0 && projectile.my_coords.x * 16 < screenWidth && projectile.my_coords.y * 16 < screenHeight )
 			{
 				Rectangle projRect = new Rectangle( ( projectile.my_coords.x * 16 ) + 8, ( projectile.my_coords.y * 16 ) + 8, 8, 8 );
 				
@@ -169,34 +174,26 @@ public class Game implements ApplicationListener {
 					if( projRect.overlaps( creepRect ) )
 					{
 						creep.Health -= projectile.damage;
-						hit = true;
+						projectile.active = false;
 						break;
 					}
 				}
 			}
 			
-			if( !hit )
+			if( projectile.active )
 			{
 				projectile.update(dt);
-				livingProjectiles.add( projectile );
 			}
 		}
-		
-		projectiles = livingProjectiles;
 
 		// Handle projectile collision, creep update, creep death
-		ArrayList<Creep> livingCreeps = new ArrayList<Creep>();
-
 		for (Creep creep : creeps) {
-			if (creep.Health > 0) {
+			if (creep.active && creep.Health > 0) {
 				creep.update(dt);
-				livingCreeps.add(creep);
 			} else {
 				creep.die();
 			}
 		}
-
-		creeps = livingCreeps;
 
 		for (Tower tower : towers) {
 			tower.update(dt);
@@ -229,26 +226,26 @@ public class Game implements ApplicationListener {
 		}
 
 		// Draw the towers
-		for (Tower tower : towers) {
-			drawSprite(tower.getIconNum(), tower.m_x, tower.m_y);
-
-			// Debugging
-			// drawCircle( tower.radius, new Color(0.0f, 1.0f, 0.0f, 0.5f), new
-			// Vector2( tower.m_x * 16 + 8, tower.m_y * 16 + 8) );
+		for( int i = 0; i < towers.size(); ++i )
+		{
+			drawSprite(towers.get( i ).getIconNum(), towers.get(i).m_x, towers.get(i).m_y);
 		}
 
 		// Draw the creeps!
-		for (Creep creep : creeps) {
-			batch.draw(spriteSheet, creep.x * 16 + creep.xOffset, creep.y * 16 + creep.yOffset, 0, 16, 16, 16);
+		for( int i = 0; i < creeps.size(); ++i)
+		{
+			if( creeps.get(i).active )
+				batch.draw(spriteSheet, creeps.get(i).x * 16 + creeps.get(i).xOffset, creeps.get(i).y * 16 + creeps.get(i).yOffset, 0, 16, 16, 16);
 		}
 
 		// Draw the projectiles!
-		for ( Projectile projectile : projectiles ) 
+		for( int i = 0; i < maxProjectiles; ++i )
 		{
-			Vector2 projCoords = projectile.my_coords;
-			
-			// TODO: Change which sprite the projectile uses based on something in the projectile
-			batch.draw( spriteSheet, projCoords.x*16, projCoords.y*16, 0, 16*3, 16, 16 );
+			if( projectiles[i].active )
+			{
+				// TODO: Change which sprite the projectile uses based on something in the projectile
+				batch.draw( spriteSheet, projectiles[i].my_coords.x*16, projectiles[i].my_coords.y*16, 0, 16*3, 16, 16 );
+			}
 		}
 
 		// Draw the UI!
@@ -287,9 +284,6 @@ public class Game implements ApplicationListener {
 		}
 		
 		batch.end();
-		if (money < maxmoney) {
-			money++;
-		}
 	}
 
 	public void drawSprite(int iconNum, int x, int y) {

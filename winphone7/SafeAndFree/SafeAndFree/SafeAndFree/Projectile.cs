@@ -18,11 +18,13 @@ namespace SafeAndFree
 
         public Projectile(WeaponStats stats, Creep targetCreep, Vector2 startPoint, TowerTypes parentTowerType)
         {
-            Stats = stats;
+            Stats = stats.GetCopy();
             TargetCreep = targetCreep;
             CurrentPoint = startPoint;
             SelectTypeBasedOnTowerType(parentTowerType);
             this.TextureID =  TowerFactory.GetProjectileMediaID(Type);
+            
+            
         }
 
         private void SelectTypeBasedOnTowerType(TowerTypes type)
@@ -35,18 +37,21 @@ namespace SafeAndFree
         /// Update this Projectile instance.
         /// </summary>
         /// <returns>True if the projectile should be removed.</returns>
-        override public bool Update()
+        public bool Update()
         {
             bool result;
             if (TargetCreep == null)
             {
                 return true;
             }
+
             CurrentPoint = Calculator.MovementTowardsPoint(CurrentPoint, TargetCreep.Position, Stats.Speed, out result);
+
             if (result)
             {
                 TargetCreep.TakeHit(this);
             }
+
             return result;
         }
     }

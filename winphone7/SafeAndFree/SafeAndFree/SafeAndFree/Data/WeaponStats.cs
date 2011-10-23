@@ -24,5 +24,17 @@ namespace SafeAndFree.Data
             Splash = splash;
             Gift = gift;
         }
+        public WeaponStats GetCopy()
+        {
+
+            if (Gift != null)
+            {
+                return new WeaponStats(Damage, Speed, Splash, Debuff.GetInstance(Gift.Target, Gift.Amount, Gift.Duration));
+            }
+            else
+            {
+                return new WeaponStats(Damage, Speed, Splash);
+            }
+        }
     }
 }
