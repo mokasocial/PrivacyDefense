@@ -28,10 +28,10 @@ public class Creep {
 		switch( direction )
 		{
 		case 'N':
-			yOffset += dt * Speed;
+			yOffset +=  dt * Speed;
 			break;
 		case 'E':
-			xOffset += dt * Speed;
+			xOffset +=  dt * Speed;
 			break;
 		case 'W':
 			xOffset -= dt * Speed;
@@ -41,22 +41,22 @@ public class Creep {
 			break;
 		}
 		
-		if( xOffset > 15 )
+		if( xOffset > 24 )
 		{
 			++x;
 			xOffset = 0;
 		}
-		if( xOffset < -15 )
+		if( xOffset < -24 )
 		{
 			--x;
 			xOffset = 0;
 		}
-		if( yOffset > 15 )
+		if( yOffset > 24 )
 		{
 			++y;
 			yOffset = 0;
 		}
-		if( yOffset < -15 )
+		if( yOffset < -24 )
 		{
 			--y;
 			yOffset = 0;
@@ -79,7 +79,7 @@ public class Creep {
 	public void getNextDestinationCoordinate()
 	{
 		// Creeps always come from North (for now)
-		if( x >= 0 && x < Game.screenWidth / 16 && y >= 0 && y < Game.screenHeight / 16 )
+		if( x >= 0 && x < Game.screenWidth / Game.SQUARE_WIDTH && y >= 0 && y < Game.screenHeight / Game.SQUARE_WIDTH )
 			direction = Game.instance.movementDirs[x][y];
 		else
 			direction = 'S';

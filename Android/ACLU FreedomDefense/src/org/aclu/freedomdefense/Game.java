@@ -21,8 +21,11 @@ public class Game implements ApplicationListener {
 	public static int screenWidth = 480;
 	public static int screenHeight = 320;
 
+	public static final int SQUARE_WIDTH = 24;
+	
 	public static final Rectangle DRD_PAUSE_RECT = new Rectangle(3, 50, 54, 25);
 	public static final Rectangle START_RECT = new Rectangle(3, 77, 54, 25);
+	public static final Rectangle RESTART_RECT = new Rectangle(3, 77, 54, 25);
 	
 	public static final float TIME_BETWEEN_WAVES = 3;
 	
@@ -57,6 +60,8 @@ public class Game implements ApplicationListener {
 	public ArrayList<TowerType> free_towers; 
 	public int startingX, startingY;
 
+	public Tower selected = null;
+	
 	public boolean runningDrd;
 	
 	public TextureRegion cursorTexture = null;
@@ -96,8 +101,14 @@ public class Game implements ApplicationListener {
 	TextureRegion blackBox;
 	TextureRegion tower_region;
 	
+	TextureRegion selection_region;
+	
+	Texture selectionImg;
+	
 	TextureRegion pause_button_region;
 	TextureRegion start_button_region;
+	TextureRegion restart_button_region;
+	
 
 	/**
 	 * Create a game object. Set running_android if being called from an android device.
@@ -120,7 +131,9 @@ public class Game implements ApplicationListener {
 
 		batch = new SpriteBatch();
 		spriteSheet = new Texture(Gdx.files.internal("sprite_sheet.png"));
-		Pixmap mapData = new Pixmap(Gdx.files.internal("map.png"));
+		selectionImg = new Texture(Gdx.files.internal("Selector32.png"));
+		
+		Pixmap mapData = new Pixmap(Gdx.files.internal("map2.png"));
 
 		creeps = new ArrayList<Creep>();
 		projectiles = new Projectile[maxProjectiles];
@@ -224,6 +237,8 @@ public class Game implements ApplicationListener {
 		uiBounds = new TextBounds();
 		pause_button_region = new TextureRegion( spriteSheet, 0, 0, 16, 16);
 		start_button_region = new TextureRegion( spriteSheet, 0, 0, 16, 16);
+		restart_button_region = new TextureRegion( spriteSheet, 0, 0, 16, 16);
+		selection_region = new TextureRegion( selectionImg, 0, 0, SQUARE_WIDTH, SQUARE_WIDTH);
 		
 		mapData.dispose();
 	}
@@ -317,10 +332,15 @@ public class Game implements ApplicationListener {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT); // clear the screen
 		batch.begin();
 
+		
+		
 		// Draw the terrain!
 		for (int x = 0; x < 30; ++x) {
 			for (int y = 0; y < 20; ++y) {
-				batch.draw(spriteSheet, x * 16, y * 16, tiles[x][y] * 16, 0, 16, 16);
+				
+				// switch to 32x32 sprite
+				//batch.draw(spriteSheet, x * 16, y * 16, tiles[x][y] * 16, 0, 16, 16);
+				batch.draw(spriteSheet, x * SQUARE_WIDTH, y * SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH, tiles[x][y] * 16, 0, 16, 16, false, false);
 
 				// Temporary, copy pasta
 				/*
@@ -331,20 +351,30 @@ public class Game implements ApplicationListener {
 				 * 0, 16, 16 ); break; case 'S': batch.draw( spriteSheet, x*16,
 				 * y*16, 14*16, 0, 16, 16 ); break; }
 				 */
+				
 			}
 		}
+		
+		
 
 		// Draw the towers
 		for( int i = 0; i < towers.size(); ++i )
 		{
 			drawSprite(towers.get( i ).getIconNum(), towers.get(i).m_x, towers.get(i).m_y);
+			if (towers.get(i).selected) {
+				//batch.draw(spriteSheet, towers.get(i).m_x * SQUARE_WIDTH, towers.get(i).m_y * SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH, towers.get(i).m_type.getSpriteLocX(), towers.get(i).m_type.getSpriteLocY(), 16, 16, false, true);
+				//drawSprite(towers.get( i ).getIconNum(), towers.get(i).m_x, towers.get(i).m_y);
+				batch.draw(selectionImg, towers.get(i).m_x * SQUARE_WIDTH, towers.get(i).m_y * SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH, 0, 0, 32, 32, false, true);
+			}
+
+			
 		}
 
 		// Draw the creeps!
 		for( int i = 0; i < creeps.size(); ++i)
 		{
 			if( creeps.get(i).active )
-				batch.draw(spriteSheet, creeps.get(i).x * 16 + creeps.get(i).xOffset, creeps.get(i).y * 16 + creeps.get(i).yOffset, 0, 16, 16, 16);
+				batch.draw(spriteSheet, creeps.get(i).x * SQUARE_WIDTH + creeps.get(i).xOffset, creeps.get(i).y * SQUARE_WIDTH + creeps.get(i).yOffset, SQUARE_WIDTH, SQUARE_WIDTH, 0, 16, 16, 16, false, false);
 		}
 
 		// Draw the projectiles!
@@ -353,7 +383,7 @@ public class Game implements ApplicationListener {
 			if( projectiles[i].active )
 			{
 				// TODO: Change which sprite the projectile uses based on something in the projectile
-				batch.draw( spriteSheet, projectiles[i].my_coords.x*16, projectiles[i].my_coords.y*16, 0, 16*3, 16, 16 );
+				batch.draw( spriteSheet, projectiles[i].my_coords.x*SQUARE_WIDTH, projectiles[i].my_coords.y*SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH, 0, 16*3, 16, 16, false, false);
 			}
 		}
 
@@ -377,6 +407,11 @@ public class Game implements ApplicationListener {
 		}
 				
 
+		// Draw the menu bar
+		//batch.draw(menu_region, 0, -100);
+		
+		
+		
 		// Keep the GC in it's cage as long as possible. 
 		if( oldMoney != money || oldLife != life )
 		{
@@ -397,6 +432,22 @@ public class Game implements ApplicationListener {
 			mFont.drawWrapped(batch, pause_button_string,
 							(32 - (pauseButtonBounds.width / 2)),
 							DRD_PAUSE_RECT.y + pauseButtonBounds.height + 4, pauseButtonBounds.width);
+			
+		}
+		
+		// Draw the restart button if paused or game over.
+		if (life <= 0 || isPaused) {
+			
+			
+			restart_button_region.setRegion(7*17, 23, 2, 2);
+			batch.draw(restart_button_region, RESTART_RECT.x, RESTART_RECT.y, RESTART_RECT.width, RESTART_RECT.height);
+			
+			String restart_button_string = "Restart";
+			TextBounds restartButtonBounds = mFont.getBounds(restart_button_string);
+			mFont.drawWrapped(batch, restart_button_string,
+							(32 - (restartButtonBounds.width / 2)),
+							RESTART_RECT.y + restartButtonBounds.height + 4, restartButtonBounds.width);
+			
 			
 		}
 		
@@ -422,7 +473,7 @@ public class Game implements ApplicationListener {
 		mFont.drawWrapped(batch, uiString, 3, uiBounds.height + 3, uiBounds.width);
 
 		// DEBUG TEXT
-		mFont.drawWrapped(batch, debugtext, 60, uiBounds.height + 3, 1000);		
+		//mFont.drawWrapped(batch, debugtext, 60, uiBounds.height + 3, 1000);		
 
 		// Draw the cursorTexture
 		if (cursorState != null && cursorTexture != null) {
@@ -460,13 +511,15 @@ public class Game implements ApplicationListener {
 
 	public void restart(int creep_speed) {
 		
-		money = 100;
+		money = 200;
 		
 		life = 100;
 		
 		waveNumber = 0;
 		
 		nextWave(INITIAL_CREEP_SPEED);
+		
+		towers.clear();
 		
 	}
 	
@@ -488,7 +541,8 @@ public class Game implements ApplicationListener {
 	}
 	
 	public void drawSprite(int iconNum, int x, int y) {
-		batch.draw(spriteSheet, x * 16, y * 16, iconNum * 16, 0, 16, 16);
+		batch.draw(spriteSheet, x * SQUARE_WIDTH, y * SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH, iconNum * 16, 16, 16, 16,false,false);
+		//batch.draw(spriteSheet, 4 * 32, 0, SQUARE_WIDTH, SQUARE_WIDTH, iconNum * 16, 0, 16, 16);
 	}
 
 	@Override

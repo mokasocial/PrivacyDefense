@@ -25,10 +25,10 @@ public class TowerType {
 		return (int)sprite_loc.y;
 	}
 	
-	public static TowerType JUDGE = new TowerType("JUDGE", 50, new Vector2( 9*16, 1*16));
-	public static TowerType FIREWALL = new TowerType("FIREWALL", 100, new Vector2( 10*16, 1*16));
-	public static TowerType TEACHER = new TowerType("TEACHER", 200, new Vector2( 10*16, 1*16));
-	public static TowerType LAWSUIT = new TowerType("LAWSUIT", 300, new Vector2( 10*16, 1*16));
+	public static TowerType JUDGE = new TowerType("JUDGE", 50, new Vector2( 10*16, 1*16));
+	public static TowerType FIREWALL = new TowerType("FIREWALL", 100, new Vector2( 8*16, 1*16));
+	public static TowerType TEACHER = new TowerType("TEACHER", 200, new Vector2( 9*16, 1*16));
+	public static TowerType LAWSUIT = new TowerType("LAWSUIT", 300, new Vector2( 7*16, 1*16));
 	
 	public static TowerType[] Values = {
 		JUDGE,
