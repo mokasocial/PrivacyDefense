@@ -1,100 +1,96 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <definitions>
-  <map path="\\Content\\winphonemap.png" tileWidth="32" tileHeight="32"/>
-  <tile index="0"/>
-  <tile index="1"/>
-  <tile index="2"/>
-  <tile index="3"/>
-  <tile index="4"/>
-  <tile index="5"/>
-  <tile index="6"/>
+  <map path="\\Content\\winphone.png" tileWidth="48" tileHeight="48"/>
+  <creepDefinition width="16" height="16" health="50" speed="2" damageToPlayer="1"/>
+  <creepDefinition width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
+  <creepDefinition width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
+  <creepDefinition width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
   <paths numPaths="1">
-    <path index="0" numWaypoints="5">
-      <waypoint column="5" row="0"/>
-      <waypoint column="5" row="12"/>
-      <waypoint column="25" row="12"/>
-      <waypoint column="25" row="5"/>
-      <waypoint column="30" row="5"/>
+    <path index="0" numWaypoints="4">
+      <waypoint column="4" row="-1"/>
+      <waypoint column="4" row="8"/>
+      <waypoint column="15" row="8"/>
+      <waypoint column="15" row="-1"/>
     </path>
   </paths>
-  <waves>
-	<wave>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
+  <waves numWaves="7">
+	<wave numCreeps="3">
+		<creep type="0" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
 	</wave>
-	<wave>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
+    <wave numCreeps="5">
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
 	</wave>
-	<wave>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
+    <wave numCreeps="7">
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
 	</wave>
-	<wave>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
+    <wave numCreeps="13">
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
 	</wave>
-	<wave>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
+  <wave numCreeps="15">
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
 	</wave>
-	<wave>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="1" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
-		<enemy type="0" delay="5"/>
+    <wave numCreeps="20">
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="1" delay="5"/>
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
+		<creep type="0" delay="5"/>
 	</wave>
-	<wave>
-		<enemy type="2" delay="5"/>
+    <wave numCreeps="1">
+		<creep type="2" delay="5"/>
 	</wave>
   </waves>
 </definitions>

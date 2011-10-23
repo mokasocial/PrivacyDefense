@@ -12,6 +12,17 @@ namespace SafeAndFree.Helpers
     static class Calculator
     {
         public const double HIT_DISTANCE_THRESHOLD = 5.5;
+
+        public static float ToRadians(float degrees)
+        {
+            return degrees * (float)Math.PI / 180;
+        }
+
+        public static float ToDegrees(float radians)
+        {
+            return radians * (float)Math.PI / 180;
+        }
+
         /// <summary>
         /// Get the distance between two points.
         /// </summary>
@@ -61,17 +72,17 @@ namespace SafeAndFree.Helpers
         {
             creep = null;
             bool found = false;
-            double best = double.MaxValue;
+            double best = 0;// double.MaxValue;
             double current;
             if (targets.Count > 0)
             {
                 foreach (Creep c in targets) //This might be changed to favor the creeps first in the list
                 {
                     current = GetDistance(c.Position, towerPosition);
-                    if ((current < range) && current < best)
+                    if ((current < range) && c.DistanceTravelled > best)
                     {
                         found = true;
-                        best = current;
+                        best = c.DistanceTravelled;
                         creep = c;
                     }
                 }

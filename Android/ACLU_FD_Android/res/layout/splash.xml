@@ -7,10 +7,23 @@
 	android:gravity="center_horizontal"
 	android:orientation="vertical"
 	android:background="#FF1CE426">
-	<ImageView
-		android:src="@drawable/icon"
-		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:layout_gravity="center_vertical|center_horizontal"
-		android:id="@+id/imageView1"></ImageView>
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:gravity="center_horizontal">
+		<ImageView
+			android:src="@drawable/icon"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_gravity="center_vertical|center_horizontal"
+			android:id="@+id/imageView1"></ImageView>
+		<TextView
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:id="@+id/textView1"
+			android:textStyle="bold"
+			android:textSize="50px"
+			android:text="Privacy Defense"></TextView>
+	</LinearLayout>
 </LinearLayout>

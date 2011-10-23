@@ -6,10 +6,18 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SafeAndFree
 {
-    public interface Screen
+    public enum Screens
     {
-        void Update();
+        TITLE,
+        GAME,
+        WIN,
+        LOSE
+    }
 
-        void Draw(SpriteBatch spriteBatch);
+    public abstract class Screen
+    {
+        public abstract void Update();
+
+        public abstract void Draw(SpriteBatch spriteBatch);
     }
 }

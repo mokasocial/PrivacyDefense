@@ -1,18 +1,22 @@
 package org.aclu.freedomdefenseandroid;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class SplashActivity extends Activity 
-{	
+public class SplashActivity extends Activity {
 	protected boolean _active = true;
 	protected int _splashTime = 2000;
+	private Context mContext;
 	
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		mContext = this;
+		
 		// splashy!
 		setContentView(R.layout.splash);
 
@@ -31,19 +35,11 @@ public class SplashActivity extends Activity
 				} catch (InterruptedException e) {
 					// do nothing
 				} finally {
-					if (isFirstTime(MainActivity.TOUR_WELCOME)) {
-						startActivity(new Intent(mContext, TourWelcomeActivity.class));
-					} else {
-						
-						/**
-						 * @todo We'll eventually want to be calling a login activity or something else...
-						 */
-						startActivity(new Intent(mContext, MainActivity.class));
-					}
+					startActivity(new Intent(mContext, AndroidGame.class));
 					finish();
 				}
 			}
 		};
 		splashTread.start();
-    }
+	}
 }

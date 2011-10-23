@@ -12,13 +12,20 @@ namespace SafeAndFree.Data
     /// 
     /// </summary>
    public enum MEDIA_ID
-    {
+   {
+        CREEP_0,
+        CREEP_1,
+        CREEP_2,
+        CREEP_3,
         MAP_0,
-        CREEP_0, 
         TOWER_0,
         PROJECTILE_0,
         TILE_SELCT,
-        PROJECTILE_1
+        PROJECTILE_1,
+        MENU_LEFT,
+        TITLESCREEN,
+        WINSCREEN,
+        LOSESCREEN
     }
 
     /// <summary>
@@ -34,7 +41,7 @@ namespace SafeAndFree.Data
 
         private static Dictionary<MEDIA_ID, Texture2D> textures = new Dictionary<MEDIA_ID, Texture2D>();
 
-        private static string[] assetNames = new string[]{"drawmap", "creep0", "TestTower", "TestProjectile", "tileSelect","TestProjectile2"};
+        private static string[] assetNames = new string[] { "creep_dataminer", "creep_heli", "creep_defcon", "creep_corporate", "SafeAndFreeMap", "Judge", "TestProjectile", "tileSelect", "TestProjectile2", "menu", "titlescreen", "losescreen", "winscreen" };
 
         public static Texture2D GetTexture(MEDIA_ID mediaId)
         {

@@ -24,7 +24,7 @@ namespace SafeAndFree
     public class Board : Screen
     {
         private ProjectileManager projectileManager;
-
+        private Player CurrentPlayer;
         private WaveManager waveManager;
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace SafeAndFree
         /// <summary>
         /// List of towers on the map.
         /// </summary>
-        private List<Tower> towers;
+        private Dictionary<Vector2, Tower> towers;
 
         /// <summary>
         /// A set of paths that creeps can follow.
@@ -67,29 +67,92 @@ namespace SafeAndFree
         /// </summary>
         public Board()
         {
+            CurrentPlayer = new Player();
             projectileManager = new ProjectileManager();
             LoadResources();
         }
 
         private void LoadResources()
         {
+            LoadData();
             LoadMap();
-            LoadPaths();
-            LoadCreeps();
             LoadATowerTest();
         }
 
         /// <summary>
         /// The update loop.
         /// </summary>
-        public void Update()
+        public override void Update()
         {
+            if (null != waveManager)
+            {
+                //if (waveManager.Update(creeps.Count == 0))
+                //{
+                //    creeps.Add(new Creep(CreepDefinitions.CreepStats[(CreepType)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0]], new Vector2(paths[0][0].X, paths[0][0].Y), (MEDIA_ID)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0], 0, 0));
+                //    if (waveManager.GameWon)
+                //    {
+                //        GameEngine.RunningEngine.Load(Screens.WIN);
+                //        return;
+                //    }
+                //}
+                if (waveManager.InfiniteUpdate(creeps.Count == 0))
+                {
+
+                    double boost = Math.Pow(1.15, waveManager.BonusWave);
+                    CreepTypeData creepNormal = new CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 32, Width = 32, Speed = 3};
+                    CreepTypeData creepFast = new CreepTypeData(){DamageToPlayer = 1, Health =(int)boost * 4, Height = 32, Width = 32, Speed = 4};
+                    CreepTypeData creepBoss = new CreepTypeData(){DamageToPlayer = 2, Health = (int)boost * 25, Height = 32, Width = 32, Speed = 3};
+                    int thing = waveManager.BonusWave % 3;
+                    Creep newCreep;
+                    switch (thing)
+                    {
+                        case 0:
+                            newCreep = new Creep(creepNormal, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_0);
+                            break;
+                        case 1:
+                             newCreep = new Creep(creepFast, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_1);
+                            break;
+                        default:
+                            newCreep = new Creep(creepBoss, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_2);
+                            break;
+                    }
+                    creeps.Add(newCreep);
+                }
+            }
+
             HandleCreepLoop();
             HandleTowerLoop();
             HandleProjectileLoop();
             HandleInput();
         }
 
+        protected bool CheckButtonPress(Vector2 check)
+        {
+            if (check.X >= 10 && check.X <= 105)
+            {
+                if (check.Y >= 56 && check.Y < 145)
+                {
+                    BuyPlaceTower(TowerTypes.Normal);
+                    return true;
+                }
+                else if (check.Y > 165 && check.Y <= 250)
+                {
+                    BuyPlaceTower(TowerTypes.Fast);
+                    return true;
+                }
+                else if (check.Y > 270 && check.Y < 360)
+                {
+                    BuyPlaceTower(TowerTypes.Slow);
+                    return true;
+                }
+                else
+                {
+                    UpdateTower(towers[selectedTile]);
+                    return true;
+                }
+            }
+            return false;
+        }
         protected void HandleInput()
         {
             TouchCollection touchCollection = TouchPanel.GetState();
@@ -107,8 +170,14 @@ namespace SafeAndFree
                 }
                 else
                 {
-                    selectedTile.X = col;
-                    selectedTile.Y = row;
+
+                    if (!CheckButtonPress(touchLocation.Position))
+                    {
+                      selectedTile.X = col;
+                      selectedTile.Y = row;
+                    }
+
+                    
                 }
             }
         }
@@ -117,7 +186,12 @@ namespace SafeAndFree
         {
             projectileManager.Update();
         }
-
+        public void HandleClick(TowerTypes towerType) 
+        {
+            
+            BuyPlaceTower(towerType);
+             
+        }
         protected void HandleCreepLoop()
         {
             for (int i = 0; i < creeps.Count; i++)
@@ -126,19 +200,19 @@ namespace SafeAndFree
                 {
                     // Creep was killed.
                     creeps.RemoveAt(i--);
+                    CurrentPlayer.AddMoney(waveManager.currentWave + 1);
                 }
                 else if (creeps[i].Update(this.paths))
                 {
                     // Creep reached the end.
                     creeps.RemoveAt(i--);
-
                 }
             }
         }
 
         protected void HandleTowerLoop()
         {
-            foreach (Tower t in towers)
+            foreach (Tower t in towers.Values)
             {
                 t.Update();
                 Creep target;
@@ -154,7 +228,7 @@ namespace SafeAndFree
         /// Called every draw loop from the GameEngine.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MAP_0), new Vector2(0, 0), Color.White);
 
@@ -166,10 +240,17 @@ namespace SafeAndFree
             // Draw all creeps.
             foreach (Creep c in creeps)
             {
-                spriteBatch.Draw(TextureLibrary.GetTexture(c.TextureID), c.Position, Color.White);
+                if (0 != c.Rotation)
+                {
+                    spriteBatch.Draw(TextureLibrary.GetTexture(c.TextureID), new Vector2(c.Position.X + (int)c.GetStat(CreepStats.Width) / 2, c.Position.Y + (int)c.GetStat(CreepStats.Height) / 2), new Rectangle(0, 0, c.GetStat(CreepStats.Width), c.GetStat(CreepStats.Height)), Color.White, Calculator.ToRadians(c.Rotation), new Vector2(c.GetStat(CreepStats.Width) / 2, c.GetStat(CreepStats.Height) / 2), 1, SpriteEffects.None, 0);
+                }
+                else
+                {
+                    spriteBatch.Draw(TextureLibrary.GetTexture(c.TextureID), c.Position, Color.White);
+                }
             }
 
-            foreach (Tower t in towers)
+            foreach (Tower t in towers.Values)
             {
                 spriteBatch.Draw(TextureLibrary.GetTexture(t.TextureID), t.Position, Color.White);
             }
@@ -178,6 +259,8 @@ namespace SafeAndFree
             {
                 spriteBatch.Draw(TextureLibrary.GetTexture(p.TextureID), p.CurrentPoint, Color.White) ;
             }
+
+            spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MENU_LEFT), new Rectangle(0, 0, 120, 480), Color.White);
         }
 
         /// <summary>
@@ -196,14 +279,29 @@ namespace SafeAndFree
         }
 
         /// <summary>
-        /// Load the paths and waypoints information from xml.
+        /// Load the paths, waypoints and wave data from xml.
         /// </summary>
-        private void LoadPaths()
+        private void LoadData()
         {
+            // Get the XML file with our data.
             XmlReader reader = XmlReader.Create("MapDefinitions.xml");
 
+            // Initialize creep data.
+            creeps = new List<Creep>();
+
+            // Initialize path data.
             int lastPath = -1;
             int lastWaypoint = 0;
+
+            // Initialize wave data.
+            waveManager = new WaveManager();
+            int[][][] waves = null;
+            int lastWave = -1;
+            int lastCreep = -1;
+
+            // Initialize creep stat data.
+
+            int lastCreepDefinition = 0;
 
             while (reader.Read())
             {
@@ -215,6 +313,17 @@ namespace SafeAndFree
                     {
                         TileDimensions = new Vector2(Int32.Parse(reader.GetAttribute("tileWidth")), Int32.Parse(reader.GetAttribute("tileHeight")));
                         TileCenter = new Vector2((int)(TileDimensions.X / 2), (int)(TileDimensions.Y / 2));
+                    }
+                    else if (reader.Name.Equals("creepDefinition"))
+                    {
+                        CreepDefinitions.CreepStats.Add((CreepType)lastCreepDefinition++, new CreepTypeData 
+                        { 
+                            Width = Int32.Parse(reader.GetAttribute("width")),
+                            Height = Int32.Parse(reader.GetAttribute("height")),
+                            Health = Int32.Parse(reader.GetAttribute("health")),
+                            Speed = Int32.Parse(reader.GetAttribute("speed")),
+                            DamageToPlayer = Int32.Parse(reader.GetAttribute("damageToPlayer"))
+                        });
                     }
                     else if (reader.Name.Equals("paths"))
                     {
@@ -229,33 +338,54 @@ namespace SafeAndFree
                     {
                         paths[lastPath][lastWaypoint++] = new Vector2(Int32.Parse(reader.GetAttribute("column")) * Board.TileDimensions.X + Board.TileCenter.X, Int32.Parse(reader.GetAttribute("row")) * Board.TileDimensions.Y + Board.TileCenter.Y);
                     }
+                    else if (reader.Name.Equals("waves"))
+                    {
+                        waves = new int[Int32.Parse(reader.GetAttribute("numWaves"))][][];
+                        lastWave = -1;
+                    }
+                    else if (reader.Name.Equals("wave"))
+                    {
+                        waves[++lastWave] = new int[Int32.Parse(reader.GetAttribute("numCreeps"))][];
+                        lastCreep = -1;
+                    }
+                    else if (reader.Name.Equals("creep"))
+                    {
+                        waves[lastWave][++lastCreep] = new int[] { Int32.Parse(reader.GetAttribute("type")), Int32.Parse(reader.GetAttribute("delay")) };
+                    }
                 }
+            }
+
+            if (null != waves)
+            {
+                waveManager.SetWaves(waves);
             }
         }
 
-        /// <summary>
-        /// Load creeps.
-        /// </summary>
-        private void LoadCreeps()
+        public void BuyPlaceTower(TowerTypes type)
         {
-            // Hard-coded for now.
-            creeps = new List<Creep>();
-            Dictionary<CreepStats, int> basicStats = new Dictionary<CreepStats, int>();
-            basicStats.Add(CreepStats.Health, 50);
-            basicStats.Add(CreepStats.Speed, 3);
-            basicStats.Add(CreepStats.DamageToPlayer, 1);
-
-            creeps.Add(new Creep(basicStats, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_0, 0, 0));
+            if(!towers.ContainsKey(selectedTile) && CurrentPlayer.WithdrawalMoney(TowerFactory.GetTowerCost(type)))
+            {
+             
+                towers.Add(selectedTile, TowerFactory.GetTower(type, new Vector2(selectedTile.X * TileDimensions.X, selectedTile.Y * TileDimensions.Y)));
+            }
         }
 
+        private void UpdateTower(Tower theOneToOneUp)
+        {
+            if (theOneToOneUp.CanLevel && CurrentPlayer.WithdrawalMoney(theOneToOneUp.GetTowerStats().CostToNext))
+            {
+                theOneToOneUp.LevelUp();
+            }
+        }
         ///
         /// Test load a tower
         ///
         private void LoadATowerTest()
         {
-            towers = new List<Tower>();
-            towers.Add(TowerFactory.GetTower(TowerTypes.Slow, new Vector2(70, 400)));
-            towers.Add(TowerFactory.GetTower(TowerTypes.Normal, new Vector2(200, 300)));
+            towers = new Dictionary<Vector2, Tower>();
+            //towers.Add(selectedTile, TowerFactory.GetTower(TowerTypes.Slow, new Vector2(70, 400)));
+            //towers.Add(TowerFactory.GetTower(TowerTypes.Normal, new Vector2(200, 300)));
+            //towers.Add(TowerFactory.GetTower(TowerTypes.Fast, new Vector2(200, 400)));
         }
     }
 }
