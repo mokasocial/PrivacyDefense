@@ -1,11 +1,15 @@
 package org.aclu.freedomdefense;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputProcessor;
 
 public class GameInputProcessor implements InputProcessor {
 
+	public static final int DEFAULT_WIN_PAUSE_KEY = Input.Keys.SPACE;
+	public static final int DEFAULT_DRD_PAUSE_KEY = Input.Keys.BACK;
+	
 	public GameInputProcessor() {
 		Gdx.input.setInputProcessor(this);
 		// other constructor stuff here...
@@ -18,13 +22,16 @@ public class GameInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean keyTyped(char character) {
-		// Game.instance.debugtext = "key typed: '" + character + "'";
+		//Game.instance.debugtext = "key typed: '" + character + "'";
 		return false;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
 		// Game.instance.debugtext = "key up: " + keycode;
+		if (keycode == DEFAULT_WIN_PAUSE_KEY || keycode == DEFAULT_DRD_PAUSE_KEY) {
+			Game.instance.pause();
+		}
 		return false;
 	}
 

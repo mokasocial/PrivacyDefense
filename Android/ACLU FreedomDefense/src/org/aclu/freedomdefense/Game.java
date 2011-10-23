@@ -20,7 +20,14 @@ import com.badlogic.gdx.math.Vector2;
 public class Game implements ApplicationListener {
 	public static int screenWidth = 480;
 	public static int screenHeight = 320;
+
+	
+	public static final float TIME_BETWEEN_WAVES = 3;
+	
+	public static final int INITIAL_CREEP_SPEED = 32;
+
 	public static int maxProjectiles = 1000;
+
 
 	private SpriteBatch batch;
 	private Texture spriteSheet;
@@ -40,11 +47,20 @@ public class Game implements ApplicationListener {
 	public int endingX;
 	public int endingY;
 	
+	public int current_creep_speed = INITIAL_CREEP_SPEED;
+	
+	public boolean isPaused = false;
+
 	public String debugtext = "";
+
+
+	public float wave_wait_timer = 0;
+	
 
 	public TowerType cursorState;
 	public int cursorLocX = 0;
 	public int cursorLocY = 0;
+
 
 	// Circle sprites for tower ranges
 	HashMap<Float, Sprite> rangeSprites = new HashMap<Float, Sprite>();
@@ -96,7 +112,7 @@ public class Game implements ApplicationListener {
 		mFont.setFixedWidthGlyphs("LifeMoney0123456789");
 
 		money = 100;
-		life = 100;
+		life = 49;
 
 		// Feel free to change this, it is confusing!
 		// Movement data is in the GREEN channel of the map:
@@ -151,54 +167,73 @@ public class Game implements ApplicationListener {
 			}
 		}
 
-		for( int i = 1; i < 20; ++i )
-			creeps.add( new Creep( 100, 32, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
+
+		for( int i = 1; i < 50; ++i )
+			creeps.add( new Creep( 100, current_creep_speed, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
+
 		
 		mapData.dispose();
 	}
 
-	public void update() 
-	{
-		float dt = Gdx.graphics.getDeltaTime();
 
-		for (Projectile projectile : projectiles) 
-		{
-			if( projectile.active && projectile.my_coords.x > 0 && projectile.my_coords.y > 0 && projectile.my_coords.x * 16 < screenWidth && projectile.my_coords.y * 16 < screenHeight )
+	public void update() {
+		float dt =2* Gdx.graphics.getDeltaTime();
+
+		if (!isPaused && life > 0) {
+			
+			for (Projectile projectile : projectiles) 
 			{
-				Rectangle projRect = new Rectangle( ( projectile.my_coords.x * 16 ) + 8, ( projectile.my_coords.y * 16 ) + 8, 8, 8 );
-				
-				for( Creep creep : creeps )
+				if( projectile.active && projectile.my_coords.x > 0 && projectile.my_coords.y > 0 && projectile.my_coords.x * 16 < screenWidth && projectile.my_coords.y * 16 < screenHeight )
 				{
-					Rectangle creepRect = new Rectangle( ( creep.x * 16 + creep.xOffset ) + 8, ( creep.y * 16 + creep.yOffset ) + 8, 8, 8 );
+					Rectangle projRect = new Rectangle( ( projectile.my_coords.x * 16 ) + 8, ( projectile.my_coords.y * 16 ) + 8, 8, 8 );
 					
-					if( projRect.overlaps( creepRect ) )
+					for( Creep creep : creeps )
 					{
-						creep.Health -= projectile.damage;
-						projectile.active = false;
-						break;
+						Rectangle creepRect = new Rectangle( ( creep.x * 16 + creep.xOffset ) + 8, ( creep.y * 16 + creep.yOffset ) + 8, 8, 8 );
+						
+						if( projRect.overlaps( creepRect ) )
+						{
+							creep.Health -= projectile.damage;
+							projectile.active = false;
+							break;
+						}
 					}
 				}
+				
+				if( projectile.active )
+				{
+					projectile.update(dt);
+				}
 			}
+	
+			// Handle projectile collision, creep update, creep death
+			for (Creep creep : creeps) {
+				if (creep.active && creep.Health > 0) {
+					creep.update(dt);
+				} else {
+					creep.die();
+				}
+			}
+
+			for (Tower tower : towers) {
+				tower.update(dt);
+			}
+		
+			if (creeps.isEmpty() && wave_wait_timer < TIME_BETWEEN_WAVES) {
 			
-			if( projectile.active )
-			{
-				projectile.update(dt);
+				wave_wait_timer += dt;
+			
+				System.out.println(wave_wait_timer);
+			
+			} else if (creeps.isEmpty() && wave_wait_timer >= TIME_BETWEEN_WAVES) {
+			
+				restart(current_creep_speed + 10);
+				wave_wait_timer = 0;
 			}
-		}
-
-		// Handle projectile collision, creep update, creep death
-		for (Creep creep : creeps) {
-			if (creep.active && creep.Health > 0) {
-				creep.update(dt);
-			} else {
-				creep.die();
-			}
-		}
-
-		for (Tower tower : towers) {
-			tower.update(dt);
 		}
 	}
+		
+
 
 	@Override
 	public void render() {
@@ -278,14 +313,44 @@ public class Game implements ApplicationListener {
 		// DEBUG TEXT
 		mFont.drawWrapped(batch, debugtext, 60, uiBounds.height + 3, 1000);		
 		
+
+		// Render Paused String if needed in bottom right corner.
+		String center_string = null;
+		if (isPaused) {
+			center_string = "PAUSED";
+		} else if (life <= 0) {
+			center_string = "GAME OVER";
+		}
+		
+		if (center_string != null) {
+			TextBounds pausedBounds = mFont.getMultiLineBounds(center_string);
+			Color oldColor = mFont.getColor();
+			mFont.setColor(Color.RED);
+			mFont.drawWrapped(batch, center_string,
+					(screenWidth / 2) - (pausedBounds.width / 2),
+					(screenHeight / 2) - (pausedBounds.height / 2), pausedBounds.width );
+			mFont.setColor(oldColor);
+		}
 		// is the player dragging a tower?
 		if (cursorState != null){
 			batch.draw(spriteSheet, cursorLocX, uiBounds.height - cursorLocY, 0, 16, 16, 16);
+
 		}
 		
 		batch.end();
 	}
 
+	public void restart(int creep_speed) {
+		
+		creeps = new ArrayList<Creep>();
+		
+		for( int i = 1; i < 100; ++i )
+			creeps.add( new Creep( 100, creep_speed, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
+		
+		life = 100;
+		
+	}
+	
 	public void drawSprite(int iconNum, int x, int y) {
 		batch.draw(spriteSheet, x * 16, y * 16, iconNum * 16, 0, 16, 16);
 	}
@@ -297,7 +362,9 @@ public class Game implements ApplicationListener {
 
 	@Override
 	public void pause() {
-
+		if (life > 0) {
+			isPaused = !isPaused;
+		}
 	}
 
 	@Override
@@ -307,6 +374,7 @@ public class Game implements ApplicationListener {
 
 	@Override
 	public void dispose() {
+
 	}
 
 	public void drawCircle(float radius, Color color, Vector2 position) {
