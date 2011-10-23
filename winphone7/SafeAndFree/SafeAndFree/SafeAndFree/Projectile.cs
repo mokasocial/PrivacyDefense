@@ -35,7 +35,15 @@ namespace SafeAndFree
         public bool Tick()
         {
             bool result;
+            if (TargetCreep == null)
+            {
+                return true;
+            }
             CurrentPoint = Calculator.MovementTowardsPoint(CurrentPoint, TargetCreep.Position, Stats.Speed, out result);
+            if (result)
+            {
+                TargetCreep.TakeHit(this);
+            }
             return result;
         }
     }

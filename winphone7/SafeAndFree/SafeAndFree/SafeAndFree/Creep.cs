@@ -16,7 +16,10 @@ namespace SafeAndFree
         /// </summary>
         private Vector2 CenterPosition;
 
-
+        public bool IsDead
+        {
+            get { return Stats[CreepStats.Health] <= 0; }
+        }
         /// <summary>
         /// The index of the path to follow.
         /// </summary>
@@ -91,6 +94,7 @@ namespace SafeAndFree
         /// <returns></returns>
         public bool Update(Vector2[][] paths)
         {
+
             Vector2[] ourPath = paths[_path];
 
             if (Math.Abs(this.CenterPosition.X - ourPath[this._nextWaypoint].X) > this.Stats[CreepStats.Speed])
