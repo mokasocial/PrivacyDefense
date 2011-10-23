@@ -27,9 +27,5 @@ namespace SafeAndFree
                 return _position;
             }
         }
-
-        public virtual void Update()
-        {
-        }
     }
 }

@@ -45,8 +45,26 @@ public class GameInputProcessor implements InputProcessor {
 
 		for (TowerType towerType : Game.instance.free_towers) {
 			if (x <= Game.instance.uiPanelWidth) {
-				if (y <= (towerType.getSpriteLocY()) && y >= (towerType.getSpriteLocY() - 16)) {
-					Game.instance.debugtext = "touch down on tower " + towerType.getClass();
+				if (y >= (32) && y <= (48)) {
+					Game.instance.debugtext = "touch down on tower 1";
+					Game.instance.cursorState = TowerType.FIREWALL;
+					Game.instance.cursorLocX = x;
+					Game.instance.cursorLocY = y;
+				} else if (y >= (80) && y <= (96)) {
+					Game.instance.debugtext = "touch down on tower 2";
+					Game.instance.cursorState = TowerType.JUDGE;
+					Game.instance.cursorLocX = x;
+					Game.instance.cursorLocY = y;
+				} else if (y >= (128) && y <= (144)) {
+					Game.instance.debugtext = "touch down on tower 3";
+					Game.instance.cursorState = TowerType.LAWSUIT;
+					Game.instance.cursorLocX = x;
+					Game.instance.cursorLocY = y;
+				} else if (y >= (176) && y <= (192)) {
+					Game.instance.debugtext = "touch down on tower 4";
+					Game.instance.cursorState = TowerType.TEACHER;
+					Game.instance.cursorLocX = x;
+					Game.instance.cursorLocY = y;
 				}
 			}
 		}
@@ -61,6 +79,11 @@ public class GameInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
+		
+		Game.instance.cursorLocX = 0;
+		Game.instance.cursorLocY = 0;
+		Game.instance.cursorState = null;
+		
 		if (Buttons.LEFT != button || pointer != 0) {
 			return false;
 		}

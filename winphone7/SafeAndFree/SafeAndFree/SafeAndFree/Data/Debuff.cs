@@ -9,13 +9,37 @@ namespace SafeAndFree.Data
     public class Debuff
     {
         public Debuff(CreepStats theTarget, int theAmount, int theDuration)
+            : this(theTarget, theAmount, theDuration, false)
         {
             Target = theTarget;
             Amount = theAmount;
             Duration = theDuration;
         }
-        public CreepStats Target { get; set; }
-        public int Amount { get; set; }
-        public int Duration { get; set; }
+        public Debuff(CreepStats theTarget, int theAmount, int theDuration, bool isInstance)
+        {
+            Target = theTarget;
+            Amount = theAmount;
+            Duration = theDuration;
+            
+        }
+        public static Debuff GetInstance(CreepStats theTarget, int theAmount, int theDuration)
+        {
+            return new Debuff(theTarget, theAmount, theDuration, true);
+        }
+        public void Update()
+        {
+            if (IsCreepInstance)
+            {
+                Duration--;
+            }
+        }
+        bool IsCreepInstance
+        {
+            get;
+            private set;
+        }
+        public CreepStats Target { get; private set; }
+        public int Amount { get; private set; }
+        public int Duration { get; private set; }
     }
 }

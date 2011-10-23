@@ -22,11 +22,12 @@ namespace SafeAndFree.Game_States
             List<Projectile> removeList = new List<Projectile>();
             foreach (Projectile p in Projectiles)
             {
-                if (p.Tick())
+                if (p.Update())
                 {
                     removeList.Add(p);
                 }
             }
+
             foreach (Projectile r in removeList)
             {
                 Projectiles.Remove(r);

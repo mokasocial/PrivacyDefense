@@ -6,11 +6,16 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel x:Name="tileList" Grid.Row="0" Orientation="Horizontal">
+        
+        <Button Width="80" Grid.Row="0" Content="Save Map" Click="Save_Map_Click"/>
+        
+        <StackPanel x:Name="tileList" Grid.Row="1" Orientation="Horizontal">
             <Image x:Name="drawnMap"/>
         </StackPanel>
-        <Canvas x:Name="map" Grid.Row="1" PreviewMouseDown="map_PreviewMouseDown">
+
+        <Canvas x:Name="map" Grid.Row="2" PreviewMouseDown="Map_Clicked">
         </Canvas>
     </Grid>
 </Window>

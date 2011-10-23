@@ -1,12 +1,17 @@
 package org.aclu.freedomdefense;
 
-public class Tower {
+import com.badlogic.gdx.math.Vector2;
+
+public class Tower 
+{
 	int m_x;
 	int m_y;
 	private final TowerType m_type;
-	public int m_speed;
+	public float m_speed;
 	public float m_timeToFire;
 	public float radius;
+	public float bullet_velocity;
+	public float bullet_damage;
 
 	public Tower(TowerType type, int x, int y) 
 	{
@@ -14,25 +19,31 @@ public class Tower {
 		m_x = x;
 		m_y = y;
 		
+		bullet_velocity = 7.0f;
+		
 		if (type.equals(TowerType.JUDGE))
 		{
-			m_speed = 5;
-			radius = 20;
+			m_speed = 0.1f;
+			radius = 5;
+			bullet_damage = 20;
 		}
 		else if (type.equals(TowerType.FIREWALL))
 		{
-			m_speed = 6;
-			radius = 25;
+			m_speed = 0.1f;
+			radius = 6;
+			bullet_damage = 15;
 		}
 		else if (type.equals(TowerType.TEACHER))
 		{
-			m_speed = 7;
-			radius = 30;
+			m_speed = 0.1f;
+			radius = 7;
+			bullet_damage = 10;
 		}
 		else 
 		{
-			m_speed = 8;
-			radius = 35;
+			m_speed = 0.1f;
+			radius = 8;
+			bullet_damage = 5;
 		}
 		
 		m_timeToFire = m_speed;
@@ -64,21 +75,55 @@ public class Tower {
 		if( m_timeToFire < 0 && Game.instance.creeps.size() > 0 ) 
 		{
 			// Find the enemy closest to the goal
-			float closestDist2 = 999999.0f;
+			float closestDistanceToGoal = 999999.0f;
+			float closestDistanceToTower = 99999.0f;
 			int closestIndex = 0;
 			
 			for( int i = 0; i < Game.instance.creeps.size(); ++i )
 			{
-				float dist2 = (float) (Math.pow( Game.instance.endingX - Game.instance.creeps.get(i).x, 2) + Math.pow( Game.instance.endingY - Game.instance.creeps.get(i).y, 2));
+				if( !Game.instance.creeps.get(i).active )
+					continue;
 				
-				if( dist2 < closestDist2 )
-					closestIndex = 0;
+				float distanceToTower = (float)Math.sqrt( Math.pow( m_x - Game.instance.creeps.get(i).x, 2 ) + Math.pow( m_y - Game.instance.creeps.get(i).y, 2) );
+				
+				if( distanceToTower < radius )
+				{
+					float distanceToGoal = (float) (Math.pow( Game.instance.endingX - Game.instance.creeps.get(i).x, 2) + Math.pow( Game.instance.endingY - Game.instance.creeps.get(i).y, 2));
+				
+					if( distanceToGoal < closestDistanceToGoal )
+					{
+						closestIndex = i;
+						closestDistanceToGoal = distanceToGoal;
+						closestDistanceToTower = distanceToTower;
+					}
+				}
 			}
 			
 			// Fire something @ Game.instance.creeps.get(index)!
-			
-			// Reset the cooldown for next frame
-			m_timeToFire = m_speed;
+			if( closestDistanceToGoal < 9999.0f ) 
+			{
+			 	//int xDirection =  Game.instance.creeps.get(closestIndex).x - m_x;
+			 	//int yDirection =  Game.instance.creeps.get(closestIndex).y - m_y;
+			 	//Vector2 directionVector = new Vector2(xDirection, yDirection);
+			 	//Vector2 scaledDirectionVector = directionVector.nor().mul(bullet_velocity);
+			 	
+			 	for( int i = 0; i < Game.maxProjectiles; ++i )
+			 	{
+			 		if( !Game.instance.projectiles[i].active )
+			 		{
+			 			Game.instance.projectiles[i].active = true;
+			 			Game.instance.projectiles[i].damage = bullet_damage;
+			 			Game.instance.projectiles[i].my_coords.x = m_x;
+			 			Game.instance.projectiles[i].my_coords.y = m_y;
+			 			Game.instance.projectiles[i].my_velocity.x = ( ( Game.instance.creeps.get(closestIndex).x - m_x ) / closestDistanceToTower ) * bullet_velocity;
+			 			Game.instance.projectiles[i].my_velocity.y = ( ( Game.instance.creeps.get(closestIndex).y - m_y ) / closestDistanceToTower ) * bullet_velocity;
+			 			break;
+			 		}
+			 	}
+			 	
+			 	// Reset the cooldown for next frame
+			 	m_timeToFire = m_speed;
+			 }
 		}
 	}
 }
