@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -18,7 +17,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public class Game implements ApplicationListener, InputProcessor {
+public class Game implements ApplicationListener {
 	public static int screenWidth = 480;
 	public static int screenHeight = 320;
 	public static int maxProjectiles = 1000;
@@ -40,15 +39,25 @@ public class Game implements ApplicationListener, InputProcessor {
 
 	public int endingX;
 	public int endingY;
+	
+	public String debugtext = "";
+
+	public TowerType cursorState;
+	public int cursorLocX = 0;
+	public int cursorLocY = 0;
 
 	// Circle sprites for tower ranges
 	HashMap<Float, Sprite> rangeSprites = new HashMap<Float, Sprite>();
+	public final int maxmoney = 9999;
+	public final int uiPanelWidth = 60;
 
 	public static Game instance;
 
 	@Override
 	public void create() {
 		instance = this;
+		
+		Gdx.input.setInputProcessor(new GameInputProcessor());
 
 		batch = new SpriteBatch();
 		spriteSheet = new Texture(Gdx.files.internal("sprite_sheet.png"));
@@ -77,6 +86,8 @@ public class Game implements ApplicationListener, InputProcessor {
 		free_towers.add(TowerType.FIREWALL);
 		free_towers.add(TowerType.TEACHER);
 		free_towers.add(TowerType.LAWSUIT);
+		
+		cursorState = null;
 
 		tiles = new int[30][20];
 		movementDirs = new char[30][20];
@@ -228,7 +239,6 @@ public class Game implements ApplicationListener, InputProcessor {
 		}
 
 		// Draw the projectiles!
-
 		for( int i = 0; i < maxProjectiles; ++i )
 		{
 			if( projectiles[i].active )
@@ -237,10 +247,12 @@ public class Game implements ApplicationListener, InputProcessor {
 				batch.draw( spriteSheet, projectiles[i].my_coords.x*16, projectiles[i].my_coords.y*16, 0, 16*3, 16, 16 );
 			}
 		}
-		
+
+		// Draw the UI!
+
 		// Background
-		//TextureRegion blackBox = new TextureRegion(spriteSheet, 0, 2 * 16, 16, 16);
-		//batch.draw(blackBox, 0, 0, 60, screenHeight);
+		TextureRegion blackBox = new TextureRegion(spriteSheet, 0, 2 * 16, 16, 16);
+		batch.draw(blackBox, 0, 0, uiPanelWidth , screenHeight);
 
 		// Draw the free towers.
 		for (int i = 1; i <= 4; i++) {
@@ -250,24 +262,27 @@ public class Game implements ApplicationListener, InputProcessor {
 															   free_towers.get(i-1).getSpriteLocX(),
 															   free_towers.get(i-1).getSpriteLocY(),
 															   16, 16);
-				batch.draw(tower_region, 40, screenHeight - 48*i, 16, 16);
+				batch.draw(tower_region, 40, screenHeight - 48 * i, 16, 16);
 				
 				String towerPrice = "$" + free_towers.get(i-1).getPrice();
 				TextBounds priceBounds = mFont.getBounds(towerPrice);
 				mFont.drawWrapped(batch, towerPrice, 3, screenHeight - 48*i + priceBounds.height, priceBounds.width);
 			}
 		}
-		
-		
-		// Draw the UI!
-		
+				
 		// Text
 		String uiString = "+: " + life + '\n' + "$: " + money;
 		TextBounds uiBounds = mFont.getMultiLineBounds(uiString);
 		mFont.drawWrapped(batch, uiString, 3, uiBounds.height + 3, uiBounds.width);
-		
-		// Towers		
 
+		// DEBUG TEXT
+		mFont.drawWrapped(batch, debugtext, 60, uiBounds.height + 3, 1000);		
+		
+		// is the player dragging a tower?
+		if (cursorState != null){
+			batch.draw(spriteSheet, cursorLocX, uiBounds.height - cursorLocY, 0, 16, 16, 16);
+		}
+		
 		batch.end();
 	}
 
@@ -292,52 +307,6 @@ public class Game implements ApplicationListener, InputProcessor {
 
 	@Override
 	public void dispose() {
-
-	}
-
-	@Override
-	public boolean keyDown(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyUp(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDown(int x, int y, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchUp(int x, int y, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int x, int y, int pointer) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchMoved(int x, int y) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public void drawCircle(float radius, Color color, Vector2 position) {
@@ -356,8 +325,9 @@ public class Game implements ApplicationListener, InputProcessor {
 		// * 2 (tower range goes both ways)
 		int powof2 = 1;
 		int shotRange = (int) Math.ceil(radius * 2);
-		while (powof2 < shotRange)
+		while (powof2 < shotRange){
 			powof2 <<= 1;
+		}
 
 		// Create a new pixmap with the appropriate size
 		Pixmap p = new Pixmap(powof2, powof2, Pixmap.Format.RGBA8888);
