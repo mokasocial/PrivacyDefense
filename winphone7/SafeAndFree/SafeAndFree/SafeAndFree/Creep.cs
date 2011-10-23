@@ -16,6 +16,7 @@ namespace SafeAndFree
         /// </summary>
         public Vector2 CenterPosition;
         private List<Debuff> CurrentDebuffs;
+        public int DistanceTravelled { get; private set; }
         public new bool IsDead
         {
             get { return Stats[CreepStats.Health] <= 0; }
@@ -96,7 +97,7 @@ namespace SafeAndFree
             CurrentDebuffs = new List<Debuff>();
             this.CenterPosition = new Vector2(position.X , position.Y);
             this.TextureID = textureID;
-
+            DistanceTravelled = 0;
             this.Stats = stats;
         }
 
@@ -130,27 +131,28 @@ namespace SafeAndFree
         {
             UpdateDebuffs();
             Vector2[] ourPath = paths[_path];
-
-            if (Math.Abs(this.CenterPosition.X - ourPath[this._nextWaypoint].X) > this.Stats[CreepStats.Speed])
+            int moveDistance = this.Stats[CreepStats.Speed];
+            DistanceTravelled += moveDistance;
+            if (Math.Abs(this.CenterPosition.X - ourPath[this._nextWaypoint].X) > moveDistance)
             {
                 if (ourPath[this._nextWaypoint].X > this.CenterPosition.X)
                 {
-                    this.CenterPosition.X += this.Stats[CreepStats.Speed];
+                    this.CenterPosition.X += moveDistance;
                 }
                 else if (ourPath[this._nextWaypoint].X < this.CenterPosition.X)
                 {
-                    this.CenterPosition.X -= this.Stats[CreepStats.Speed];
+                    this.CenterPosition.X -= moveDistance;
                 }
             }
-            else if (Math.Abs(this.CenterPosition.Y - ourPath[this._nextWaypoint].Y) > this.Stats[CreepStats.Speed])
+            else if (Math.Abs(this.CenterPosition.Y - ourPath[this._nextWaypoint].Y) > moveDistance)
             {
                 if (ourPath[this._nextWaypoint].Y > this.CenterPosition.Y)
                 {
-                    this.CenterPosition.Y += this.Stats[CreepStats.Speed];
+                    this.CenterPosition.Y += moveDistance;
                 }
                 else if (ourPath[this._nextWaypoint].Y < this.CenterPosition.Y)
                 {
-                    this.CenterPosition.Y -= this.Stats[CreepStats.Speed];
+                    this.CenterPosition.Y -= moveDistance;
                 }
             }
             else
