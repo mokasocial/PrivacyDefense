@@ -33,7 +33,7 @@ namespace SafeAndFree.Data
                 Duration--;
             }
         }
-        bool IsCreepInstance
+        public bool IsCreepInstance
         {
             get;
             private set;
