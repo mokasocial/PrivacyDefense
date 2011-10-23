@@ -13,14 +13,16 @@ using System.Windows.Resources;
 using Microsoft.Xna.Framework.Input;
 using SafeAndFree.Enumerations;
 using SafeAndFree.Helpers;
+using SafeAndFree.Game_States;
 
 namespace SafeAndFree
 {
     /// <summary>
     /// Logic for the game board.
     /// </summary>
-    class Board : Screen
+    public class Board : Screen
     {
+        private ProjectileManager projectileManager;
         /// <summary>
         /// TODO: This shouldn't be kept,
         /// this should be loaded from the map image
@@ -38,6 +40,7 @@ namespace SafeAndFree
         /// </summary>
         private List<Creep> creeps;
 
+        private List<Tower> towers;
         /// <summary>
         /// A set of paths that creeps can follow.
         /// The first rank are paths,
@@ -57,15 +60,31 @@ namespace SafeAndFree
         /// </summary>
         public Board()
         {
+            projectileManager = new ProjectileManager();
+            LoadResources();
+        }
+        private void LoadResources()
+        {
             LoadMap();
             LoadPaths();
             LoadCreeps();
+            LoadATowerTest();
         }
-
         /// <summary>
         /// The update loop.
         /// </summary>
         public void Update()
+        {
+            HandleCreepLoop();
+            HandleTowerLoop();
+            HandleProjectileLoop();
+        }
+
+        protected void HandleProjectileLoop()
+        {
+            projectileManager.Update();
+        }
+        protected void HandleCreepLoop()
         {
             for (int i = 0; i < creeps.Count; i++)
             {
@@ -79,7 +98,18 @@ namespace SafeAndFree
                 }
             }
         }
-
+        protected void HandleTowerLoop()
+        {
+            foreach (Tower t in towers)
+            {
+                Creep target;
+                if(Calculator.BestShootableCreep(creeps, t.Position, t.GetTowerStats().Range, out target))
+                {
+                    var proj = TowerFactory.GetTowerProjectile(t, target);
+                    projectileManager.AddProjectile(proj);
+                }
+            }
+        }
         /// <summary>
         /// Called every draw loop from the GameEngine.
         /// </summary>
@@ -91,6 +121,15 @@ namespace SafeAndFree
             {
                 spriteBatch.Draw(TextureLibrary.GetTexture(c.TextureID), c.Position, Color.White);
             }
+            foreach (Tower t in towers)
+            {
+                spriteBatch.Draw(TextureLibrary.GetTexture(t.TextureID), t.Position, Color.White);
+            }
+            foreach (Projectile p in projectileManager.Projectiles)
+            {
+                spriteBatch.Draw(TextureLibrary.GetTexture(p.TextureID), p.CurrentPoint, Color.White) ;
+            }
+
         }
 
         /// <summary>
@@ -188,7 +227,9 @@ namespace SafeAndFree
         ///
         private void LoadATowerTest()
         {
-            Tower aTower = TowerFactory.GetTower(TowerTypes.Normal);
+            towers = new List<Tower>();
+            Tower testTower = TowerFactory.GetTower(TowerTypes.Normal, new Vector2(50, 400));
+            towers.Add(testTower);
         }
     }
 }
