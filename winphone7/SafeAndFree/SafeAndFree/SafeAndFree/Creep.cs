@@ -15,7 +15,7 @@ namespace SafeAndFree
         /// The center position of this instance.
         /// </summary>
         private Vector2 CenterPosition;
-
+        private List<Debuff> CurrentDebuffs;
         public bool IsDead
         {
             get { return Stats[CreepStats.Health] <= 0; }
@@ -53,10 +53,33 @@ namespace SafeAndFree
             }
         }
 
+        private Dictionary<CreepStats, int> stats;
         /// <summary>
         /// A reference to the stats of this creep.
         /// </summary>
-        public Dictionary<CreepStats, int> Stats { get; private set; }
+        public Dictionary<CreepStats, int> Stats { 
+            get 
+            { 
+                if(CurrentDebuffs.Count>0)
+                {
+                    Dictionary<CreepStats, int> newStats = new Dictionary<CreepStats, int>(); 
+                    foreach(KeyValuePair<CreepStats, int> kvp in stats)
+                    {
+                        newStats.Add(kvp.Key, kvp.Value);
+                    }
+                    CurrentDebuffs.ForEach(cd => 
+                    {
+                        if(newStats.ContainsKey(cd.Target))
+                        {
+                            newStats[cd.Target] -= Math.Min(newStats[cd.Target], stats[cd.Target] - cd.Amount);
+                        }
+                    });
+                    return newStats;
+                } 
+                return stats;
+            }
+            private set { stats = value; }
+        }
 
         /// <summary>
         /// Creep instance constructor.
@@ -87,6 +110,12 @@ namespace SafeAndFree
             this._nextWaypoint = startingWaypoint;
         }
 
+        private void UpdateDebuffs()
+        {
+            List<Debuff> retList = new List<Debuff>() ;
+            CurrentDebuffs.ForEach(d => { d.Update(); if (d.Duration <= 0) { retList.Add(d); } });
+            retList.ForEach(r => { CurrentDebuffs.Remove(r); });
+        }
         /// <summary>
         /// Update this Creep instance.
         /// </summary>
@@ -94,7 +123,7 @@ namespace SafeAndFree
         /// <returns></returns>
         public bool Update(Vector2[][] paths)
         {
-
+            UpdateDebuffs();
             Vector2[] ourPath = paths[_path];
 
             if (Math.Abs(this.CenterPosition.X - ourPath[this._nextWaypoint].X) > this.Stats[CreepStats.Speed])
@@ -146,7 +175,7 @@ namespace SafeAndFree
             Stats[CreepStats.Health] -= bullet.Stats.Damage;
             if (bullet.Stats.Gift != null)
             {
-
+                CurrentDebuffs.Add(bullet.Stats.Gift);
             }
             if (Stats[CreepStats.Health] <= 0)
             {

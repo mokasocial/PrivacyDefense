@@ -18,11 +18,13 @@ namespace SafeAndFree
 
         public Projectile(WeaponStats stats, Creep targetCreep, Vector2 startPoint, TowerTypes parentTowerType)
         {
-            Stats = stats;
+            Stats = stats.GetCopy();
             TargetCreep = targetCreep;
             CurrentPoint = startPoint;
             SelectTypeBasedOnTowerType(parentTowerType);
             this.TextureID =  TowerFactory.GetProjectileMediaID(Type);
+            
+            
         }
 
         private void SelectTypeBasedOnTowerType(TowerTypes type)
