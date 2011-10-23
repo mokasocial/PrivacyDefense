@@ -106,6 +106,33 @@ namespace SafeAndFree
             HandleInput();
         }
 
+        protected bool CheckButtonPress(Vector2 check)
+        {
+            if (check.X >= 10 && check.X <= 105)
+            {
+                if (check.Y >= 56 && check.Y < 145)
+                {
+                    BuyPlaceTower(TowerTypes.Normal);
+                    return true;
+                }
+                else if (check.Y > 165 && check.Y <= 250)
+                {
+                    BuyPlaceTower(TowerTypes.Fast);
+                    return true;
+                }
+                else if (check.Y > 270 && check.Y < 360)
+                {
+                    BuyPlaceTower(TowerTypes.Slow);
+                    return true;
+                }
+                else
+                {
+                    UpdateTower(towers[selectedTile]);
+                    return true;
+                }
+            }
+            return false;
+        }
         protected void HandleInput()
         {
             TouchCollection touchCollection = TouchPanel.GetState();
@@ -123,19 +150,13 @@ namespace SafeAndFree
                 }
                 else
                 {
-                    if (col <= 2 && row > 1 && row < 4)
-                        HandleClick(TowerTypes.Normal);
-                    else if (col <= 2 && row >= 4 && row < 7)
-                        HandleClick(TowerTypes.Fast);
-                    else if (col <= 2 && row >= 7 && row < 9)
-                        HandleClick(TowerTypes.Slow);
-                    else if (col <= 2 && row >=9 && towers.Count > 0&& towers.ContainsKey(selectedTile))
+
+                    if (!CheckButtonPress(touchLocation.Position))
                     {
-                        UpdateTower(towers[selectedTile]);
+                      selectedTile.X = col;
+                      selectedTile.Y = row;
                     }
 
-                    selectedTile.X = col;
-                    selectedTile.Y = row;
                     
                 }
             }
@@ -159,7 +180,7 @@ namespace SafeAndFree
                 {
                     // Creep was killed.
                     creeps.RemoveAt(i--);
-                    CurrentPlayer.AddMoney(waveManager.currentWave);
+                    CurrentPlayer.AddMoney(waveManager.currentWave + 1);
                 }
                 else if (creeps[i].Update(this.paths))
                 {
@@ -322,7 +343,7 @@ namespace SafeAndFree
 
         public void BuyPlaceTower(TowerTypes type)
         {
-            if(CurrentPlayer.WithdrawalMoney(TowerFactory.GetTowerCost(type)) && !towers.ContainsKey(selectedTile))
+            if(!towers.ContainsKey(selectedTile) && CurrentPlayer.WithdrawalMoney(TowerFactory.GetTowerCost(type)))
             {
              
                 towers.Add(selectedTile, TowerFactory.GetTower(type, new Vector2(selectedTile.X * TileDimensions.X, selectedTile.Y * TileDimensions.Y)));
