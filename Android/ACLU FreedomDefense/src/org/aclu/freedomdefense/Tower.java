@@ -8,13 +8,16 @@ public class Tower
 {
 	int m_x;
 	int m_y;
-	private final TowerType m_type;
+	final TowerType m_type;
 	public float m_speed;
 	public float m_timeToFire;
 	public float radius;
 	public float bullet_velocity;
 	public float bullet_damage;
 	private Random rando;
+	public boolean selected = false;
+	
+	public int level = 1;
 
 	public Tower(TowerType type, int x, int y) 
 	{
@@ -28,25 +31,25 @@ public class Tower
 		{
 			m_speed = 0.3f;
 			radius = 5;
-			bullet_damage = 20;
+			bullet_damage = 10;
 		}
 		else if (type.equals(TowerType.FIREWALL))
 		{
 			m_speed = 0.25f;
 			radius = 6;
-			bullet_damage = 15;
+			bullet_damage = 11;
 		}
 		else if (type.equals(TowerType.TEACHER))
 		{
 			m_speed = 0.15f;
 			radius = 7;
-			bullet_damage = 10;
+			bullet_damage = 12;
 		}
 		else 
 		{
 			m_speed = 0.1f;
 			radius = 5;
-			bullet_damage = 10.0f;
+			bullet_damage = 13.0f;
 		}
 		
 		m_timeToFire = m_speed;
@@ -63,13 +66,13 @@ public class Tower
 	public int getIconNum() 
 	{
 		if (m_type.equals(TowerType.JUDGE))
-			return 0;
+			return 10;
 		else if (m_type.equals(TowerType.FIREWALL))
-			return 2;
+			return 7;
 		else if (m_type.equals(TowerType.TEACHER))
-			return 1;
+			return 9;
 		else 
-			return 3;
+			return 8;
 	}
 	
 	public void update(float deltaTime) 
