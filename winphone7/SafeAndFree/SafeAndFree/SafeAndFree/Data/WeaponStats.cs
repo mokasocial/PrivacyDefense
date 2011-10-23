@@ -26,7 +26,6 @@ namespace SafeAndFree.Data
         }
         public WeaponStats GetCopy()
         {
-
             if (Gift != null)
             {
                 return new WeaponStats(Damage, Speed, Splash, Debuff.GetInstance(Gift.Target, Gift.Amount, Gift.Duration));

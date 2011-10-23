@@ -257,7 +257,7 @@ namespace SafeAndFree
 
             if (null != waves)
             {
-                waveManager.SetWaves(waves);
+                //waveManager.SetWaves(waves);
             }
         }
 

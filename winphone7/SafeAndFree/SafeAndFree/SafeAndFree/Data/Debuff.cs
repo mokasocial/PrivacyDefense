@@ -20,7 +20,7 @@ namespace SafeAndFree.Data
             Target = theTarget;
             Amount = theAmount;
             Duration = theDuration;
-            
+            IsCreepInstance = isInstance;
         }
         public static Debuff GetInstance(CreepStats theTarget, int theAmount, int theDuration)
         {
