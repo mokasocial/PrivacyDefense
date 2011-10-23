@@ -7,11 +7,14 @@ public class Projectile
 	private final Vector2 my_velocity;
 
 	public Vector2 my_coords;
+	
+	public float damage;
 
-	public Projectile(final Vector2 the_starting_coord, final Vector2 velocity)
+	public Projectile(final Vector2 the_starting_coord, final Vector2 velocity, float damage )
 	{
 		my_coords = the_starting_coord;
 		my_velocity = velocity;
+		this.damage = damage;
 	}
 	
 	/**

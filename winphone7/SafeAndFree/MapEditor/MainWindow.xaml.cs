@@ -24,6 +24,7 @@ namespace MapEditor
     {
         private int[,] tiles;
         private Image[,] visualTiles;
+        private System.Drawing.Bitmap[,] visualBitmaps;
 
         private BitmapSource[,] tileImages;
 
@@ -42,7 +43,7 @@ namespace MapEditor
 
         private void GrabData()
         {
-            XmlTextReader reader = new XmlTextReader(Environment.CurrentDirectory + "\\Content\\MapDefinitions.xml");
+            XmlTextReader reader = new XmlTextReader(Environment.CurrentDirectory + "\\MapDefinitions.xml");
 
             while (reader.Read())
             {
@@ -53,11 +54,25 @@ namespace MapEditor
                     if (reader.Name.Equals("map"))
                     {
                         Uri path = new Uri(Environment.CurrentDirectory + reader.GetAttribute("path"), UriKind.Absolute);
-                        BitmapImage newImg = new BitmapImage(path);
 
-                        drawnMap.Source = newImg;
-                        drawnMap.Width = newImg.Width;
-                        drawnMap.Height = newImg.Height;
+                        ImageSource loadedImage = null;
+
+                        try
+                        {
+                            loadedImage = new BitmapImage(path);
+                        }
+                        catch (Exception e)
+                        {
+                            System.Drawing.Bitmap newImage = new System.Drawing.Bitmap(25, 15);
+                            loadedImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(newImage.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                        }
+                        finally
+                        {
+                            drawnMap.Source = loadedImage;
+                        }
+
+                        drawnMap.Width = drawnMap.Source.Width;
+                        drawnMap.Height = drawnMap.Source.Height;
 
                         TileDimensions = new Point(Int32.Parse(reader.GetAttribute("tileWidth")), Int32.Parse(reader.GetAttribute("tileHeight")));
                     }
@@ -103,13 +118,14 @@ namespace MapEditor
             return destination;
         }
 
-
         private unsafe void GenerateMap()
         {
-            int imageWidth = (int)drawnMap.Source.Width;
-            int imageHeight = (int)drawnMap.Source.Height;
+            int imageWidth = (int)Math.Round(drawnMap.Source.Width);
+            int imageHeight = (int)Math.Round(drawnMap.Source.Height);
 
             tiles = new int[imageWidth, imageHeight];
+            visualTiles = new Image[imageWidth, imageHeight];
+            visualBitmaps = new System.Drawing.Bitmap[imageWidth, imageHeight];
             tileImages = new BitmapSource[imageWidth, imageHeight];
 
             System.Drawing.Rectangle imageRectangle = new System.Drawing.Rectangle(0, 0, imageWidth, imageHeight);
@@ -122,27 +138,31 @@ namespace MapEditor
             {
                 int* scanline = (int*)bitmapPixels.Scan0 + (row * imageWidth);
 
-                for (int col = 0; col < imageWidth; col++)
+                for (int column = 0; column < imageWidth; column++)
                 {
-                    System.Drawing.Color savedColor = System.Drawing.Color.FromArgb(scanline[col]);
+                    System.Drawing.Color savedColor = System.Drawing.Color.FromArgb(scanline[column]);
 
-                    tiles[col, row] = savedColor.R;
-                    tileImages[col, row] = tileTextures[tiles[col, row]];
+                    tiles[column, row] = savedColor.R;
+                    tileImages[column, row] = tileTextures[tiles[column, row]];
 
                     Image newImage = new Image();
-                    newImage.Source = tileImages[col, row];
-                    newImage.Width = tileImages[col, row].Width;
-                    newImage.Height = tileImages[col, row].Height;
-                    Canvas.SetLeft(newImage, col * TileDimensions.X);
+                    newImage.Source = tileImages[column, row];
+                    newImage.Width = tileImages[column, row].Width;
+                    newImage.Height = tileImages[column, row].Height;
+                    visualTiles[column, row] = newImage;
+
+                    visualBitmaps[column, row] = _bitmapFromSource(tileTextures[tiles[column, row]]);
+
+                    Canvas.SetLeft(newImage, column * TileDimensions.X);
                     Canvas.SetTop(newImage, row * TileDimensions.Y);
-                    map.Children.Add(newImage);
+                    map.Children.Add(visualTiles[column, row]);
                 }
             }
 
             bitmapSource.UnlockBits(bitmapPixels);
         }
 
-        private void map_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void Map_Clicked(object sender, MouseButtonEventArgs e)
         {
             if (null == tiles || 0 == tiles.Length)
             {
@@ -160,9 +180,81 @@ namespace MapEditor
                 return;
             }
 
-            tiles[column, row]++;
+            tiles[column, row] += (e.LeftButton == MouseButtonState.Pressed ? 1 : -1);
 
+            if (tiles[column, row] == tileTextures.Count)
+            {
+                tiles[column, row] = 0;
+            }
+            else if (tiles[column, row] < 0)
+            {
+                tiles[column, row] = tileTextures.Count - 1;
+            }
 
+            visualTiles[column, row].Source = tileTextures[tiles[column, row]];
+        }
+
+        private int ColorToInt(Color color)
+        {
+            return (int)((color.A << 24) | (color.R << 16) |
+                          (color.G << 8) | (color.B << 0));
+        }
+
+        /// <summary>
+        /// Event handler called when the save map button is clicked.
+        /// </summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event handler.</param>
+        private unsafe void Save_Map_Click(object sender, RoutedEventArgs e)
+        {
+            if (null == tiles || 0 == tiles.Length)
+            {
+                // There are no tiles shown. We can't save a map.
+                return;
+            }
+
+            // Open the save file dialog to request for a file name and location.
+            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
+            dialog.FileName = "SafeAndFreeMap";
+            dialog.DefaultExt = ".png";
+            dialog.Filter = "Portable Network Graphics|*.png";
+            bool? save = dialog.ShowDialog();
+
+            if (save.Equals(true))
+            {
+                // The user decided to save - so let's do it.
+
+                // Get image dimensions.
+                int imageWidth = (int)Math.Round((tiles.GetUpperBound(0) + 1) * TileDimensions.X);
+                int imageHeight = (int)Math.Round((tiles.GetUpperBound(1) + 1) * TileDimensions.Y);
+
+                System.Drawing.Bitmap newMap = new System.Drawing.Bitmap(imageWidth, imageHeight);
+
+                System.Drawing.Rectangle newMapRectangle = new System.Drawing.Rectangle(0, 0, imageWidth, imageHeight);
+
+                BitmapData newMapData = newMap.LockBits(newMapRectangle, ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+                for (int i = 0; i < imageHeight; i++)
+                {
+                    int* newMapScanline = (int*)newMapData.Scan0 + (i * imageWidth);
+
+                    for (int j = 0; j < imageWidth; j++)
+                    {
+                        int col = (int)Math.Floor(j / TileDimensions.X);
+                        int row = (int)Math.Floor(i / TileDimensions.Y);
+
+                        int relativeCol = (int)(j - col * TileDimensions.X);
+                        int relativeRow = (int)(i - row * TileDimensions.Y);
+
+                        newMapScanline[j] = visualBitmaps[col, row].GetPixel(relativeCol, relativeRow).ToArgb();//Color.FromArgb(255, (byte)tiles[j, i], 0, 0));
+                    }
+                }
+
+                newMap.UnlockBits(newMapData);
+
+                newMap.Save(dialog.FileName);
+                
+            }
         }
     }
 }

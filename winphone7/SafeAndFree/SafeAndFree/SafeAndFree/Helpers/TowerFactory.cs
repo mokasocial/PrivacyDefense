@@ -34,7 +34,7 @@ namespace SafeAndFree.Helpers
             //    case TowerTypes.Splash:
             //    case TowerTypes.Normal:
             //    case default :    
-            towerStats = new TowerStats[5] { new TowerStats(20, 100, 5), new TowerStats(15, 130, 10), new TowerStats(13, 150, 20), new TowerStats(11, 170, 40), new TowerStats(10, 190, -1) };
+            towerStats = new TowerStats[5] { new TowerStats(30, 100, 5), new TowerStats(15, 130, 10), new TowerStats(13, 150, 20), new TowerStats(11, 170, 40), new TowerStats(10, 190, -1) };
             weaponStats = new WeaponStats[5] { new WeaponStats(10, 10, 1), new WeaponStats(20, 10, 1), new WeaponStats(40, 10, 1), new WeaponStats(80, 10, 1), new WeaponStats(200, 10, 1) };
             //break;
             //}
@@ -55,7 +55,7 @@ namespace SafeAndFree.Helpers
         }
         public static Projectile GetTowerProjectile(Tower tower, Creep target)
         {
-            return new Projectile(tower.GetWeaponStats(), target, tower.Position, tower.Type);
+            return new Projectile(tower.Fire(), target, tower.Position, tower.Type);
         }
     }
 }

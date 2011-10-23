@@ -16,7 +16,10 @@ namespace SafeAndFree
         /// </summary>
         private Vector2 CenterPosition;
 
-
+        public bool IsDead
+        {
+            get { return Stats[CreepStats.Health] <= 0; }
+        }
         /// <summary>
         /// The index of the path to follow.
         /// </summary>
@@ -91,6 +94,7 @@ namespace SafeAndFree
         /// <returns></returns>
         public bool Update(Vector2[][] paths)
         {
+
             Vector2[] ourPath = paths[_path];
 
             if (Math.Abs(this.CenterPosition.X - ourPath[this._nextWaypoint].X) > this.Stats[CreepStats.Speed])
@@ -136,7 +140,7 @@ namespace SafeAndFree
         /// Makes the creep take a projectile hit.
         /// </summary>
         /// <param name="bullet">The projectile that hits the creep</param>
-        /// <returns>true if the creep dies, false otherwise</returns>
+        /// <returns>True if the creep dies, false otherwise</returns>
         public bool TakeHit(Projectile bullet)
         {
             Stats[CreepStats.Health] -= bullet.Stats.Damage;

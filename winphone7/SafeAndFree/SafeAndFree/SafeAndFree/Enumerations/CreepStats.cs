@@ -7,7 +7,8 @@ namespace SafeAndFree.Enumerations
 {
     public enum CreepStats
     {
-        Speed, 
-        Health
+        Speed,
+        Health,
+        DamageToPlayer
     }
 }
