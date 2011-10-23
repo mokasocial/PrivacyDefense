@@ -27,11 +27,15 @@
     <level delay="5" range="5" costToNext="5"/>
   </towerDefinition>
   <paths numPaths="1">
-    <path index="0" numWaypoints="4">
-      <waypoint column="4" row="-1"/>
-      <waypoint column="4" row="8"/>
+    <path index="0" numWaypoints="8">
+      <waypoint column="3" row="-1"/>
+      <waypoint column="3" row="8"/>
       <waypoint column="15" row="8"/>
-      <waypoint column="15" row="-1"/>
+      <waypoint column="15" row="5"/>
+      <waypoint column="7" row="5"/>
+      <waypoint column="7" row="1"/>
+      <waypoint column="16" row="1"/>
+      <waypoint column="16" row="-1"/>
     </path>
   </paths>
   <waves numWaves="7">
