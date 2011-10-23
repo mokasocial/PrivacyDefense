@@ -10,7 +10,7 @@ namespace SafeAndFree
         public int[][][] waves;
         public int currentWave { get; private set; }
         public int nextSpawnIndex { get; private set; }
-
+        int i;
         private int delay;
 
         public bool GameWon { get; private set; }
