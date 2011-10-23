@@ -31,7 +31,7 @@ public class Game implements ApplicationListener {
 
 
 	private SpriteBatch batch;
-	private Texture spriteSheet;
+	public Texture spriteSheet;
 	private Texture mapData;
 	private BitmapFont mFont;
 	private int[][] tiles; // Our base map (paths and whatnot)
@@ -56,6 +56,7 @@ public class Game implements ApplicationListener {
 
 	public boolean runningDrd;
 	
+	public TextureRegion cursorTexture = null;
 	
 	
 	public int waveNumber = 0;
@@ -411,6 +412,14 @@ public class Game implements ApplicationListener {
 		// DEBUG TEXT
 		mFont.drawWrapped(batch, debugtext, 60, uiBounds.height + 3, 1000);		
 
+		// Draw the cursorTexture
+		if (cursorState != null) {
+		
+			batch.draw(cursorTexture, cursorLocX - 8, screenHeight - cursorLocY - 8);
+			
+		}
+		
+		
 		// Render Paused String if needed in bottom right corner.
 		String center_string = null;
 		if (isPaused) {
