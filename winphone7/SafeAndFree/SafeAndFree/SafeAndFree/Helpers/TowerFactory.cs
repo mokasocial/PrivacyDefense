@@ -29,7 +29,10 @@ namespace SafeAndFree.Helpers
         {
             switch (type)
             {            
-                //case TowerTypes.Fast:
+                case TowerTypes.Fast:
+                     towerStats = new TowerStats[5] { new TowerStats(30, 250, 5), new TowerStats(15, 250, 10), new TowerStats(13, 250, 20), new TowerStats(11, 250, 40), new TowerStats(10, 250, -1) };
+                     weaponStats = new WeaponStats[5] { new WeaponStats(5, 10, 1), new WeaponStats(15, 10, 1), new WeaponStats(40, 10, 1), new WeaponStats(80, 10, 1), new WeaponStats(200, 10, 1) };
+                break;
                 //case TowerTypes.Splash:
                 case TowerTypes.Slow:
                     Debuff slow = new Debuff(CreepStats.Speed, 1, 10);
