@@ -23,25 +23,25 @@ public class Tower
 		
 		if (type.equals(TowerType.JUDGE))
 		{
-			m_speed = 0.25f;
+			m_speed = 0.1f;
 			radius = 5;
 			bullet_damage = 20;
 		}
 		else if (type.equals(TowerType.FIREWALL))
 		{
-			m_speed = 0.5f;
+			m_speed = 0.1f;
 			radius = 6;
 			bullet_damage = 15;
 		}
 		else if (type.equals(TowerType.TEACHER))
 		{
-			m_speed = 0.75f;
+			m_speed = 0.1f;
 			radius = 7;
 			bullet_damage = 10;
 		}
 		else 
 		{
-			m_speed = 1.0f;
+			m_speed = 0.1f;
 			radius = 8;
 			bullet_damage = 5;
 		}
@@ -76,10 +76,14 @@ public class Tower
 		{
 			// Find the enemy closest to the goal
 			float closestDistanceToGoal = 999999.0f;
+			float closestDistanceToTower = 99999.0f;
 			int closestIndex = 0;
 			
 			for( int i = 0; i < Game.instance.creeps.size(); ++i )
 			{
+				if( !Game.instance.creeps.get(i).active )
+					continue;
+				
 				float distanceToTower = (float)Math.sqrt( Math.pow( m_x - Game.instance.creeps.get(i).x, 2 ) + Math.pow( m_y - Game.instance.creeps.get(i).y, 2) );
 				
 				if( distanceToTower < radius )
@@ -90,6 +94,7 @@ public class Tower
 					{
 						closestIndex = i;
 						closestDistanceToGoal = distanceToGoal;
+						closestDistanceToTower = distanceToTower;
 					}
 				}
 			}
@@ -97,12 +102,24 @@ public class Tower
 			// Fire something @ Game.instance.creeps.get(index)!
 			if( closestDistanceToGoal < 9999.0f ) 
 			{
-			 	int xDirection =  Game.instance.creeps.get(closestIndex).x - m_x;
-			 	int yDirection =  Game.instance.creeps.get(closestIndex).y - m_y;
-			 	Vector2 directionVector = new Vector2(xDirection, yDirection);
-			 	Vector2 scaledDirectionVector = directionVector.nor().mul(bullet_velocity);
-			 	Projectile projectile = new Projectile(new Vector2(m_x,m_y), scaledDirectionVector, bullet_damage);
-			 	Game.instance.projectiles.add(projectile);
+			 	//int xDirection =  Game.instance.creeps.get(closestIndex).x - m_x;
+			 	//int yDirection =  Game.instance.creeps.get(closestIndex).y - m_y;
+			 	//Vector2 directionVector = new Vector2(xDirection, yDirection);
+			 	//Vector2 scaledDirectionVector = directionVector.nor().mul(bullet_velocity);
+			 	
+			 	for( int i = 0; i < Game.maxProjectiles; ++i )
+			 	{
+			 		if( !Game.instance.projectiles[i].active )
+			 		{
+			 			Game.instance.projectiles[i].active = true;
+			 			Game.instance.projectiles[i].damage = bullet_damage;
+			 			Game.instance.projectiles[i].my_coords.x = m_x;
+			 			Game.instance.projectiles[i].my_coords.y = m_y;
+			 			Game.instance.projectiles[i].my_velocity.x = ( ( Game.instance.creeps.get(closestIndex).x - m_x ) / closestDistanceToTower ) * bullet_velocity;
+			 			Game.instance.projectiles[i].my_velocity.y = ( ( Game.instance.creeps.get(closestIndex).y - m_y ) / closestDistanceToTower ) * bullet_velocity;
+			 			break;
+			 		}
+			 	}
 			 	
 			 	// Reset the cooldown for next frame
 			 	m_timeToFire = m_speed;

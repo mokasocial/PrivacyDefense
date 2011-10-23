@@ -1,6 +1,7 @@
 package org.aclu.freedomdefense;
 
 public class Creep {
+	boolean active;
 	CreepType m_type;
 	float Health, Speed, Money;
 	public int x, y;
@@ -17,6 +18,7 @@ public class Creep {
 		this.y = y;
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
+		active = true;
 	}
 
 	public void move( float dt )
@@ -84,5 +86,6 @@ public class Creep {
 	public void die()
 	{
 		Game.instance.money += Money;
+		active = false;
 	}
 }
