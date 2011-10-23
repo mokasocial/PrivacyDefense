@@ -15,10 +15,7 @@ namespace SafeAndFree
         /// The center position of this instance.
         /// </summary>
         public Vector2 CenterPosition;
-<<<<<<< HEAD
 
-=======
->>>>>>> 0d1d26a4695284bc971d9504998332e3a596ab24
         private List<Debuff> CurrentDebuffs;
 
         public new bool IsDead
