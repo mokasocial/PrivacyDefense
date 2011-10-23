@@ -92,9 +92,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
-    <Resource Include="MapDefinitions.xml">
+    <Content Include="MapDefinitions.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </Content>
     <Content Include="PhoneGameThumb.png">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </Content>

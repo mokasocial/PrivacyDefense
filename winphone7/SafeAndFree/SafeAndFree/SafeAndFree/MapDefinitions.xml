@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <definitions>
-  <map path="\\Content\\winphonemap.png" tileWidth="16" tileHeight="16"/>
+  <map path="\\Content\\winphonemap.png" tileWidth="32" tileHeight="32"/>
   <tile index="0" path="\\Content\\tile0.png"/>
   <tile index="1" path="\\Content\\tile1.png"/>
   <tile index="2" path="\\Content\\tile2.png"/>

@@ -106,14 +106,7 @@ namespace SafeAndFree
             {
                 for (int j = 0; j < mapDefinition.Width; j++)
                 {
-                    if (bits[i * mapDefinition.Width + j].R == 0)
-                    {
-                        tileTextureIds[j, i] = 3;
-                    }
-                    else
-                    {
-                        tileTextureIds[j, i] = 0;
-                    }
+                    tileTextureIds[j, i] = bits[i * mapDefinition.Width + j].R;
                 }
             }
 
@@ -135,8 +128,7 @@ namespace SafeAndFree
         /// </summary>
         private void LoadPaths()
         {
-            StreamResourceInfo definitionsStream = Application.GetResourceStream(new Uri("/SafeAndFree;component/MapDefinitions.xml", UriKind.RelativeOrAbsolute));
-            XmlReader reader = XmlReader.Create(definitionsStream.Stream);
+            XmlReader reader = XmlReader.Create("MapDefinitions.xml");
 
             int lastPath = -1;
             int lastWaypoint = 0;
