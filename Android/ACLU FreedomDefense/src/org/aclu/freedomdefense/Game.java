@@ -21,6 +21,7 @@ public class Game implements ApplicationListener {
 	public static int screenWidth = 480;
 	public static int screenHeight = 320;
 
+	public static final Rectangle DRD_PAUSE_RECT = new Rectangle(3, 50, 54, 25);
 	
 	public static final float TIME_BETWEEN_WAVES = 3;
 	
@@ -53,6 +54,10 @@ public class Game implements ApplicationListener {
 	public ArrayList<TowerType> free_towers; 
 	public int startingX, startingY;
 
+	public boolean runningDrd;
+	
+	
+	
 	public int waveNumber = 0;
 	
 	public int endingX;
@@ -86,7 +91,18 @@ public class Game implements ApplicationListener {
 	// I'm sorry this is getting cruddy, so sleepy
 	TextureRegion blackBox;
 	TextureRegion tower_region;
+	
+	TextureRegion pause_button_region;
 
+	/**
+	 * Create a game object. Set running_android if being called from an android device.
+	 * False otherwise.
+	 * @param running_android Flag for running android.
+	 */
+	public Game(final boolean running_android) {
+		runningDrd = running_android;
+	}
+	
 	@Override
 	public void create() {
 		instance = this;
@@ -213,6 +229,7 @@ public class Game implements ApplicationListener {
 		
 		uiString = "";
 		uiBounds = new TextBounds();
+		pause_button_region = new TextureRegion( spriteSheet, 0, 0, 16, 16);
 		
 		mapData.dispose();
 	}
@@ -361,6 +378,7 @@ public class Game implements ApplicationListener {
 			}
 		}
 				
+
 		// Keep the GC in it's cage as long as possible. 
 		if( oldMoney != money || oldLife != life )
 		{
@@ -369,12 +387,29 @@ public class Game implements ApplicationListener {
 		}
 		oldMoney = money;
 		oldLife = life;
+				
+		// Draw droid pause button if on an android device.
+		if (runningDrd) {
+			
+			pause_button_region.setRegion(7*17, 23, 2, 2);
+			batch.draw(pause_button_region, DRD_PAUSE_RECT.x, DRD_PAUSE_RECT.y, DRD_PAUSE_RECT.width, DRD_PAUSE_RECT.height);
+			
+			String pause_button_string = "Pause";
+			TextBounds pauseButtonBounds = mFont.getBounds(pause_button_string);
+			mFont.drawWrapped(batch, pause_button_string,
+							(32 - (pauseButtonBounds.width / 2)),
+							DRD_PAUSE_RECT.y + pauseButtonBounds.height + 4, pauseButtonBounds.width);
+			
+		}
+		
+		// Text
+		String uiString = "+: " + life + '\n' + "$: " + money;
+		TextBounds uiBounds = mFont.getMultiLineBounds(uiString);
 		
 		mFont.drawWrapped(batch, uiString, 3, uiBounds.height + 3, uiBounds.width);
 
 		// DEBUG TEXT
 		mFont.drawWrapped(batch, debugtext, 60, uiBounds.height + 3, 1000);		
-		
 
 		// Render Paused String if needed in bottom right corner.
 		String center_string = null;
