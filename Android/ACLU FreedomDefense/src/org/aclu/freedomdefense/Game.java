@@ -44,6 +44,7 @@ public class Game implements ApplicationListener {
 	HashMap<Float, Sprite> rangeSprites = new HashMap<Float, Sprite>();
 	public final int maxmoney = 9999;
 	public final int uiPanelWidth = 60;
+	private TowerType cursorState;
 
 	public static Game instance;
 
@@ -70,6 +71,8 @@ public class Game implements ApplicationListener {
 		free_towers.add(TowerType.FIREWALL);
 		free_towers.add(TowerType.TEACHER);
 		free_towers.add(TowerType.LAWSUIT);
+		
+		cursorState = null;
 
 		tiles = new int[30][20];
 		movementDirs = new char[30][20];
@@ -230,7 +233,7 @@ public class Game implements ApplicationListener {
 															   free_towers.get(i-1).getSpriteLocX(),
 															   free_towers.get(i-1).getSpriteLocY(),
 															   16, 16);
-				batch.draw(tower_region, 40, screenHeight - 48*i, 16, 16);
+				batch.draw(tower_region, 40, screenHeight - 48 * i, 16, 16);
 				
 				String towerPrice = "$" + free_towers.get(i-1).getPrice();
 				TextBounds priceBounds = mFont.getBounds(towerPrice);
