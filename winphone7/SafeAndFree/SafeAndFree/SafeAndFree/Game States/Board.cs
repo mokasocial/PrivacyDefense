@@ -287,6 +287,21 @@ namespace SafeAndFree
             }
         }
 
+        public void BuyPlaceTower(Vector2 location, TowerTypes type)
+        {
+            if(CurrentPlayer.WithdrawalMoney(TowerFactory.GetTowerCost(type)))
+            {
+                towers.Add(TowerFactory.GetTower(type, location));
+            }
+        }
+
+        private void UpdateTower(Tower theOneToOneUp)
+        {
+            if (theOneToOneUp.CanLevel && CurrentPlayer.WithdrawalMoney(theOneToOneUp.GetTowerStats().CostToNext))
+            {
+                theOneToOneUp.LevelUp();
+            }
+        }
         ///
         /// Test load a tower
         ///
