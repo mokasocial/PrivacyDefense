@@ -24,7 +24,7 @@ namespace SafeAndFree
     public class Board : Screen
     {
         private ProjectileManager projectileManager;
-
+        private Player CurrentPlayer;
         private WaveManager waveManager;
 
         /// <summary>
@@ -67,6 +67,7 @@ namespace SafeAndFree
         /// </summary>
         public Board()
         {
+            CurrentPlayer = new Player();
             projectileManager = new ProjectileManager();
             LoadResources();
         }
