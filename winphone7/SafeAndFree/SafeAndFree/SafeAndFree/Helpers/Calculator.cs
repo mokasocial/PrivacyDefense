@@ -45,5 +45,21 @@ namespace SafeAndFree.Helpers
             return new Vector2((float)(start.X + (xDiff * movementPercent)), (float)(start.Y + (yDiff * movementPercent)));
         }
 
+        /// <summary>
+        /// Not yet the best shootable creep, right now just any creep
+        /// returns true if there's a valid creep, creep is the target
+        /// </summary>
+        /// <param name="targets"></param>
+        /// <param name="towerPosition"></param>
+        /// <returns></returns>
+        public static bool BestShootableCreep(List<Creep> targets, Vector2 towerPosition, int range, out Creep creep)
+        {
+            creep = null;
+            if (targets.Count > 0)
+            {
+                creep = targets[0];
+            }
+            return true;
+        }
     }
 }

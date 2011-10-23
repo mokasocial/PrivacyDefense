@@ -16,10 +16,6 @@ namespace SafeAndFree
         /// </summary>
         private Vector2 CenterPosition;
 
-        /// <summary>
-        /// The texture for this instance.
-        /// </summary>
-        public MEDIA_ID TextureID;
 
         /// <summary>
         /// The index of the path to follow.
