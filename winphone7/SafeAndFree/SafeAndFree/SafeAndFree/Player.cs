@@ -20,6 +20,7 @@ namespace SafeAndFree
         /// </summary>
         public int Score { get; set; }
 
+        public int Moneys { get; set; }
         /// <summary>
         /// Returns true if the player has lost.
         /// </summary>
@@ -36,8 +37,9 @@ namespace SafeAndFree
         /// </summary>
         public Player()
         {
-            Lives = 6;
+            Lives = 20;
             Score = 0;
+            Moneys = 50;
         }
     }
 }

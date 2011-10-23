@@ -61,14 +61,14 @@ namespace SafeAndFree.Helpers
         {
             creep = null;
             bool found = false;
-            double best = double.MaxValue;
+            double best = 0;// double.MaxValue;
             double current;
             if (targets.Count > 0)
             {
                 foreach (Creep c in targets) //This might be changed to favor the creeps first in the list
                 {
                     current = GetDistance(c.Position, towerPosition);
-                    if ((current < range) && current < best)
+                    if ((current < range) && current > best)
                     {
                         found = true;
                         best = current;
