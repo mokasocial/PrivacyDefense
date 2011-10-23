@@ -150,8 +150,11 @@ namespace SafeAndFree
                 }
                 else
                 {
-                    if (towers.ContainsKey(selectedTile)) 
-                    UpdateTower(towers[selectedTile]);
+                    if (towers.ContainsKey(selectedTile))
+                    {
+                        UpdateTower(towers[selectedTile]);
+                    }
+
                     return true;
                 }
             }
@@ -265,6 +268,7 @@ namespace SafeAndFree
                 spriteBatch.Draw(TextureLibrary.GetTexture(p.TextureID), p.CurrentPoint, Color.White) ;
             }
 
+            spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MENU_TOP), new Rectangle(0, 0, 800, 20), Color.White);
             spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MENU_LEFT), new Rectangle(0, 0, 144, 480), Color.White);
         }
 

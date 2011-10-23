@@ -23,6 +23,7 @@ namespace SafeAndFree.Data
         TILE_SELCT,
         PROJECTILE_1,
         MENU_LEFT,
+        MENU_TOP,
         TITLESCREEN,
         WINSCREEN,
         LOSESCREEN
@@ -41,7 +42,7 @@ namespace SafeAndFree.Data
 
         private static Dictionary<MEDIA_ID, Texture2D> textures = new Dictionary<MEDIA_ID, Texture2D>();
 
-        private static string[] assetNames = new string[] { "creep_dataminer", "creep_heli", "creep_defcon", "creep_corporate", "SafeAndFreeMap", "Judge", "TestProjectile", "tileSelect", "TestProjectile2", "menu", "titlescreen", "losescreen", "winscreen" };
+        private static string[] assetNames = new string[] { "creep_dataminer", "creep_heli", "creep_defcon", "creep_corporate", "SafeAndFreeMap", "Judge", "TestProjectile", "tileSelect", "TestProjectile2", "menu", "tophud", "titlescreen", "winscreen", "screen_lose" };
 
         public static Texture2D GetTexture(MEDIA_ID mediaId)
         {

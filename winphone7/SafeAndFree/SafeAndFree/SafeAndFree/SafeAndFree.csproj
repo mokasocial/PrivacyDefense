@@ -102,12 +102,8 @@
     <Content Include="MapDefinitions.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="PhoneGameThumb.png">
-      <XnaPlatformSpecific>true</XnaPlatformSpecific>
-    </Content>
-    <Content Include="Background.png">
-      <XnaPlatformSpecific>true</XnaPlatformSpecific>
-    </Content>
+    <Content Include="Background.png" />
+    <Content Include="PhoneGameThumb.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SafeAndFreeContent\SafeAndFreeContent.contentproj">

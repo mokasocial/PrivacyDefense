@@ -5,6 +5,27 @@
   <creepDefinition name="blackHeli" width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
   <creepDefinition name="hackerDefcon" width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
   <creepDefinition name="corporate" width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
+  <towerDefinition name="judge" levels="5" width="48" height="48">
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+  </towerDefinition>
+  <towerDefinition name="lawyer" levels="5" width="48" height="48">
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+  </towerDefinition>
+  <towerDefinition name="teacher" levels="5" width="48" height="48">
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+  </towerDefinition>
   <paths numPaths="1">
     <path index="0" numWaypoints="4">
       <waypoint column="4" row="-1"/>
