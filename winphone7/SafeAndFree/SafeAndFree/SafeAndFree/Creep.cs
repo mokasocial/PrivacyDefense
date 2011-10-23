@@ -17,11 +17,8 @@ namespace SafeAndFree
         public Vector2 CenterPosition;
 
         private List<Debuff> CurrentDebuffs;
-<<<<<<< HEAD
         public int DistanceTravelled { get; private set; }
-=======
 
->>>>>>> 7635effdcbcf233fbddf57321956fcf23f722b17
         public new bool IsDead
         {
             get { return Stats[CreepStats.Health] <= 0; }
