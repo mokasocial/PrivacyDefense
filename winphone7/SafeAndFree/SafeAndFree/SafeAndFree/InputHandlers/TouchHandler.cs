@@ -11,7 +11,7 @@ namespace SafeAndFree.InputHandlers
         private static TouchCollection touches;
 
         private static bool wasDown = false;
-
+        public static bool JustClicked = false;
         /// <summary>
         /// Evaluates to true if the touches have started.
         /// </summary>
@@ -47,8 +47,15 @@ namespace SafeAndFree.InputHandlers
 
         public static void Update()
         {
+            if (IsDown && !wasDown)//just got clicked!
+            {
+                JustClicked = true;
+            }
+            else 
+            {
+                JustClicked = false;
+            }
             wasDown = IsDown;
-
             touches = TouchPanel.GetState();
         }
     }

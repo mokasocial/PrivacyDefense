@@ -40,7 +40,7 @@ namespace SafeAndFree
         /// <summary>
         /// List of towers on the map.
         /// </summary>
-        private List<Tower> towers;
+        private Dictionary<Vector2, Tower> towers;
 
         /// <summary>
         /// A set of paths that creeps can follow.
@@ -74,8 +74,8 @@ namespace SafeAndFree
 
         private void LoadResources()
         {
-            LoadMap();
             LoadData();
+            LoadMap();
             LoadATowerTest();
         }
 
@@ -86,16 +86,37 @@ namespace SafeAndFree
         {
             if (null != waveManager)
             {
-                if (waveManager.Update(creeps.Count == 0))
+                //if (waveManager.Update(creeps.Count == 0))
+                //{
+                //    creeps.Add(new Creep(CreepDefinitions.CreepStats[(CreepType)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0]], new Vector2(paths[0][0].X, paths[0][0].Y), (MEDIA_ID)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0], 0, 0));
+                //    if (waveManager.GameWon)
+                //    {
+                //        GameEngine.RunningEngine.Load(Screens.WIN);
+                //        return;
+                //    }
+                //}
+                if (waveManager.InfiniteUpdate(creeps.Count == 0))
                 {
-                    creeps.Add(new Creep(CreepDefinitions.CreepStats[(CreepType)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0]], new Vector2(paths[0][0].X, paths[0][0].Y), (MEDIA_ID)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0], 0, 0));
 
-                    if (waveManager.GameWon)
+                    double boost = Math.Pow(1.2, waveManager.BonusWave);
+                    CreepTypeData creepNormal = new CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 32, Width = 32, Speed = 3};
+                    CreepTypeData creepFast = new CreepTypeData(){DamageToPlayer = 1, Health =(int)boost * 4, Height = 32, Width = 32, Speed = 4};
+                    CreepTypeData creepBoss = new CreepTypeData(){DamageToPlayer = 2, Health = (int)boost * 25, Height = 32, Width = 32, Speed = 3};
+                    int thing = waveManager.BonusWave % 3;
+                    Creep newCreep;
+                    switch (thing)
                     {
-                        GameEngine.RunningEngine.Load(Screens.WIN);
-
-                        return;
+                        case 0:
+                            newCreep = new Creep(creepNormal, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_0);
+                            break;
+                        case 1:
+                             newCreep = new Creep(creepFast, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_1);
+                            break;
+                        default:
+                            newCreep = new Creep(creepBoss, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_2);
+                            break;
                     }
+                    creeps.Add(newCreep);
                 }
             }
 
@@ -105,6 +126,34 @@ namespace SafeAndFree
             HandleInput();
         }
 
+        protected bool CheckButtonPress(Vector2 check)
+        {
+            if (check.X >= 10 && check.X <= 105)
+            {
+                if (check.Y >= 56 && check.Y < 145)
+                {
+                    BuyPlaceTower(TowerTypes.Normal);
+                    return true;
+                }
+                else if (check.Y > 165 && check.Y <= 250)
+                {
+                    BuyPlaceTower(TowerTypes.Fast);
+                    return true;
+                }
+                else if (check.Y > 270 && check.Y < 360)
+                {
+                    BuyPlaceTower(TowerTypes.Slow);
+                    return true;
+                }
+                else
+                {
+                    if (towers.ContainsKey(selectedTile)) 
+                    UpdateTower(towers[selectedTile]);
+                    return true;
+                }
+            }
+            return false;
+        }
         protected void HandleInput()
         {
             TouchCollection touchCollection = TouchPanel.GetState();
@@ -122,8 +171,14 @@ namespace SafeAndFree
                 }
                 else
                 {
-                    selectedTile.X = col;
-                    selectedTile.Y = row;
+
+                    if (!CheckButtonPress(touchLocation.Position))
+                    {
+                      selectedTile.X = col;
+                      selectedTile.Y = row;
+                    }
+
+                    
                 }
             }
         }
@@ -132,7 +187,12 @@ namespace SafeAndFree
         {
             projectileManager.Update();
         }
-
+        public void HandleClick(TowerTypes towerType) 
+        {
+            
+            BuyPlaceTower(towerType);
+             
+        }
         protected void HandleCreepLoop()
         {
             for (int i = 0; i < creeps.Count; i++)
@@ -141,6 +201,7 @@ namespace SafeAndFree
                 {
                     // Creep was killed.
                     creeps.RemoveAt(i--);
+                    CurrentPlayer.AddMoney(waveManager.currentWave + 1);
                 }
                 else if (creeps[i].Update(this.paths))
                 {
@@ -152,13 +213,14 @@ namespace SafeAndFree
 
         protected void HandleTowerLoop()
         {
-            foreach (Tower t in towers)
+            foreach (Tower t in towers.Values)
             {
                 t.Update();
                 Creep target;
                 if(t.CanFire && Calculator.BestShootableCreep(creeps, t.Position, t.GetTowerStats().Range, out target))
                 {
                     var proj = TowerFactory.GetTowerProjectile(t, target);
+                    target.DeathForecast += proj.Stats.Damage;
                     projectileManager.AddProjectile(proj);
                 }
             }
@@ -190,7 +252,7 @@ namespace SafeAndFree
                 }
             }
 
-            foreach (Tower t in towers)
+            foreach (Tower t in towers.Values)
             {
                 spriteBatch.Draw(TextureLibrary.GetTexture(t.TextureID), t.Position, Color.White);
             }
@@ -301,11 +363,12 @@ namespace SafeAndFree
             }
         }
 
-        public void BuyPlaceTower(Vector2 location, TowerTypes type)
+        public void BuyPlaceTower(TowerTypes type)
         {
-            if(CurrentPlayer.WithdrawalMoney(TowerFactory.GetTowerCost(type)))
+            if(!towers.ContainsKey(selectedTile) && CurrentPlayer.WithdrawalMoney(TowerFactory.GetTowerCost(type)))
             {
-                towers.Add(TowerFactory.GetTower(type, location));
+             
+                towers.Add(selectedTile, TowerFactory.GetTower(type, new Vector2(selectedTile.X * TileDimensions.X, selectedTile.Y * TileDimensions.Y)));
             }
         }
 
@@ -321,10 +384,10 @@ namespace SafeAndFree
         ///
         private void LoadATowerTest()
         {
-            towers = new List<Tower>();
-            towers.Add(TowerFactory.GetTower(TowerTypes.Slow, new Vector2(70, 400)));
-            towers.Add(TowerFactory.GetTower(TowerTypes.Normal, new Vector2(200, 300)));
-            towers.Add(TowerFactory.GetTower(TowerTypes.Fast, new Vector2(200, 400)));
+            towers = new Dictionary<Vector2, Tower>();
+            //towers.Add(selectedTile, TowerFactory.GetTower(TowerTypes.Slow, new Vector2(70, 400)));
+            //towers.Add(TowerFactory.GetTower(TowerTypes.Normal, new Vector2(200, 300)));
+            //towers.Add(TowerFactory.GetTower(TowerTypes.Fast, new Vector2(200, 400)));
         }
     }
 }
