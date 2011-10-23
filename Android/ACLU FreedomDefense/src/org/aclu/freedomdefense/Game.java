@@ -457,12 +457,10 @@ public class Game implements ApplicationListener {
 			mFont.drawWrapped(batch, pause_button_string,
 							(32 - (pauseButtonBounds.width / 2)),
 							DRD_PAUSE_RECT.y + pauseButtonBounds.height + 4, pauseButtonBounds.width);
-			
 		}
 		
 		// Draw the restart button if paused or game over.
 		if (life <= 0 || isPaused) {
-			
 			
 			restart_button_region.setRegion(7*17, 23, 2, 2);
 			batch.draw(restart_button_region, RESTART_RECT.x, RESTART_RECT.y, RESTART_RECT.width, RESTART_RECT.height);
