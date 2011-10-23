@@ -8,6 +8,6 @@ public class AndroidGame extends AndroidApplication {
 	@Override
 	public void onCreate(android.os.Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		initialize(new Game(), false);
+		initialize(new Game(true), false);
 	}
 }

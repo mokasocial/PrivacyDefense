@@ -1,5 +1,7 @@
 package org.aclu.freedomdefense;
 
+import java.util.Random;
+
 import com.badlogic.gdx.math.Vector2;
 
 public class Tower 
@@ -12,6 +14,7 @@ public class Tower
 	public float radius;
 	public float bullet_velocity;
 	public float bullet_damage;
+	private Random rando;
 
 	public Tower(TowerType type, int x, int y) 
 	{
@@ -41,12 +44,14 @@ public class Tower
 		}
 		else 
 		{
-			m_speed = 0.1f;
-			radius = 8;
-			bullet_damage = 5;
+			m_speed = 1.0f;
+			radius = 5;
+			bullet_damage = 10.0f;
 		}
 		
 		m_timeToFire = m_speed;
+		
+		rando = new Random();
 	}
 
 	public void move(int x, int y) 
@@ -124,6 +129,11 @@ public class Tower
 			 	// Reset the cooldown for next frame
 			 	m_timeToFire = m_speed;
 			 }
+			else
+			{
+				// Needs time to wake up, heh (so we don't have too many towers trying to shoot every frame)
+				m_timeToFire = 0.5f + rando.nextFloat();
+			}
 		}
 	}
 }
