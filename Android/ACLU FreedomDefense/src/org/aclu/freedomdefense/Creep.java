@@ -13,6 +13,7 @@ public class Creep {
 		this.m_type = creepType;
 		this.Health = Health;
 		this.Speed = Speed;
+		// This money is obsolete.
 		this.Money = Money;
 		this.x = x;
 		this.y = y;
@@ -86,7 +87,7 @@ public class Creep {
 	
 	public void die()
 	{
-		Game.instance.money += Money;
+		Game.instance.money += m_type.getWorth();
 		active = false;
 	}
 }

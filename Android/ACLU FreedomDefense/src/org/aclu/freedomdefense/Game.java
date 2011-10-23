@@ -22,6 +22,7 @@ public class Game implements ApplicationListener {
 	public static int screenHeight = 320;
 
 	public static final Rectangle DRD_PAUSE_RECT = new Rectangle(3, 50, 54, 25);
+	public static final Rectangle START_RECT = new Rectangle(3, 77, 54, 25);
 	
 	public static final float TIME_BETWEEN_WAVES = 3;
 	
@@ -41,6 +42,8 @@ public class Game implements ApplicationListener {
 	// This is just to reduce the number of temporary objects
 	public int oldMoney;
 	public int oldLife;
+	
+	public boolean buildMode = true;
 	
 	public int money;
 	public int life;
@@ -94,6 +97,7 @@ public class Game implements ApplicationListener {
 	TextureRegion tower_region;
 	
 	TextureRegion pause_button_region;
+	TextureRegion start_button_region;
 
 	/**
 	 * Create a game object. Set running_android if being called from an android device.
@@ -150,8 +154,8 @@ public class Game implements ApplicationListener {
 		mFont = new BitmapFont(Gdx.files.internal("ostrich_sans_mellow.fnt"), Gdx.files.internal("ostrich_sans_mellow.png"), false);
 		mFont.setFixedWidthGlyphs("LifeMoney0123456789");
 
-		money = 100;
-		life = 49;
+		money = 200;
+		life = 100;
 
 		// Feel free to change this, it is confusing!
 		// Movement data is in the GREEN channel of the map:
@@ -206,18 +210,6 @@ public class Game implements ApplicationListener {
 			}
 		}
 
-		for( int i = 1; i < 29; ++i )
-		{
-			for( int j = 1; j < 19; ++j )
-			{
-				if( tiles[i][j] == 4 &&
-					 ( tiles[i-1][j] != 4 || tiles[i+1][j] != 4 || tiles[i][j-1] != 4 || tiles[i][j+1] != 4 ) )
-				{
-					towers.add( new Tower( TowerType.LAWSUIT, i, j ) );
-				}
-			}
-		}
-
 		for( int i = 1; i < 50; ++i )
 			creeps.add( new Creep( 100, current_creep_speed, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
 
@@ -231,6 +223,7 @@ public class Game implements ApplicationListener {
 		uiString = "";
 		uiBounds = new TextBounds();
 		pause_button_region = new TextureRegion( spriteSheet, 0, 0, 16, 16);
+		start_button_region = new TextureRegion( spriteSheet, 0, 0, 16, 16);
 		
 		mapData.dispose();
 	}
@@ -239,6 +232,13 @@ public class Game implements ApplicationListener {
 	public void update() {
 		float dt = Gdx.graphics.getDeltaTime();
 
+		if (buildMode) {
+			
+			// show start button.
+			
+			return;
+		}
+		
 		if (!isPaused && life > 0) {
 			
 			for (Projectile projectile : projectiles) 
@@ -403,6 +403,21 @@ public class Game implements ApplicationListener {
 			
 		}
 		
+		// Draw the start button if we are in build mode.
+		if (buildMode) {
+			
+			start_button_region.setRegion(7*17, 23, 2, 2);
+			batch.draw(start_button_region, START_RECT.x, START_RECT.y, START_RECT.width, START_RECT.height);
+			
+			String start_button_string = "Start";
+			TextBounds startButtonBounds = mFont.getBounds(start_button_string);
+			mFont.drawWrapped(batch, start_button_string,
+							(32 - (startButtonBounds.width / 2)),
+							START_RECT.y + startButtonBounds.height + 4, startButtonBounds.width);
+			
+			
+		}
+		
 		// Text
 		String uiString = "+: " + life + '\n' + "$: " + money;
 		TextBounds uiBounds = mFont.getMultiLineBounds(uiString);
@@ -413,7 +428,7 @@ public class Game implements ApplicationListener {
 		mFont.drawWrapped(batch, debugtext, 60, uiBounds.height + 3, 1000);		
 
 		// Draw the cursorTexture
-		if (cursorState != null) {
+		if (cursorState != null && cursorTexture != null) {
 		
 			batch.draw(cursorTexture, cursorLocX - 8, screenHeight - cursorLocY - 8);
 			
