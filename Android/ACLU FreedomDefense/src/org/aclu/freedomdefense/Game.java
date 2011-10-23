@@ -59,7 +59,10 @@ public class Game implements ApplicationListener, InputProcessor {
 
 		towers.add(new Tower(TowerType.JUDGE, 6, 6));
 		towers.add(new Tower(TowerType.LAWSUIT, 12, 4));
-		towers.add(new Tower(TowerType.TEACHER, 20, 8));
+		towers.add(new Tower(TowerType.TEACHER, 19, 8));
+		towers.add(new Tower(TowerType.JUDGE, 8, 8));
+		towers.add(new Tower(TowerType.LAWSUIT, 4, 12));
+		towers.add(new Tower(TowerType.TEACHER, 8, 19));
 		
 		free_towers = new ArrayList<TowerType>();
 		free_towers.add(TowerType.JUDGE);
@@ -139,29 +142,36 @@ public class Game implements ApplicationListener, InputProcessor {
 		float dt = Gdx.graphics.getDeltaTime();
 
 		ArrayList<Projectile> livingProjectiles = new ArrayList<Projectile>();
+		
 		for (Projectile projectile : projectiles) 
 		{
+			boolean hit = false;
+			
 			if( projectile.my_coords.x > 0 && projectile.my_coords.y > 0 && projectile.my_coords.x * 16 < screenWidth && projectile.my_coords.y * 16 < screenHeight )
 			{
-				Rectangle projRect = new Rectangle( projectile.my_coords.x * 16, projectile.my_coords.y * 16, 16, 16 );
+				Rectangle projRect = new Rectangle( ( projectile.my_coords.x * 16 ) + 8, ( projectile.my_coords.y * 16 ) + 8, 8, 8 );
 				
 				for( Creep creep : creeps )
 				{
-					Rectangle creepRect = new Rectangle( creep.x * 16 + creep.xOffset, creep.y * 16 + creep.yOffset, 16, 16 );
+					Rectangle creepRect = new Rectangle( ( creep.x * 16 + creep.xOffset ) + 8, ( creep.y * 16 + creep.yOffset ) + 8, 8, 8 );
 					
 					if( projRect.overlaps( creepRect ) )
 					{
 						creep.Health -= projectile.damage;
-					}
-					else
-					{
-						projectile.update(dt);
-						livingProjectiles.add( projectile );
+						hit = true;
+						break;
 					}
 				}
 			}
+			
+			if( !hit )
+			{
+				projectile.update(dt);
+				livingProjectiles.add( projectile );
+			}
 		}
-		livingProjectiles = projectiles;
+		
+		projectiles = livingProjectiles;
 
 		// Handle projectile collision, creep update, creep death
 		ArrayList<Creep> livingCreeps = new ArrayList<Creep>();
@@ -228,7 +238,7 @@ public class Game implements ApplicationListener, InputProcessor {
 			Vector2 projCoords = projectile.my_coords;
 			
 			// TODO: Change which sprite the projectile uses based on something in the projectile
-			batch.draw( spriteSheet, projCoords.x*16+8, projCoords.y*16+8, 0, 16*3, 16, 16 );
+			batch.draw( spriteSheet, projCoords.x*16, projCoords.y*16, 0, 16*3, 16, 16 );
 		}
 		
 		// Background

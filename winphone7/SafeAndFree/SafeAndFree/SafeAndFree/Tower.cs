@@ -8,17 +8,22 @@ using SafeAndFree.Enumerations;
 
 namespace SafeAndFree
 {
+    /// <summary>
+    /// Logic for tower objects.
+    /// </summary>
     public class Tower : Actor
     {
         public TowerTypes Type { get; private set; }
         public int NextFire { get; private set; }
         private TowerStats[] towerStats;
         private WeaponStats[] weaponStats;
+
         public int Level 
         { 
             get; 
             private set; 
         }
+
         public bool CanLevel 
         { 
             get 
@@ -36,10 +41,12 @@ namespace SafeAndFree
             Type = type;
             TextureID = textureID;
         }
+
         public TowerStats GetTowerStats()
         {
             return towerStats[Level];
         }
+
         public WeaponStats GetWeaponStats()
         {
             return weaponStats[Level];
@@ -50,7 +57,6 @@ namespace SafeAndFree
             missile = weaponStats[Level];
             NextFire += towerStats[Level].Delay;
         }
-
 
         public void LevelUp()
         {

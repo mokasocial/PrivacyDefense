@@ -136,7 +136,7 @@ namespace SafeAndFree
         /// Makes the creep take a projectile hit.
         /// </summary>
         /// <param name="bullet">The projectile that hits the creep</param>
-        /// <returns>true if the creep dies, false otherwise</returns>
+        /// <returns>True if the creep dies, false otherwise</returns>
         public bool TakeHit(Projectile bullet)
         {
             Stats[CreepStats.Health] -= bullet.Stats.Damage;

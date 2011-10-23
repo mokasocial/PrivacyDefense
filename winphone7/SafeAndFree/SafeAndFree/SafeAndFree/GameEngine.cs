@@ -109,7 +109,7 @@ namespace SafeAndFree
             // Draw the current game screen, if one exists.
             if (null != currentGameScreen)
             {
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 
                 currentGameScreen.Draw(spriteBatch);
 

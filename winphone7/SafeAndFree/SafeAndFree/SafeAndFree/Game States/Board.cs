@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Input;
 using SafeAndFree.Enumerations;
 using SafeAndFree.Helpers;
 using SafeAndFree.Game_States;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace SafeAndFree
 {
@@ -24,23 +25,20 @@ namespace SafeAndFree
     {
         private ProjectileManager projectileManager;
         /// <summary>
-        /// TODO: This shouldn't be kept,
-        /// this should be loaded from the map image
-        /// and then represented in a single bitmap.
-        /// </summary>
-        private int[,] tileTextureIds = new int[50, 30];
-
-        /// <summary>
         /// The grid of tiles.
         /// </summary>
         private Tile[,] mapTiles;
 
         /// <summary>
-        /// List of active creeps.
+        /// List of towers on the map.
         /// </summary>
         private List<Creep> creeps;
 
+        /// <summary>
+        /// List of towers on the map.
+        /// </summary>
         private List<Tower> towers;
+
         /// <summary>
         /// A set of paths that creeps can follow.
         /// The first rank are paths,
@@ -48,12 +46,18 @@ namespace SafeAndFree
         /// </summary>
         private Vector2[][] paths;
 
-        public static Vector2 TileDimensions
-        {
-            get; private set;
-        }
+        /// <summary>
+        /// The consistent size of tiles.
+        /// </summary>
+        public static Vector2 TileDimensions { get; private set; }
 
+        /// <summary>
+        /// The offset (X and Y) from a tile's top left position
+        /// that will give you the tile's center position.
+        /// </summary>
         public static Vector2 TileCenter;
+
+        public Vector2 selectedTile = new Vector2(-1, -1);
 
         /// <summary>
         /// Constructor.
@@ -63,6 +67,7 @@ namespace SafeAndFree
             projectileManager = new ProjectileManager();
             LoadResources();
         }
+
         private void LoadResources()
         {
             LoadMap();
@@ -70,6 +75,7 @@ namespace SafeAndFree
             LoadCreeps();
             LoadATowerTest();
         }
+
         /// <summary>
         /// The update loop.
         /// </summary>
@@ -78,26 +84,53 @@ namespace SafeAndFree
             HandleCreepLoop();
             HandleTowerLoop();
             HandleProjectileLoop();
+            HandleInput();
+        }
+
+        protected void HandleInput()
+        {
+            TouchCollection touchCollection = TouchPanel.GetState();
+            foreach (TouchLocation touchLocation in touchCollection)
+            {
+                int col = (int)Math.Floor(touchLocation.Position.X / Board.TileDimensions.X);
+                int row = (int)Math.Floor(touchLocation.Position.Y / Board.TileDimensions.Y);
+
+                if (selectedTile.X == col && selectedTile.Y == row)
+                {
+                    //selectedTile.X = -1;
+                    //selectedTile.Y = -1;
+                }
+                else
+                {
+                    selectedTile.X = col;
+                    selectedTile.Y = row;
+                }
+            }
         }
 
         protected void HandleProjectileLoop()
         {
             projectileManager.Update();
         }
+
         protected void HandleCreepLoop()
         {
             for (int i = 0; i < creeps.Count; i++)
             {
                 if (creeps[i].IsDead)
                 {
+                    // Creep was killed.
                     creeps.RemoveAt(i--);
                 }
                 else if (creeps[i].Update(this.paths))
                 {
+                    // Creep reached the end.
                     creeps.RemoveAt(i--);
+
                 }
             }
         }
+
         protected void HandleTowerLoop()
         {
             foreach (Tower t in towers)
@@ -110,26 +143,35 @@ namespace SafeAndFree
                 }
             }
         }
+
         /// <summary>
         /// Called every draw loop from the GameEngine.
         /// </summary>
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MAP_0), new Vector2(0, 0), Color.White);
+
+            if (selectedTile.X >= 0 && selectedTile.Y >= 0)
+            {
+                spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.TILE_SELCT), new Vector2(selectedTile.X * TileDimensions.X, selectedTile.Y * TileDimensions.Y), Color.White);
+            }
+
             // Draw all creeps.
             foreach (Creep c in creeps)
             {
                 spriteBatch.Draw(TextureLibrary.GetTexture(c.TextureID), c.Position, Color.White);
             }
+
             foreach (Tower t in towers)
             {
                 spriteBatch.Draw(TextureLibrary.GetTexture(t.TextureID), t.Position, Color.White);
             }
+
             foreach (Projectile p in projectileManager.Projectiles)
             {
                 spriteBatch.Draw(TextureLibrary.GetTexture(p.TextureID), p.CurrentPoint, Color.White) ;
             }
-
         }
 
         /// <summary>
@@ -137,35 +179,13 @@ namespace SafeAndFree
         /// </summary>
         private void LoadMap()
         {
-            Texture2D mapDefinition = TextureLibrary.GetTexture(MEDIA_ID.MAP_0);
-
-            Color[] bits = new Color[mapDefinition.Width * mapDefinition.Height];
-            mapDefinition.GetData<Color>(bits);
-
-            for (int i = 0; i < mapDefinition.Height; i++)
-            {
-                for (int j = 0; j < mapDefinition.Width; j++)
-                {
-                    if (bits[i * mapDefinition.Width + j].R == 0)
-                    {
-                        tileTextureIds[j, i] = 3;
-                    }
-                    else
-                    {
-                        tileTextureIds[j, i] = 0;
-                    }
-                }
-            }
-
-            // TODO: Blit to a bitmap here, so that we don't draw
-            // a bitmap for each tile on the draw loop.
             mapTiles = new Tile[30, 50];
 
             for (int i = 0; i <= mapTiles.GetUpperBound(0); i++)
             {
                 for (int j = 0; j <= mapTiles.GetUpperBound(1); j++)
                 {
-                    mapTiles[i, j] = new Tile(new Vector2(j * Board.TileDimensions.X, i * Board.TileDimensions.Y), (MEDIA_ID)tileTextureIds[j, i]);
+                    mapTiles[i, j] = new Tile(new Vector2(j * Board.TileDimensions.X, i * Board.TileDimensions.Y));
                 }
             }
         }
@@ -175,8 +195,7 @@ namespace SafeAndFree
         /// </summary>
         private void LoadPaths()
         {
-            StreamResourceInfo definitionsStream = Application.GetResourceStream(new Uri("/SafeAndFree;component/MapDefinitions.xml", UriKind.RelativeOrAbsolute));
-            XmlReader reader = XmlReader.Create(definitionsStream.Stream);
+            XmlReader reader = XmlReader.Create("MapDefinitions.xml");
 
             int lastPath = -1;
             int lastWaypoint = 0;
@@ -219,17 +238,18 @@ namespace SafeAndFree
             Dictionary<CreepStats, int> basicStats = new Dictionary<CreepStats, int>();
             basicStats.Add(CreepStats.Health, 50);
             basicStats.Add(CreepStats.Speed, 3);
+            basicStats.Add(CreepStats.DamageToPlayer, 1);
 
             creeps.Add(new Creep(basicStats, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_0, 0, 0));
         }
+
         ///
-        ///Test load a tower
+        /// Test load a tower
         ///
         private void LoadATowerTest()
         {
             towers = new List<Tower>();
-            Tower testTower = TowerFactory.GetTower(TowerTypes.Normal, new Vector2(50, 400));
-            towers.Add(testTower);
+            towers.Add(TowerFactory.GetTower(TowerTypes.Normal, new Vector2(50, 400)));
         }
     }
 }
