@@ -60,11 +60,23 @@ namespace SafeAndFree.Helpers
         public static bool BestShootableCreep(List<Creep> targets, Vector2 towerPosition, int range, out Creep creep)
         {
             creep = null;
+            bool found = false;
+            double best = double.MaxValue;
+            double current;
             if (targets.Count > 0)
             {
-                creep = targets[0];
+                foreach (Creep c in targets) //This might be changed to favor the creeps first in the list
+                {
+                    current = GetDistance(c.Position, towerPosition);
+                    if ((current < range) && current < best)
+                    {
+                        found = true;
+                        best = current;
+                        creep = c;
+                    }
+                }
             }
-            return true;
+            return found;
         }
     }
 }
