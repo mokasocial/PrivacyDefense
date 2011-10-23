@@ -35,6 +35,14 @@ public class GameInputProcessor implements InputProcessor {
 			return false;
 		}
 		Game.instance.debugtext = "touch down: " + x + ", " + y + ", button: " + getButtonString(button);
+
+		for (TowerType towerType : Game.instance.free_towers) {
+			if (x <= Game.instance.uiPanelWidth) {
+				if (y <= (towerType.getSpriteLocY()) && y >= (towerType.getSpriteLocY() - 16)) {
+					Game.instance.debugtext = "touch down on tower " + towerType.getClass();
+				}
+			}
+		}
 		return false;
 	}
 
