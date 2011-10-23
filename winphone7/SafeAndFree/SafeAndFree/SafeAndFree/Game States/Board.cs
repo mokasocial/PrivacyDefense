@@ -40,7 +40,7 @@ namespace SafeAndFree
         /// <summary>
         /// List of towers on the map.
         /// </summary>
-        private List<Tower> towers;
+        private Dictionary<Vector2, Tower> towers;
 
         /// <summary>
         /// A set of paths that creeps can follow.
@@ -74,8 +74,8 @@ namespace SafeAndFree
 
         private void LoadResources()
         {
-            LoadMap();
             LoadData();
+            LoadMap();
             LoadATowerTest();
         }
 
@@ -88,6 +88,7 @@ namespace SafeAndFree
             {
                 if (waveManager.Update(creeps.Count == 0))
                 {
+                    
                     creeps.Add(new Creep(CreepDefinitions.CreepStats[(CreepType)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0]], new Vector2(paths[0][0].X, paths[0][0].Y), (MEDIA_ID)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0], 0, 0));
 
                     if (waveManager.GameWon)
@@ -122,8 +123,20 @@ namespace SafeAndFree
                 }
                 else
                 {
+                    if (col <= 2 && row > 1 && row < 4)
+                        HandleClick(TowerTypes.Normal);
+                    else if (col <= 2 && row >= 4 && row < 7)
+                        HandleClick(TowerTypes.Fast);
+                    else if (col <= 2 && row >= 7 && row < 9)
+                        HandleClick(TowerTypes.Slow);
+                    else if (col <= 2 && row >=9 && towers.Count > 0&& towers.ContainsKey(selectedTile))
+                    {
+                        UpdateTower(towers[selectedTile]);
+                    }
+
                     selectedTile.X = col;
                     selectedTile.Y = row;
+                    
                 }
             }
         }
@@ -132,7 +145,12 @@ namespace SafeAndFree
         {
             projectileManager.Update();
         }
-
+        public void HandleClick(TowerTypes towerType) 
+        {
+            
+            BuyPlaceTower(towerType);
+             
+        }
         protected void HandleCreepLoop()
         {
             for (int i = 0; i < creeps.Count; i++)
@@ -141,6 +159,7 @@ namespace SafeAndFree
                 {
                     // Creep was killed.
                     creeps.RemoveAt(i--);
+                    CurrentPlayer.AddMoney(waveManager.currentWave);
                 }
                 else if (creeps[i].Update(this.paths))
                 {
@@ -152,7 +171,7 @@ namespace SafeAndFree
 
         protected void HandleTowerLoop()
         {
-            foreach (Tower t in towers)
+            foreach (Tower t in towers.Values)
             {
                 t.Update();
                 Creep target;
@@ -190,7 +209,7 @@ namespace SafeAndFree
                 }
             }
 
-            foreach (Tower t in towers)
+            foreach (Tower t in towers.Values)
             {
                 spriteBatch.Draw(TextureLibrary.GetTexture(t.TextureID), t.Position, Color.White);
             }
@@ -301,11 +320,12 @@ namespace SafeAndFree
             }
         }
 
-        public void BuyPlaceTower(Vector2 location, TowerTypes type)
+        public void BuyPlaceTower(TowerTypes type)
         {
-            if(CurrentPlayer.WithdrawalMoney(TowerFactory.GetTowerCost(type)))
+            if(CurrentPlayer.WithdrawalMoney(TowerFactory.GetTowerCost(type)) && !towers.ContainsKey(selectedTile))
             {
-                towers.Add(TowerFactory.GetTower(type, location));
+             
+                towers.Add(selectedTile, TowerFactory.GetTower(type, new Vector2(selectedTile.X * TileDimensions.X, selectedTile.Y * TileDimensions.Y)));
             }
         }
 
@@ -321,10 +341,10 @@ namespace SafeAndFree
         ///
         private void LoadATowerTest()
         {
-            towers = new List<Tower>();
-            towers.Add(TowerFactory.GetTower(TowerTypes.Slow, new Vector2(70, 400)));
-            towers.Add(TowerFactory.GetTower(TowerTypes.Normal, new Vector2(200, 300)));
-            towers.Add(TowerFactory.GetTower(TowerTypes.Fast, new Vector2(200, 400)));
+            towers = new Dictionary<Vector2, Tower>();
+            //towers.Add(selectedTile, TowerFactory.GetTower(TowerTypes.Slow, new Vector2(70, 400)));
+            //towers.Add(TowerFactory.GetTower(TowerTypes.Normal, new Vector2(200, 300)));
+            //towers.Add(TowerFactory.GetTower(TowerTypes.Fast, new Vector2(200, 400)));
         }
     }
 }

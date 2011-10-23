@@ -102,7 +102,9 @@ namespace SafeAndFree
             TouchHandler.Update();
 
             if (null != currentGameScreen)
+            {
                 currentGameScreen.Update();
+            }
 
             base.Update(gameTime);
         }

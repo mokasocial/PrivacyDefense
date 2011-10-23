@@ -61,7 +61,7 @@ namespace SafeAndFree
         /// <returns>Whether the transation worked(they had enough dalla)</returns>
         public bool WithdrawalMoney(int yen)
         {
-            if (yen >= Moneys)
+            if (yen <= Moneys)
             {
                 Moneys -= yen;
                 return true;
