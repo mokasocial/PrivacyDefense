@@ -14,14 +14,15 @@ namespace SafeAndFree.Helpers
         /// <summary>
         /// Get the distance between two points.
         /// </summary>
-        /// <param name="pos1">The first point.</param>
-        /// <param name="pos2">The second point.</param>
-        /// <returns>The distance between two points.</returns>
+        /// <param name="pos1"></param>
+        /// <param name="pos2"></param>
+        /// <returns></returns>
         public static double GetDistance(Vector2 pos1, Vector2 pos2)
         {
             return Math.Sqrt(Math.Pow(pos1.X - pos2.X, 2) + Math.Pow(pos1.Y - pos2.Y, 2));
         }
 
+        
         /// <summary>
         /// Gives the movement vector for an object to move towards
         /// the given point.
@@ -34,24 +35,28 @@ namespace SafeAndFree.Helpers
         public static Vector2 MovementTowardsPoint(Vector2 start, Vector2 end, int speed, out bool Connected)
         {
             double totalDistance = GetDistance(start, end);
-            double movementPercent = (double)speed * totalDistance;
 
-            // Has the object connected with its destination?
+
+            //double movementPercent =  totalDistance / (double)speed;
+            double movementPercent = 0;
             if (movementPercent >= 1)
             {
                 Connected = true;
                 return end;
             }
-
-            // It has not connected.
             Connected = false;
+            
+            double xDiff = Math.Abs(start.X - end.X);
+            double yDiff = Math.Abs(start.Y - end.Y);
+            double totalDiff = xDiff + yDiff;
+            int xPos = start.X > end.X ? -1 : 1;
+            int yPos = start.Y > end.Y ? -1 : 1;
 
-            // Determine the movement vector.
-            double xDiff = start.X - end.X;
-            double yDiff = start.Y - end.Y;
+            double xRatio = xDiff / yDiff; //x to y ratio
+            double xSpeed = (double)speed * (xDiff / totalDiff);
+            double ySpeed = (double) speed * (yDiff / totalDiff);
 
-            // Give it back.
-            return new Vector2((float)(start.X + (xDiff * movementPercent)), (float)(start.Y + (yDiff * movementPercent)));
+            return new Vector2((float)(start.X + (xSpeed * xPos)), (float)(start.Y + ( ySpeed * yPos)));
         }
 
         /// <summary>
