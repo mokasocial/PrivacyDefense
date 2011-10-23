@@ -206,10 +206,13 @@ public class Game implements ApplicationListener {
 				}
 			}
 	
+			int active_creeps = 0;
+			
 			// Handle projectile collision, creep update, creep death
 			for (Creep creep : creeps) {
 				if (creep.active && creep.Health > 0) {
 					creep.update(dt);
+					active_creeps++;
 				} else {
 					creep.die();
 				}
@@ -219,13 +222,12 @@ public class Game implements ApplicationListener {
 				tower.update(dt);
 			}
 		
-			if (creeps.isEmpty() && wave_wait_timer < TIME_BETWEEN_WAVES) {
+			if (active_creeps <= 0 && wave_wait_timer < TIME_BETWEEN_WAVES) {
 			
 				wave_wait_timer += dt;
-			
 				System.out.println(wave_wait_timer);
-			
-			} else if (creeps.isEmpty() && wave_wait_timer >= TIME_BETWEEN_WAVES) {
+				
+			} else if (active_creeps <= 0 && wave_wait_timer >= TIME_BETWEEN_WAVES) {
 			
 				restart(current_creep_speed + 10);
 				wave_wait_timer = 0;
@@ -342,10 +344,13 @@ public class Game implements ApplicationListener {
 
 	public void restart(int creep_speed) {
 		
-		creeps = new ArrayList<Creep>();
-		
-		for( int i = 1; i < 100; ++i )
-			creeps.add( new Creep( 100, creep_speed, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
+		for (int i = 0; i < creeps.size(); i++) {
+			creeps.get(i).active = true;
+			creeps.get(i).Health = 100;
+			creeps.get(i).Speed = creep_speed;
+			creeps.get(i).x = startingX;
+			creeps.get(i).y = startingY + i;
+		}
 		
 		life = 100;
 		
