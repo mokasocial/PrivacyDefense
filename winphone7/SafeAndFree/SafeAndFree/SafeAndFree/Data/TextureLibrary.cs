@@ -32,6 +32,14 @@ namespace SafeAndFree.Data
         LOSESCREEN
     }
 
+   public enum BUTTON_MEDIA_ID
+   {
+       TEACHER,
+       LAWYER,
+       JUDGE,
+       UPGRADE
+   }
+
    public enum FONT_ID
    {
        HUDINFO,
@@ -56,6 +64,10 @@ namespace SafeAndFree.Data
         private static Dictionary<FONT_ID, SpriteFont> fonts = new Dictionary<FONT_ID, SpriteFont>();
         private static string[] fontNames = new string[] { "DefaultFont", "TapToGo" };
 
+
+        private static Dictionary<BUTTON_MEDIA_ID, Texture2D> btnTextures = new Dictionary<BUTTON_MEDIA_ID, Texture2D>();
+        private static string[] buttonNames = new string[] { "ButtonTeacher","ButtonLawyer","ButtonJudge", "ButtonUpgrade"};
+
         public static SpriteFont GetFont(FONT_ID fontId)
         {
             if (null == Content)
@@ -67,11 +79,30 @@ namespace SafeAndFree.Data
             {
                 return fonts[fontId];
             }
+            else
+            {
+                SpriteFont newFont = Content.Load<SpriteFont>(fontNames[(int)fontId]);
+                fonts.Add(fontId, newFont);
+                return newFont;
+            }
+        }
 
-            SpriteFont newFont = Content.Load<SpriteFont>(fontNames[(int)fontId]);
-            fonts.Add(fontId, newFont);
-
-            return newFont;
+        public static Texture2D GetButtonTexture(BUTTON_MEDIA_ID mediaId)
+        {
+            if (null == Content)
+            {
+                throw new ContentNotDefinedException();
+            }
+            if (btnTextures.ContainsKey(mediaId))
+            {
+                return btnTextures[mediaId];
+            }
+            else
+            {
+                Texture2D newTexture = Content.Load<Texture2D>(buttonNames[(int)mediaId]);
+                btnTextures.Add(mediaId, newTexture);
+                return newTexture;
+            }
         }
 
         public static Texture2D GetTexture(MEDIA_ID mediaId)

@@ -15,6 +15,7 @@ using SafeAndFree.Enumerations;
 using SafeAndFree.Helpers;
 using SafeAndFree.Game_States;
 using Microsoft.Xna.Framework.Input.Touch;
+using SafeAndFree.InputHandlers;
 
 namespace SafeAndFree
 {
@@ -135,34 +136,30 @@ namespace SafeAndFree
 
         protected bool CheckButtonPress(Vector2 check)
         {
-            if (check.X >= 10 && check.X <= 105)
+            if (check.X >= 5 && check.X <= 99)
             {
-                if (check.Y >= 56 && check.Y < 145)
+                if (towers.ContainsKey(selectedTile) && check.Y >= 20 && check.Y < 110)
+                {
+                
+                        UpdateTower(towers[selectedTile]);
+                        return true;
+                }
+                if (check.Y >= 20 && check.Y < 110)
                 {
                     BuyPlaceTower(TowerTypes.Judge);
                     return true;
                 }
-                else if (check.Y > 165 && check.Y <= 250)
+                else if (check.Y >= 120 && check.Y < 210)
                 {
                     BuyPlaceTower(TowerTypes.Lawyer);
                     return true;
                 }
-                else if (check.Y > 270 && check.Y < 360)
+                else if (check.Y >= 220 && check.Y < 310)
                 {
                     BuyPlaceTower(TowerTypes.Teacher);
                     return true;
                 }
-                else
-                {
-                    if (towers.ContainsKey(selectedTile))
-                    {
-                        UpdateTower(towers[selectedTile]);
-                    }
-
-                    return true;
-                }
             }
-
             return false;
         }
 
@@ -183,7 +180,6 @@ namespace SafeAndFree
                 }
                 else
                 {
-
                     if (!CheckButtonPress(touchLocation.Position))
                     {
                       selectedTile.X = col;
@@ -296,12 +292,23 @@ namespace SafeAndFree
             spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MENU_TOP), new Rectangle(0, 0, 800, 20), Color.White);
             spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MENU_LEFT), new Rectangle(0, 0, 144, 480), Color.White);
 
-            // Lol, why use var?
             SpriteFont font = TextureLibrary.GetFont(FONT_ID.HUDINFO);
-            spriteBatch.DrawString(font, "Level: " + waveManager.currentWave, new Vector2(125, 0), Color.LightGreen);
+
+            spriteBatch.DrawString(font, "Level: " + (1 + waveManager.BonusWave), new Vector2(125, 0), Color.LightGreen);
             spriteBatch.DrawString(font, "Cash: " + CurrentPlayer.Moneys, new Vector2(250, 0), Color.LightGreen);
             spriteBatch.DrawString(font, "Lives: " + CurrentPlayer.Lives, new Vector2(375, 0), Color.LightGreen);
             spriteBatch.DrawString(font, "Score: " + CurrentPlayer.Score, new Vector2(500, 0), Color.LightGreen);
+
+            if (towers.ContainsKey(selectedTile))
+            {
+                spriteBatch.Draw(TextureLibrary.GetButtonTexture(BUTTON_MEDIA_ID.UPGRADE), new Rectangle(5, 20, 94, 90), Color.White);
+            }
+            else
+            {
+                spriteBatch.Draw(TextureLibrary.GetButtonTexture(BUTTON_MEDIA_ID.TEACHER), new Rectangle(5, 20, 94, 90), Color.White);
+                spriteBatch.Draw(TextureLibrary.GetButtonTexture(BUTTON_MEDIA_ID.LAWYER), new Rectangle(5, 120, 94, 90), Color.White);
+                spriteBatch.Draw(TextureLibrary.GetButtonTexture(BUTTON_MEDIA_ID.JUDGE), new Rectangle(5, 220, 94, 90), Color.White);
+            }
         }
 
         /// <summary>
