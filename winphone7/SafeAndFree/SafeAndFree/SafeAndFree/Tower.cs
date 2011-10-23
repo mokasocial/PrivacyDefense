@@ -23,12 +23,13 @@ namespace SafeAndFree
                 return Level < towerStats.Length && Level < weaponStats.Length && (towerStats[Level].CostToNext >= 0); 
             } 
         }
-        public Tower(TowerStats[] tStats, WeaponStats[] wStats)
+        public Tower(TowerStats[] tStats, WeaponStats[] wStats, MEDIA_ID textureID)
         {
             towerStats = tStats;
             weaponStats = wStats;
             Level = 0;
             NextFire = 0;
+            this.TextureID = textureID;
         }
         public TowerStats GetTowerStats()
         {

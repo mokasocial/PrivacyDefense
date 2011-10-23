@@ -19,7 +19,7 @@ namespace SafeAndFree
     /// <summary>
     /// Logic for the game board.
     /// </summary>
-    class Board : Screen
+    public class Board : Screen
     {
         /// <summary>
         /// TODO: This shouldn't be kept,
@@ -38,6 +38,7 @@ namespace SafeAndFree
         /// </summary>
         private List<Creep> creeps;
 
+        private List<Tower> towers;
         /// <summary>
         /// A set of paths that creeps can follow.
         /// The first rank are paths,
@@ -60,6 +61,7 @@ namespace SafeAndFree
             LoadMap();
             LoadPaths();
             LoadCreeps();
+            LoadATowerTest();
         }
 
         /// <summary>
@@ -91,6 +93,11 @@ namespace SafeAndFree
             {
                 spriteBatch.Draw(TextureLibrary.GetTexture(c.TextureID), c.Position, Color.White);
             }
+            foreach (Tower t in towers)
+            {
+                spriteBatch.Draw(TextureLibrary.GetTexture(t.TextureID), t.Position, Color.White);
+            }
+
         }
 
         /// <summary>
@@ -188,7 +195,7 @@ namespace SafeAndFree
         ///
         private void LoadATowerTest()
         {
-            Tower aTower = TowerFactory.GetTower(TowerTypes.Normal);
+            Tower testTower = TowerFactory.GetTower(TowerTypes.Normal);
         }
     }
 }

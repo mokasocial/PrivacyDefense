@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SafeAndFree.Enumerations;
 using SafeAndFree.Data;
+using Microsoft.Xna.Framework;
 
 namespace SafeAndFree.Helpers
 {
@@ -15,7 +16,7 @@ namespace SafeAndFree.Helpers
             WeaponStats[] wStats;
             TowerStats[] tStats;
             GetStatsForTowerType(type, out tStats, out wStats);
-            return new Tower(tStats, wStats);
+            return new Tower(tStats, wStats, GetTowerMediaID(type));
             //switch (type)
             //{
             //    case TowerTypes.Normal:
@@ -38,7 +39,19 @@ namespace SafeAndFree.Helpers
             //break;
             //}
         }
-
-
+        /// <summary>
+        /// Should eventually return an array, for different levels
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static MEDIA_ID GetTowerMediaID(TowerTypes type)
+        {
+            return MEDIA_ID.TOWER_0;
+            //switch(type) <-needs that eventually
+        }
+        public static Projectile GetTowerProjectile(Creep target, Tower tower, Vector2 startPoint)
+        {
+            return new Projectile(tower.GetWeaponStats(), target, startPoint);
+        }
     }
 }
