@@ -58,6 +58,7 @@ namespace SafeAndFree
         /// </summary>
         public Board()
         {
+
             LoadMap();
             LoadPaths();
             LoadCreeps();
@@ -68,6 +69,13 @@ namespace SafeAndFree
         /// The update loop.
         /// </summary>
         public void Update()
+        {
+            HandleCreepLoop();
+            HandleTowerLoop();
+        }
+
+
+        protected void HandleCreepLoop()
         {
             for (int i = 0; i < creeps.Count; i++)
             {
@@ -81,7 +89,18 @@ namespace SafeAndFree
                 }
             }
         }
+        protected void HandleTowerLoop()
+        {
+            foreach (Tower t in towers)
+            {
+                Creep target;
+                if(Calculator.BestShootableCreep(creeps, t.Position, t.GetTowerStats().Range, out target))
+                {
+                    var proj = TowerFactory.GetTowerProjectile(t, target);
 
+                }
+            }
+        }
         /// <summary>
         /// Called every draw loop from the GameEngine.
         /// </summary>
@@ -195,7 +214,9 @@ namespace SafeAndFree
         ///
         private void LoadATowerTest()
         {
-            Tower testTower = TowerFactory.GetTower(TowerTypes.Normal);
+            towers = new List<Tower>();
+            Tower testTower = TowerFactory.GetTower(TowerTypes.Normal, new Vector2(50, 400));
+            towers.Add(testTower);
         }
     }
 }

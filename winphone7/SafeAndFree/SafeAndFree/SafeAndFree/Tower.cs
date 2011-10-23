@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SafeAndFree.Data;
+using Microsoft.Xna.Framework;
 
 namespace SafeAndFree
 {
@@ -23,13 +24,14 @@ namespace SafeAndFree
                 return Level < towerStats.Length && Level < weaponStats.Length && (towerStats[Level].CostToNext >= 0); 
             } 
         }
-        public Tower(TowerStats[] tStats, WeaponStats[] wStats, MEDIA_ID textureID)
+        public Tower(TowerStats[] tStats, WeaponStats[] wStats, MEDIA_ID textureID, Vector2 startPosition)
         {
             towerStats = tStats;
             weaponStats = wStats;
             Level = 0;
             NextFire = 0;
-            this.TextureID = textureID;
+            this._position = startPosition;
+            TextureID = textureID;
         }
         public TowerStats GetTowerStats()
         {

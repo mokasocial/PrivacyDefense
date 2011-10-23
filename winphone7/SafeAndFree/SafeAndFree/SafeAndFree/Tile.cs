@@ -6,7 +6,7 @@ namespace SafeAndFree
     class Tile : Actor
     {
         // This won't be needed when blitting the bitmap.
-        public MEDIA_ID TextureID;
+ 
 
         public Tile()
         {
