@@ -28,6 +28,8 @@ namespace MapEditor
 
         private BitmapSource[,] tileImages;
 
+        private Dictionary<BitmapSource, System.Drawing.Bitmap> cachedSourceToBitmaps = new Dictionary<BitmapSource, System.Drawing.Bitmap>();
+
         private List<BitmapImage> tileTextures = new List<BitmapImage>();
 
         public Point TileDimensions;
@@ -96,7 +98,13 @@ namespace MapEditor
 
         private System.Drawing.Bitmap _bitmapFromSource(BitmapSource bitmapsource)
         {
+            if (cachedSourceToBitmaps.ContainsKey(bitmapsource))
+            {
+                return cachedSourceToBitmaps[bitmapsource];
+            }
+
             System.Drawing.Bitmap bitmap;
+
             using (MemoryStream outStream = new MemoryStream())
             {
                 // from System.Media.BitmapImage to System.Drawing.Bitmap
@@ -105,6 +113,9 @@ namespace MapEditor
                 enc.Save(outStream);
                 bitmap = new System.Drawing.Bitmap(outStream);
             }
+
+            cachedSourceToBitmaps.Add(bitmapsource, bitmap);
+
             return bitmap;
         }
 
