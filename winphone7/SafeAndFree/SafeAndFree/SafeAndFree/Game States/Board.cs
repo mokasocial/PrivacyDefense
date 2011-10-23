@@ -269,7 +269,7 @@ namespace SafeAndFree
             // Hard-coded for now.
             creeps = new List<Creep>();
             Dictionary<CreepStats, int> basicStats = new Dictionary<CreepStats, int>();
-            basicStats.Add(CreepStats.Health, 50);
+            basicStats.Add(CreepStats.Health, 200);
             basicStats.Add(CreepStats.Speed, 3);
             basicStats.Add(CreepStats.DamageToPlayer, 1);
 
