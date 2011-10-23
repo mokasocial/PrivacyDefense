@@ -16,7 +16,6 @@
     <XnaProfile>Reach</XnaProfile>
     <XnaCrossPlatformGroupID>15e47a73-ebe1-4f30-9195-24b7f0fb0eac</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
-    <XnaRefreshLevel>1</XnaRefreshLevel>
     <WPTombstoneEnabled>false</WPTombstoneEnabled>
     <XapFilename>$(AssemblyName).xap</XapFilename>
     <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
