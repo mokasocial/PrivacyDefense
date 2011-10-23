@@ -27,10 +27,5 @@ namespace SafeAndFree
                 return _position;
             }
         }
-
-        public virtual bool Update()
-        {
-            return false;
-        }
     }
 }

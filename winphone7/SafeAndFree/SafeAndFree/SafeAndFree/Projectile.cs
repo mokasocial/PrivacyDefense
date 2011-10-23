@@ -37,18 +37,21 @@ namespace SafeAndFree
         /// Update this Projectile instance.
         /// </summary>
         /// <returns>True if the projectile should be removed.</returns>
-        override public bool Update()
+        public bool Update()
         {
             bool result;
             if (TargetCreep == null)
             {
                 return true;
             }
+
             CurrentPoint = Calculator.MovementTowardsPoint(CurrentPoint, TargetCreep.Position, Stats.Speed, out result);
+
             if (result)
             {
                 TargetCreep.TakeHit(this);
             }
+
             return result;
         }
     }

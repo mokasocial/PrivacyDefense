@@ -35,26 +35,6 @@ namespace SafeAndFree.Helpers
         public static Vector2 MovementTowardsPoint(Vector2 start, Vector2 end, int speed, out bool Connected)
         {
             double totalDistance = GetDistance(start, end);
-<<<<<<< Temporary merge branch 1
-            double movementPercent = (double)speed * totalDistance;
-
-            // Has the object connected with its destination?
-            if (movementPercent >= 1)
-            {
-                Connected = true;
-                return end;
-            }
-
-            // It has not connected.
-            Connected = false;
-
-            // Determine the movement vector.
-            double xDiff = start.X - end.X;
-            double yDiff = start.Y - end.Y;
-
-            // Give it back.
-            return new Vector2((float)(start.X + (xDiff * movementPercent)), (float)(start.Y + (yDiff * movementPercent)));
-=======
 
             Connected = totalDistance < HIT_DISTANCE_THRESHOLD;
             
@@ -69,7 +49,6 @@ namespace SafeAndFree.Helpers
             Vector2 result = new Vector2((float)(start.X + (xSpeed * xPos)), (float)(start.Y + ( ySpeed * yPos)));
             
             return result;
->>>>>>> Temporary merge branch 2
         }
 
         /// <summary>
