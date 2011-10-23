@@ -57,7 +57,6 @@ namespace SafeAndFree.Helpers
             double xSpeed = (double)speed * (xDiff / totalDiff);
             double ySpeed = (double) speed * (yDiff / totalDiff);
             Vector2 result = new Vector2((float)(start.X + (xSpeed * xPos)), (float)(start.Y + ( ySpeed * yPos)));
-            
             return result;
         }
 
@@ -79,7 +78,7 @@ namespace SafeAndFree.Helpers
                 foreach (Creep c in targets) //This might be changed to favor the creeps first in the list
                 {
                     current = GetDistance(c.Position, towerPosition);
-                    if ((current < range) && c.DistanceTravelled > best)
+                    if ((current < range) && c.DistanceTravelled > best && c.DeathForecast < c.Stats[Enumerations.CreepStats.Health])
                     {
                         found = true;
                         best = c.DistanceTravelled;

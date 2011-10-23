@@ -17,7 +17,7 @@ namespace SafeAndFree
         /// The index of the path to follow.
         /// </summary>
         private int _path = 0;
-
+        public int DeathForecast = 0;
         /// <summary>
         /// The index of the waypoint this instance
         /// is walking towards.
@@ -204,6 +204,7 @@ namespace SafeAndFree
         /// <returns>True if the creep dies, false otherwise</returns>
         public bool TakeHit(Projectile bullet)
         {
+            DeathForecast -= bullet.Stats.Damage;
             Stats[CreepStats.Health] -= bullet.Stats.Damage;
             if (bullet.Stats.Gift != null)
             {
