@@ -289,7 +289,7 @@ namespace SafeAndFree
 
         public void BuyPlaceTower(Vector2 location, TowerTypes type)
         {
-            if(CurrentPlayer.WithdrawalMoney(TowerFactory.GetTowerCost(type))
+            if(CurrentPlayer.WithdrawalMoney(TowerFactory.GetTowerCost(type)))
             {
                 towers.Add(TowerFactory.GetTower(type, location));
             }
