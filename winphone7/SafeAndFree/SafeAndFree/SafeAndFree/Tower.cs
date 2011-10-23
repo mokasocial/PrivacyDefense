@@ -38,6 +38,14 @@ namespace SafeAndFree
         {
             return weaponStats[Level];
         }
+
+        public void Fire(out WeaponStats missile)
+        {
+            missile = weaponStats[Level];
+            NextFire += towerStats[Level].Delay;
+        }
+
+
         public void LevelUp()
         {
             if(CanLevel)

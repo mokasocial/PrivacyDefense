@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Resources;
 using Microsoft.Xna.Framework.Input;
 using SafeAndFree.Enumerations;
+using SafeAndFree.Helpers;
 
 namespace SafeAndFree
 {
@@ -173,6 +174,13 @@ namespace SafeAndFree
             basicStats.Add(CreepStats.Speed, 3);
 
             creeps.Add(new Creep(basicStats, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_0, 0, 0));
+        }
+        ///
+        ///Test load a tower
+        ///
+        private void LoadATowerTest()
+        {
+            Tower aTower = TowerFactory.GetTower(TowerTypes.Normal);
         }
     }
 }
