@@ -27,9 +27,14 @@ namespace SafeAndFree
         private Tile[,] mapTiles;
 
         /// <summary>
-        /// List of active creeps.
+        /// List of towers on the map.
         /// </summary>
         private List<Creep> creeps;
+
+        /// <summary>
+        /// List of towers on the map.
+        /// </summary>
+        private List<Tower> towers;
 
         /// <summary>
         /// A set of paths that creeps can follow.
@@ -169,7 +174,7 @@ namespace SafeAndFree
         ///
         private void LoadATowerTest()
         {
-            Tower aTower = TowerFactory.GetTower(TowerTypes.Normal);
+            towers.Add(TowerFactory.GetTower(TowerTypes.Normal));
         }
     }
 }
