@@ -26,6 +26,8 @@
     <level delay="5" range="5" costToNext="5"/>
     <level delay="5" range="5" costToNext="5"/>
   </towerDefinition>
+  <projectile name="apple" numFrames="1" width="8" height="8"/>
+  <projectile name="gavel" numFrames="6" width="8" height="8" spinDelay="2"/>
   <paths numPaths="1">
     <path index="0" numWaypoints="8">
       <waypoint column="3" row="-1"/>
