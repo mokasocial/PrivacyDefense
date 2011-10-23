@@ -8,15 +8,15 @@ public class Projectile
 	public Vector2 my_velocity;
 	public Vector2 my_coords;
 	public float damage;
-	public String creeptype;
+	public String towertype;
 
-	public Projectile(final Vector2 the_starting_coord, final Vector2 velocity, float damage, String creeptypecode )
+	public Projectile(final Vector2 the_starting_coord, final Vector2 velocity, float damage, String towertypecode )
 	{
 		my_coords = the_starting_coord;
 		my_velocity = velocity;
 		this.damage = damage;
 		active = true;
-		creeptype = creeptypecode;
+		towertype = towertypecode;
 	}
 	
 	/**

@@ -403,8 +403,14 @@ public class Game implements ApplicationListener {
 		{
 			if( projectiles[i].active )
 			{
-				// TODO: Change which sprite the projectile uses based on something in the projectile
-				batch.draw( spriteSheet, projectiles[i].my_coords.x*SQUARE_WIDTH, projectiles[i].my_coords.y*SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH, 0, 16*3, 16, 16, false, false);
+//				batch.draw( spriteSheet, projectiles[i].my_coords.x*SQUARE_WIDTH, projectiles[i].my_coords.y*SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH, 0, 16*3, 16, 16, false, false);
+				if (projectiles[i].towertype == "judge"){
+					batch.draw( spriteSheet, projectiles[i].my_coords.x*SQUARE_WIDTH, projectiles[i].my_coords.y*SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH, 0, 16*3, 16, 16, false, false);
+				} else if (projectiles[i].towertype == "teacher"){
+					batch.draw( spriteSheet, projectiles[i].my_coords.x*SQUARE_WIDTH, projectiles[i].my_coords.y*SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH, 16, 16*3, 16, 16, false, false);
+				} else if (projectiles[i].towertype == "lawyer"){
+					batch.draw( spriteSheet, projectiles[i].my_coords.x*SQUARE_WIDTH, projectiles[i].my_coords.y*SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH, 32, 16*3, 16, 16, false, false);
+				}
 			}
 		}
 
@@ -431,7 +437,7 @@ public class Game implements ApplicationListener {
 				String towerPrice = "$" + free_towers.get(i-1).getPrice();
 				TextBounds priceBounds = mFont.getBounds(towerPrice);
 				Color oldColor = mFont.getColor();
-				mFont.setColor(Color.RED);
+				mFont.setColor(Color.GREEN);
 				mFont.drawWrapped(batch, towerPrice, 10, 33 + screenHeight - 58*i + priceBounds.height, priceBounds.width);
 				mFont.setColor(oldColor);
 			}
