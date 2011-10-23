@@ -33,6 +33,7 @@ public class Game implements ApplicationListener, InputProcessor {
 	public ArrayList<Creep> creeps;
 	public ArrayList<Projectile> projectiles;
 	public ArrayList<Tower> towers;
+	public ArrayList<TowerType> free_towers; 
 	public int startingX, startingY;
 
 	public int endingX;
@@ -58,6 +59,12 @@ public class Game implements ApplicationListener, InputProcessor {
 		towers.add(new Tower(TowerType.JUDGE, 6, 6));
 		towers.add(new Tower(TowerType.LAWSUIT, 12, 4));
 		towers.add(new Tower(TowerType.TEACHER, 20, 8));
+		
+		free_towers = new ArrayList<TowerType>();
+		free_towers.add(TowerType.JUDGE);
+		free_towers.add(TowerType.FIREWALL);
+		free_towers.add(TowerType.TEACHER);
+		free_towers.add(TowerType.LAWSUIT);
 
 		tiles = new int[30][20];
 		movementDirs = new char[30][20];
@@ -204,11 +211,32 @@ public class Game implements ApplicationListener, InputProcessor {
 			batch.draw( spriteSheet, projCoords.x*16+8, projCoords.y*16+8, 0, 16*3, 16, 16 );
 		}
 
-		// Draw the UI!
+		
+		
+		
 		// Background
 		TextureRegion blackBox = new TextureRegion(spriteSheet, 0, 2 * 16, 16, 16);
 		batch.draw(blackBox, 0, 0, 60, screenHeight);
 
+		// Draw the free towers.
+		for (int i = 1; i <= 4; i++) {
+			if (free_towers.get(i-1) != null) {
+
+				TextureRegion tower_region = new TextureRegion(spriteSheet,
+															   free_towers.get(i-1).getSpriteLocX(),
+															   free_towers.get(i-1).getSpriteLocY(),
+															   16, 16);
+				batch.draw(tower_region, 40, screenHeight - 48*i, 16, 16);
+				
+				String towerPrice = "$" + free_towers.get(i-1).getPrice();
+				TextBounds priceBounds = mFont.getBounds(towerPrice);
+				mFont.drawWrapped(batch, towerPrice, 3, screenHeight - 48*i + priceBounds.height, priceBounds.width);
+			}
+		}
+		
+		
+		// Draw the UI!
+		
 		// Text
 		String uiString = "+: " + life + '\n' + "$: " + money;
 		TextBounds uiBounds = mFont.getMultiLineBounds(uiString);
