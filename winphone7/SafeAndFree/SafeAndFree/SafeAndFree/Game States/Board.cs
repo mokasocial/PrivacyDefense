@@ -86,17 +86,37 @@ namespace SafeAndFree
         {
             if (null != waveManager)
             {
-                if (waveManager.Update(creeps.Count == 0))
+                //if (waveManager.Update(creeps.Count == 0))
+                //{
+                //    creeps.Add(new Creep(CreepDefinitions.CreepStats[(CreepType)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0]], new Vector2(paths[0][0].X, paths[0][0].Y), (MEDIA_ID)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0], 0, 0));
+                //    if (waveManager.GameWon)
+                //    {
+                //        GameEngine.RunningEngine.Load(Screens.WIN);
+                //        return;
+                //    }
+                //}
+                if (waveManager.InfiniteUpdate(creeps.Count == 0))
                 {
-                    
-                    creeps.Add(new Creep(CreepDefinitions.CreepStats[(CreepType)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0]], new Vector2(paths[0][0].X, paths[0][0].Y), (MEDIA_ID)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0], 0, 0));
 
-                    if (waveManager.GameWon)
+                    double boost = Math.Pow(1.15, waveManager.BonusWave);
+                    CreepTypeData creepNormal = new CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 32, Width = 32, Speed = 3};
+                    CreepTypeData creepFast = new CreepTypeData(){DamageToPlayer = 1, Health =(int)boost * 4, Height = 32, Width = 32, Speed = 4};
+                    CreepTypeData creepBoss = new CreepTypeData(){DamageToPlayer = 2, Health = (int)boost * 70, Height = 32, Width = 32, Speed = 3};
+                    int thing = waveManager.BonusWave % 3;
+                    Creep newCreep;
+                    switch (thing)
                     {
-                        GameEngine.RunningEngine.Load(Screens.WIN);
-
-                        return;
+                        case 0:
+                            newCreep = new Creep(creepNormal, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_0);
+                            break;
+                        case 1:
+                             newCreep = new Creep(creepFast, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_1);
+                            break;
+                        default:
+                            newCreep = new Creep(creepBoss, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_2);
+                            break;
                     }
+                    creeps.Add(newCreep);
                 }
             }
 
