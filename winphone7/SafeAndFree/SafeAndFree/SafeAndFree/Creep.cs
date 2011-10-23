@@ -15,7 +15,10 @@ namespace SafeAndFree
         /// The center position of this instance.
         /// </summary>
         public Vector2 CenterPosition;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0d1d26a4695284bc971d9504998332e3a596ab24
         private List<Debuff> CurrentDebuffs;
 
         public new bool IsDead
@@ -44,7 +47,7 @@ namespace SafeAndFree
                 return new Vector2(CenterPosition.X - (int)GetStat(CreepStats.Width) / 2, CenterPosition.Y - (int)GetStat(CreepStats.Height) / 2);
             }
         }
-
+        
         /// <summary>
         /// The index of the path this creep travels.
         /// </summary>
@@ -55,7 +58,10 @@ namespace SafeAndFree
                 return _path;
             }
         }
-
+        public Vector2 GetCenterPosition()
+        {
+            return CenterPosition;
+        }
         private Dictionary<CreepStats, int> stats;
         /// <summary>
         /// A reference to the stats of this creep.

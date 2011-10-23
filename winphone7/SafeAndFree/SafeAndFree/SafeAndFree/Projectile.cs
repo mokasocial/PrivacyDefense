@@ -51,7 +51,7 @@ namespace SafeAndFree
                 return true;
             }
 
-            CurrentPoint = Calculator.MovementTowardsPoint(CurrentPoint, TargetCreep.Position, Stats.Speed, out result);
+            CurrentPoint = Calculator.MovementTowardsPoint(CurrentPoint, TargetCreep.GetCenterPosition(), Stats.Speed, out result);
 
             if (result)
             {

@@ -35,7 +35,7 @@ public class Game implements ApplicationListener {
 	public Texture spriteSheet;
 	private Texture mapData;
 	private BitmapFont mFont;
-	private int[][] tiles; // Our base map (paths and whatnot)
+	public int[][] tiles; // Our base map (paths and whatnot)
 	public char[][] movementDirs; // Our pathfinding, 'N' 'E' 'W' or 'S' (and
 									// can make different for flyers, woah!)
 	
@@ -233,9 +233,6 @@ public class Game implements ApplicationListener {
 		float dt = Gdx.graphics.getDeltaTime();
 
 		if (buildMode) {
-			
-			// show start button.
-			
 			return;
 		}
 		

@@ -28,15 +28,15 @@ namespace SafeAndFree.Helpers
         public static void GetStatsForTowerType(TowerTypes type, out TowerStats[] towerStats, out WeaponStats[] weaponStats)
         {
             switch (type)
-            {            
-                case TowerTypes.Fast:
-                     towerStats = new TowerStats[5] { new TowerStats(30, 250, 5), new TowerStats(15, 250, 10), new TowerStats(13, 250, 20), 
-                         new TowerStats(11, 250, 40), new TowerStats(10, 250, -1) };
-                     weaponStats = new WeaponStats[5] { new WeaponStats(5, 10, 1), new WeaponStats(15, 10, 1), new WeaponStats(40, 10, 1), 
-                         new WeaponStats(80, 10, 1), new WeaponStats(200, 10, 1) };
+            {
+                case TowerTypes.Fast://Base cost 15 min delay is 4
+                    towerStats = new TowerStats[7] {new TowerStats(4, 250, -1) /*new TowerStats(15, 180, 25)*/, new TowerStats(12, 190, 50), new TowerStats(9, 200, 90), 
+                         new TowerStats(7, 210, 200), new TowerStats(6, 220, 450),new TowerStats(5, 230, 700),new TowerStats(4, 250, -1) };
+                    weaponStats = new WeaponStats[7] { new WeaponStats(3000, 10, 1)/*new WeaponStats(5, 10, 1)*/, new WeaponStats(18, 10, 1), new WeaponStats(40, 10, 1), 
+                         new WeaponStats(120, 10, 1), new WeaponStats(500, 10, 1),new WeaponStats(1500, 10, 1),new WeaponStats(3000, 10, 1) };
                 break;
                 //case TowerTypes.Splash:
-                case TowerTypes.Slow:
+                case TowerTypes.Slow://base 20 
                     Debuff slow = new Debuff(CreepStats.Speed, 1, 10);
                     Debuff slow2 = new Debuff(CreepStats.Speed, 2, 20);
                 towerStats = new TowerStats[5] { new TowerStats(70, 150, 40), new TowerStats(50, 160, 60), 
