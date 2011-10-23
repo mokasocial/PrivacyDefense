@@ -7,9 +7,9 @@ namespace SafeAndFree.Enumerations
 {
     public enum TowerTypes
     {
-        Normal, 
-        Fast,
-        Slow,
+        Judge,
+        Lawyer,
+        Teacher,
         Splash
     }
 }

@@ -27,6 +27,11 @@ namespace SafeAndFree
         private Dictionary<CreepStats, int> stats;
 
         /// <summary>
+        /// The center position of this instance.
+        /// </summary>
+        public Vector2 CenterPosition;
+
+        /// <summary>
         /// Get the top-left position of this instance.
         /// </summary>
         public override Vector2 Position
@@ -57,11 +62,6 @@ namespace SafeAndFree
                 return Stats[CreepStats.Health] <= 0; 
             }
         }
-
-        /// <summary>
-        /// The center position of this instance.
-        /// </summary>
-        public Vector2 CenterPosition;
 
         public float Rotation { get; private set; }
 

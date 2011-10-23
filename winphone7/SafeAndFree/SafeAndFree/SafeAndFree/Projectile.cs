@@ -13,29 +13,65 @@ namespace SafeAndFree
     {
         public ProjectileTypes Type { get; private set; }
         public WeaponStats Stats;
-        public Vector2 CurrentPoint;
         public Creep TargetCreep;
+
+        public ProjectileTypes type;
+
+        private int numFrames = 0;
+        public int Frame = 0;
+        public int CurrentDelay = 0;
+
+        public float Rotation = 0;
+
+        /// <summary>
+        /// The center position of this instance.
+        /// </summary>
+        public Vector2 CenterPosition;
+
+        /// <summary>
+        /// Get the top-left position of this instance.
+        /// </summary>
+        public override Vector2 Position
+        {
+            get
+            {
+                return new Vector2(CenterPosition.X - (int)ProjectileDefinitions.ProjectileStats[type].Width / 2, CenterPosition.Y - (int)ProjectileDefinitions.ProjectileStats[type].Height / 2);
+            }
+        }
+
+        public Rectangle AnimationSource
+        {
+            get
+            {
+                return new Rectangle(Frame * ProjectileDefinitions.ProjectileStats[type].Width, 0, ProjectileDefinitions.ProjectileStats[type].Width, ProjectileDefinitions.ProjectileStats[type].Height);
+            }
+        }
 
         public Projectile(WeaponStats stats, Creep targetCreep, Vector2 startPoint, TowerTypes parentTowerType)
         {
             Stats = stats.GetCopy();
             TargetCreep = targetCreep;
-            CurrentPoint = startPoint;
-            SelectTypeBasedOnTowerType(parentTowerType);
-            this.TextureID =  TowerFactory.GetProjectileMediaID(Type);
+
+            CenterPosition = startPoint;
+
+            this.type = SelectTypeBasedOnTowerType(parentTowerType);
+            this.TextureID =  TowerFactory.GetProjectileMediaID(type);
+
+            this.numFrames = ProjectileDefinitions.ProjectileStats[type].NumFrames;
         }
 
-        private void SelectTypeBasedOnTowerType(TowerTypes type)
+        private ProjectileTypes SelectTypeBasedOnTowerType(TowerTypes type)
         {
-            switch(type)
+            if (type == TowerTypes.Judge)
             {
-                case TowerTypes.Slow:
-                    Type = ProjectileTypes.Slow;
-                    break;
-                default:
-                Type = ProjectileTypes.Normal;
-                break;
+                return ProjectileTypes.Gavel;
             }
+            else if (type == TowerTypes.Lawyer)
+            {
+                return ProjectileTypes.Scroll;
+            }
+
+            return ProjectileTypes.Teacher;
             //have a switch here at some point
         }
 
@@ -46,16 +82,35 @@ namespace SafeAndFree
         public bool Update()
         {
             bool result;
+
             if (TargetCreep == null)
             {
                 return true;
             }
 
-            CurrentPoint = Calculator.MovementTowardsPoint(CurrentPoint, TargetCreep.CenterPosition, Stats.Speed, out result);
+            CenterPosition = Calculator.MovementTowardsPoint(CenterPosition, TargetCreep.CenterPosition, Stats.Speed, out result);
 
-            if (result)
+            // Don't hard code this!
+            if (ProjectileTypes.Scroll == this.type)
+            {
+                // Math.Atan2 gives the angle between two points in RADIANS. We need to convert to degrees.
+                this.Rotation = Calculator.ToDegrees((float)Math.Atan2(TargetCreep.CenterPosition.Y - this.CenterPosition.Y, TargetCreep.CenterPosition.X - this.CenterPosition.X));
+            }
+
+            if (Calculator.GetDistance(this.CenterPosition, TargetCreep.CenterPosition) <= Math.Abs(ProjectileDefinitions.ProjectileStats[type].Width/2 - TargetCreep.GetStat(CreepStats.Width)/2))
             {
                 TargetCreep.TakeHit(this);
+            }
+
+            if (numFrames > 1)
+            {
+                if (--CurrentDelay <= 0)
+                {
+                    if (++Frame >= numFrames)
+                    {
+                        numFrames = 0;
+                    }
+                }
             }
 
             return result;

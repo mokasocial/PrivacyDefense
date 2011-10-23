@@ -88,7 +88,7 @@ namespace SafeAndFree
             {
                 //if (waveManager.Update(creeps.Count == 0))
                 //{
-                //    creeps.Add(new Creep(CreepDefinitions.CreepStats[(CreepType)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0]], new Vector2(paths[0][0].X, paths[0][0].Y), (MEDIA_ID)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0], 0, 0));
+                //    creeps.Add(new Creep(CreepDefinitions.ProjectileStats[(CreepType)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0]], new Vector2(paths[0][0].X, paths[0][0].Y), (MEDIA_ID)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0], 0, 0));
                 //    if (waveManager.GameWon)
                 //    {
                 //        GameEngine.RunningEngine.Load(Screens.WIN);
@@ -98,7 +98,7 @@ namespace SafeAndFree
                 if (waveManager.InfiniteUpdate(creeps.Count == 0))
                 {
                     double boost = Math.Pow(1.2, waveManager.BonusWave);
-                    CreepTypeData creepNormal = new CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 32, Width = 32, Speed = 3};
+                    CreepTypeData creepNormal = new CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 16, Width = 16, Speed = 3};
                     CreepTypeData creepFast = new CreepTypeData(){DamageToPlayer = 1, Health =(int)boost * 4, Height = 32, Width = 32, Speed = 4};
                     CreepTypeData creepBoss = new CreepTypeData(){DamageToPlayer = 2, Health = (int)boost * 25, Height = 32, Width = 32, Speed = 3};
                     
@@ -135,17 +135,17 @@ namespace SafeAndFree
             {
                 if (check.Y >= 56 && check.Y < 145)
                 {
-                    BuyPlaceTower(TowerTypes.Normal);
+                    BuyPlaceTower(TowerTypes.Judge);
                     return true;
                 }
                 else if (check.Y > 165 && check.Y <= 250)
                 {
-                    BuyPlaceTower(TowerTypes.Fast);
+                    BuyPlaceTower(TowerTypes.Lawyer);
                     return true;
                 }
                 else if (check.Y > 270 && check.Y < 360)
                 {
-                    BuyPlaceTower(TowerTypes.Slow);
+                    BuyPlaceTower(TowerTypes.Teacher);
                     return true;
                 }
                 else
@@ -260,12 +260,26 @@ namespace SafeAndFree
 
             foreach (Tower t in towers.Values)
             {
-                spriteBatch.Draw(TextureLibrary.GetTexture(t.TextureID), t.Position, Color.White);
+                spriteBatch.Draw(TextureLibrary.GetTexture(t.TextureID), t.Position, new Rectangle(t.Level * (int)TileDimensions.X, 0, (int)TileDimensions.X, (int)TileDimensions.Y), Color.White);
             }
 
             foreach (Projectile p in projectileManager.Projectiles)
             {
-                spriteBatch.Draw(TextureLibrary.GetTexture(p.TextureID), p.CurrentPoint, Color.White) ;
+                if (0 != p.Rotation)
+                {
+                    spriteBatch.Draw(TextureLibrary.GetTexture(p.TextureID),
+                        new Vector2(p.Position.X + (int)ProjectileDefinitions.ProjectileStats[p.type].Width / 2, p.Position.Y + (int)ProjectileDefinitions.ProjectileStats[p.type].Height / 2),
+                        new Rectangle(0, 0, ProjectileDefinitions.ProjectileStats[p.type].Width, ProjectileDefinitions.ProjectileStats[p.type].Height), 
+                        Color.White, 
+                        Calculator.ToRadians(p.Rotation),
+                        new Vector2(ProjectileDefinitions.ProjectileStats[p.type].Width / 2, ProjectileDefinitions.ProjectileStats[p.type].Height / 2),
+                        1, 
+                        SpriteEffects.None, 0);
+                }
+                else
+                {
+                    spriteBatch.Draw(TextureLibrary.GetTexture(p.TextureID), p.Position, p.AnimationSource, Color.White);
+                }
             }
 
             spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MENU_TOP), new Rectangle(0, 0, 800, 20), Color.White);
@@ -312,6 +326,9 @@ namespace SafeAndFree
 
             int lastCreepDefinition = 0;
 
+            // Initialize projectile stat data.
+            int lastProjectileDefinition = 0;
+
             while (reader.Read())
             {
                 XmlNodeType nodeType = reader.NodeType;
@@ -335,6 +352,18 @@ namespace SafeAndFree
                         };
 
                         CreepDefinitions.CreepStats.Add((CreepType)(lastCreepDefinition++), creepData);
+                    }
+                    else if (reader.Name.Equals("projectileDefinition"))
+                    {
+                        ProjectileTypeData projectileData = new ProjectileTypeData
+                        {
+                            AnimationDelay = Int32.Parse(reader.GetAttribute("delay")),
+                            NumFrames = Int32.Parse(reader.GetAttribute("numFrames")),
+                            Width = Int32.Parse(reader.GetAttribute("width")),
+                            Height = Int32.Parse(reader.GetAttribute("height"))
+                        };
+
+                        ProjectileDefinitions.ProjectileStats.Add((ProjectileTypes)lastProjectileDefinition++, projectileData);
                     }
                     else if (reader.Name.Equals("paths"))
                     {
@@ -376,7 +405,6 @@ namespace SafeAndFree
         {
             if(!towers.ContainsKey(selectedTile) && CurrentPlayer.WithdrawalMoney(TowerFactory.GetTowerCost(type)))
             {
-             
                 towers.Add(selectedTile, TowerFactory.GetTower(type, new Vector2(selectedTile.X * TileDimensions.X, selectedTile.Y * TileDimensions.Y)));
             }
         }
@@ -394,9 +422,9 @@ namespace SafeAndFree
         private void LoadATowerTest()
         {
             towers = new Dictionary<Vector2, Tower>();
-            //towers.Add(selectedTile, TowerFactory.GetTower(TowerTypes.Slow, new Vector2(70, 400)));
-            //towers.Add(TowerFactory.GetTower(TowerTypes.Normal, new Vector2(200, 300)));
-            //towers.Add(TowerFactory.GetTower(TowerTypes.Fast, new Vector2(200, 400)));
+            //towers.Add(selectedTile, TowerFactory.GetTower(TowerTypes.Teacher, new Vector2(70, 400)));
+            //towers.Add(TowerFactory.GetTower(TowerTypes.Gavel, new Vector2(200, 300)));
+            //towers.Add(TowerFactory.GetTower(TowerTypes.Lawyer, new Vector2(200, 400)));
         }
     }
 }

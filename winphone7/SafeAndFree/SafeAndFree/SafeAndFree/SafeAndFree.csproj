@@ -101,6 +101,7 @@
     <Content Include="Game.ico" />
     <Content Include="MapDefinitions.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Background.png" />
     <Content Include="PhoneGameThumb.png" />
