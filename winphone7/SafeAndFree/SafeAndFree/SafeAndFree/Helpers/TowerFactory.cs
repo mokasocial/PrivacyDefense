@@ -25,6 +25,19 @@ namespace SafeAndFree.Helpers
             //    case TowerTypes.Splash:
             //}
         }
+
+        public static int GetTowerCost(TowerTypes type)
+        {
+            switch(type)
+            {
+                case TowerTypes.Fast:
+                    return 15;                       
+                case TowerTypes.Slow:
+                    return 20;
+                default:
+                    return 10;//Normal tower
+            }
+        }
         public static void GetStatsForTowerType(TowerTypes type, out TowerStats[] towerStats, out WeaponStats[] weaponStats)
         {
             switch (type)
