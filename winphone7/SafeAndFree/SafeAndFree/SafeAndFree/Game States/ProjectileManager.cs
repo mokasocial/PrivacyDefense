@@ -29,7 +29,7 @@ namespace SafeAndFree.Game_States
             }
             foreach (Projectile r in removeList)
             {
-                //Projectiles.Remove(r);
+                Projectiles.Remove(r);
             }
         }
         public List<Vector2> GetProjectilePoints()

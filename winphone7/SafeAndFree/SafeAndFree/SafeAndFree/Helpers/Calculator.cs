@@ -33,16 +33,28 @@ namespace SafeAndFree.Helpers
         public static Vector2 MovementTowardsPoint(Vector2 start, Vector2 end, int speed, out bool Connected)
         {
             double totalDistance = GetDistance(start, end);
-            double movementPercent = (double)speed * totalDistance;
+
+
+            //double movementPercent =  totalDistance / (double)speed;
+            double movementPercent = 0;
             if (movementPercent >= 1)
             {
                 Connected = true;
                 return end;
             }
             Connected = false;
-            double xDiff = start.X - end.X;
-            double yDiff = start.Y - end.Y;
-            return new Vector2((float)(start.X + (xDiff * movementPercent)), (float)(start.Y + (yDiff * movementPercent)));
+            
+            double xDiff = Math.Abs(start.X - end.X);
+            double yDiff = Math.Abs(start.Y - end.Y);
+            double totalDiff = xDiff + yDiff;
+            int xPos = start.X > end.X ? -1 : 1;
+            int yPos = start.Y > end.Y ? -1 : 1;
+
+            double xRatio = xDiff / yDiff; //x to y ratio
+            double xSpeed = (double)speed * (xDiff / totalDiff);
+            double ySpeed = (double) speed * (yDiff / totalDiff);
+
+            return new Vector2((float)(start.X + (xSpeed * xPos)), (float)(start.Y + ( ySpeed * yPos)));
         }
 
         /// <summary>
