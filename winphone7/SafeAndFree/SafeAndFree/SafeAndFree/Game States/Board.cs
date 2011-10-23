@@ -25,6 +25,8 @@ namespace SafeAndFree
     {
         private ProjectileManager projectileManager;
 
+        private WaveManager waveManager;
+
         /// <summary>
         /// The grid of tiles.
         /// </summary>
@@ -86,6 +88,11 @@ namespace SafeAndFree
             HandleTowerLoop();
             HandleProjectileLoop();
             HandleInput();
+
+            if (null != waveManager)
+            {
+                waveManager.Update();
+            }
         }
 
         protected void HandleInput()
@@ -203,6 +210,10 @@ namespace SafeAndFree
             int lastPath = -1;
             int lastWaypoint = 0;
 
+            int[][][] waves = null;
+            int lastWave = -1;
+            int lastCreep = -1;
+
             while (reader.Read())
             {
                 XmlNodeType nodeType = reader.NodeType;
@@ -227,7 +238,26 @@ namespace SafeAndFree
                     {
                         paths[lastPath][lastWaypoint++] = new Vector2(Int32.Parse(reader.GetAttribute("column")) * Board.TileDimensions.X + Board.TileCenter.X, Int32.Parse(reader.GetAttribute("row")) * Board.TileDimensions.Y + Board.TileCenter.Y);
                     }
+                    else if (reader.Name.Equals("waves"))
+                    {
+                        waves = new int[Int32.Parse(reader.GetAttribute("numWaves"))][][];
+                        lastWave = -1;
+                    }
+                    else if (reader.Name.Equals("wave"))
+                    {
+                        waves[++lastWave] = new int[Int32.Parse(reader.GetAttribute("numCreeps"))][];
+                        lastCreep = -1;
+                    }
+                    else if (reader.Name.Equals("creep"))
+                    {
+                        waves[lastWave][++lastCreep] = new int[] { Int32.Parse(reader.GetAttribute("type")), Int32.Parse(reader.GetAttribute("delay")) };
+                    }
                 }
+            }
+
+            if (null != waves)
+            {
+                //waveManager.SetWaves(waves);
             }
         }
 
@@ -239,7 +269,7 @@ namespace SafeAndFree
             // Hard-coded for now.
             creeps = new List<Creep>();
             Dictionary<CreepStats, int> basicStats = new Dictionary<CreepStats, int>();
-            basicStats.Add(CreepStats.Health, 50);
+            basicStats.Add(CreepStats.Health, 200);
             basicStats.Add(CreepStats.Speed, 3);
             basicStats.Add(CreepStats.DamageToPlayer, 1);
 
