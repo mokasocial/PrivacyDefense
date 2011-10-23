@@ -97,13 +97,15 @@ namespace SafeAndFree
                 //}
                 if (waveManager.InfiniteUpdate(creeps.Count == 0))
                 {
-
                     double boost = Math.Pow(1.15, waveManager.BonusWave);
-                    CreepTypeData creepNormal = new CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 32, Width = 32, Speed = 3};
+                    CreepTypeData creepNormal = new CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 16, Width = 16, Speed = 3};
                     CreepTypeData creepFast = new CreepTypeData(){DamageToPlayer = 1, Health =(int)boost * 4, Height = 32, Width = 32, Speed = 4};
                     CreepTypeData creepBoss = new CreepTypeData(){DamageToPlayer = 2, Health = (int)boost * 70, Height = 32, Width = 32, Speed = 3};
+
+                    // What is this?
                     int thing = waveManager.BonusWave % 3;
                     Creep newCreep;
+
                     switch (thing)
                     {
                         case 0:
@@ -116,6 +118,7 @@ namespace SafeAndFree
                             newCreep = new Creep(creepBoss, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_2);
                             break;
                     }
+
                     creeps.Add(newCreep);
                 }
             }
@@ -151,8 +154,10 @@ namespace SafeAndFree
                     return true;
                 }
             }
+
             return false;
         }
+
         protected void HandleInput()
         {
             TouchCollection touchCollection = TouchPanel.GetState();
@@ -176,8 +181,6 @@ namespace SafeAndFree
                       selectedTile.X = col;
                       selectedTile.Y = row;
                     }
-
-                    
                 }
             }
         }
@@ -186,12 +189,12 @@ namespace SafeAndFree
         {
             projectileManager.Update();
         }
+
         public void HandleClick(TowerTypes towerType) 
         {
-            
             BuyPlaceTower(towerType);
-             
         }
+
         protected void HandleCreepLoop()
         {
             for (int i = 0; i < creeps.Count; i++)
@@ -316,14 +319,16 @@ namespace SafeAndFree
                     }
                     else if (reader.Name.Equals("creepDefinition"))
                     {
-                        CreepDefinitions.CreepStats.Add((CreepType)lastCreepDefinition++, new CreepTypeData 
-                        { 
+                        CreepTypeData creepData = new CreepTypeData
+                        {
                             Width = Int32.Parse(reader.GetAttribute("width")),
                             Height = Int32.Parse(reader.GetAttribute("height")),
                             Health = Int32.Parse(reader.GetAttribute("health")),
                             Speed = Int32.Parse(reader.GetAttribute("speed")),
                             DamageToPlayer = Int32.Parse(reader.GetAttribute("damageToPlayer"))
-                        });
+                        };
+
+                        CreepDefinitions.CreepStats.Add((CreepType)(lastCreepDefinition++), creepData);
                     }
                     else if (reader.Name.Equals("paths"))
                     {
