@@ -68,10 +68,10 @@ namespace SafeAndFree.Helpers
                 foreach (Creep c in targets) //This might be changed to favor the creeps first in the list
                 {
                     current = GetDistance(c.Position, towerPosition);
-                    if ((current < range) && current > best)
+                    if ((current < range) && c.DistanceTravelled > best)
                     {
                         found = true;
-                        best = current;
+                        best = c.DistanceTravelled;
                         creep = c;
                     }
                 }
