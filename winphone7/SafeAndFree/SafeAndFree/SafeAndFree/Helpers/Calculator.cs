@@ -43,7 +43,6 @@ namespace SafeAndFree.Helpers
             double totalDiff = xDiff + yDiff;
             int xPos = start.X > end.X ? -1 : 1;
             int yPos = start.Y > end.Y ? -1 : 1;
-            double xRatio = xDiff / yDiff; //x to y ratio
             double xSpeed = (double)speed * (xDiff / totalDiff);
             double ySpeed = (double) speed * (yDiff / totalDiff);
             Vector2 result = new Vector2((float)(start.X + (xSpeed * xPos)), (float)(start.Y + ( ySpeed * yPos)));

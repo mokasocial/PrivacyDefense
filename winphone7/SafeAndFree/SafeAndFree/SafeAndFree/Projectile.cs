@@ -23,13 +23,19 @@ namespace SafeAndFree
             CurrentPoint = startPoint;
             SelectTypeBasedOnTowerType(parentTowerType);
             this.TextureID =  TowerFactory.GetProjectileMediaID(Type);
-            
-            
         }
 
         private void SelectTypeBasedOnTowerType(TowerTypes type)
         {
-            Type = ProjectileTypes.Normal;
+            switch(type)
+            {
+                case TowerTypes.Slow:
+                    Type = ProjectileTypes.Slow;
+                    break;
+                default:
+                Type = ProjectileTypes.Normal;
+                break;
+            }
             //have a switch here at some point
         }
 
