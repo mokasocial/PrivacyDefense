@@ -123,27 +123,27 @@ public class GameInputProcessor implements InputProcessor {
 		
 			for (TowerType towerType : Game.instance.free_towers) {
 				if (x <= Game.instance.uiPanelWidth && x >= 35) {
-					if (y >= (20) && y <= (40)) {
+					if (y >= (30) && y <= (60)) {
 						Game.instance.debugtext = "touch down on tower 1";
 						Game.instance.cursorState = Game.instance.free_towers.get(0);					
 						Game.instance.cursorLocX = x;
 						Game.instance.cursorLocY = y;
-					} else if (y >= (60) && y <= (80)) {
+					} else if (y >= (90) && y <= (120)) {
 						Game.instance.debugtext = "touch down on tower 2";
 						Game.instance.cursorState = Game.instance.free_towers.get(1);
 						Game.instance.cursorLocX = x;
 						Game.instance.cursorLocY = y;
-					} else if (y >= (100) && y <= (120)) {
+					} else if (y >= (150) && y <= (180)) {
 						Game.instance.debugtext = "touch down on tower 3";
 						Game.instance.cursorState = Game.instance.free_towers.get(2);
 						Game.instance.cursorLocX = x;
 						Game.instance.cursorLocY = y;
-					} else if (y >= (140) && y <= (160)) {
+					} /*else if (y >= (140) && y <= (160)) {
 						Game.instance.debugtext = "touch down on tower 4";
 						Game.instance.cursorState = Game.instance.free_towers.get(3);
 						Game.instance.cursorLocX = x;
 						Game.instance.cursorLocY = y;
-					}
+					}*/
 				
 					if (Game.instance.cursorState != null) {
 						Game.instance.cursorTexture = new TextureRegion(Game.instance.spriteSheet,
@@ -194,10 +194,9 @@ public class GameInputProcessor implements InputProcessor {
 			int gameCoordY = (Game.instance.screenHeight - y) / Game.instance.SQUARE_WIDTH;
 			
 			//System.out.println(Game.instance.tiles[gameCoordX][gameCoordY]);
-			
 			if (!tileContainsTower(gameCoordX, gameCoordY) &&
-					!(Game.instance.tiles[gameCoordX][gameCoordY] == 6 ||
-					  Game.instance.tiles[gameCoordX][gameCoordY] == 5)) {
+					!(Game.instance.tiles[gameCoordX][gameCoordY] >= 5 &&
+					  Game.instance.tiles[gameCoordX][gameCoordY] <= 10)) {
 				
 				// Check to make sure there is enough money to buy the tower.
 				if (Game.instance.money >= Game.instance.cursorState.getPrice()) {
