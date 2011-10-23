@@ -13,6 +13,8 @@ namespace SafeAndFree
         public WeaponStats Stats;
         public Vector2 CurrentPoint;
         public Creep TargetCreep;
+
+        // Constructor.
         public Projectile(WeaponStats stats, Creep targetCreep, Vector2 startPoint)
         {
             Stats = stats;

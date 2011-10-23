@@ -1,12 +1,9 @@
-Content\tile0.xnb
-Content\tile1.xnb
-Content\tile2.xnb
-Content\tile3.xnb
 Content\winphonemap.xnb
 Content\creep0.xnb
-Content\tile0.png
-Content\tile1.png
-Content\tile2.png
-Content\tile3.png
+Content\drawmap.xnb
 Content\winphonemap.png
 MapDefinitions.xml
+obsolete tile images\tile0.png
+obsolete tile images\tile1.png
+obsolete tile images\tile2.png
+obsolete tile images\tile3.png

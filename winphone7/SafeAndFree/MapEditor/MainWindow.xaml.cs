@@ -24,6 +24,7 @@ namespace MapEditor
     {
         private int[,] tiles;
         private Image[,] visualTiles;
+        private System.Drawing.Bitmap[,] visualBitmaps;
 
         private BitmapSource[,] tileImages;
 
@@ -124,6 +125,7 @@ namespace MapEditor
 
             tiles = new int[imageWidth, imageHeight];
             visualTiles = new Image[imageWidth, imageHeight];
+            visualBitmaps = new System.Drawing.Bitmap[imageWidth, imageHeight];
             tileImages = new BitmapSource[imageWidth, imageHeight];
 
             System.Drawing.Rectangle imageRectangle = new System.Drawing.Rectangle(0, 0, imageWidth, imageHeight);
@@ -148,6 +150,8 @@ namespace MapEditor
                     newImage.Width = tileImages[column, row].Width;
                     newImage.Height = tileImages[column, row].Height;
                     visualTiles[column, row] = newImage;
+
+                    visualBitmaps[column, row] = _bitmapFromSource(tileTextures[tiles[column, row]]);
 
                     Canvas.SetLeft(newImage, column * TileDimensions.X);
                     Canvas.SetTop(newImage, row * TileDimensions.Y);
@@ -219,31 +223,37 @@ namespace MapEditor
             if (save.Equals(true))
             {
                 // The user decided to save - so let's do it.
-                //System.Drawing.Bitmap loadedMapBitmap = this._bitmapFromSource((BitmapSource)drawnMap.Source);
 
-                int imageWidth = tiles.GetUpperBound(0) + 1;
-                int imageHeight = tiles.GetUpperBound(1) + 1;
+                // Get image dimensions.
+                int imageWidth = (int)Math.Round((tiles.GetUpperBound(0) + 1) * TileDimensions.X);
+                int imageHeight = (int)Math.Round((tiles.GetUpperBound(1) + 1) * TileDimensions.Y);
 
                 System.Drawing.Bitmap newMap = new System.Drawing.Bitmap(imageWidth, imageHeight);
 
                 System.Drawing.Rectangle newMapRectangle = new System.Drawing.Rectangle(0, 0, imageWidth, imageHeight);
 
                 BitmapData newMapData = newMap.LockBits(newMapRectangle, ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                // BitmapData loadedMapData = loadedMapBitmap.LockBits(newMapRectangle, ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-                for (int row = 0; row < imageHeight; row++)
+                for (int i = 0; i < imageHeight; i++)
                 {
-                    int* newMapScanline = (int*)newMapData.Scan0 + (row * imageWidth);
+                    int* newMapScanline = (int*)newMapData.Scan0 + (i * imageWidth);
 
-                    for (int column = 0; column < imageWidth; column++)
+                    for (int j = 0; j < imageWidth; j++)
                     {
-                        newMapScanline[column] = ColorToInt(Color.FromArgb(255, (byte)tiles[column, row], 0, 0));
+                        int col = (int)Math.Floor(j / TileDimensions.X);
+                        int row = (int)Math.Floor(i / TileDimensions.Y);
+
+                        int relativeCol = (int)(j - col * TileDimensions.X);
+                        int relativeRow = (int)(i - row * TileDimensions.Y);
+
+                        newMapScanline[j] = visualBitmaps[col, row].GetPixel(relativeCol, relativeRow).ToArgb();//Color.FromArgb(255, (byte)tiles[j, i], 0, 0));
                     }
                 }
 
                 newMap.UnlockBits(newMapData);
 
                 newMap.Save(dialog.FileName);
+                
             }
         }
     }

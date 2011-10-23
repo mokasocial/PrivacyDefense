@@ -22,13 +22,6 @@ namespace SafeAndFree
     class Board : Screen
     {
         /// <summary>
-        /// TODO: This shouldn't be kept,
-        /// this should be loaded from the map image
-        /// and then represented in a single bitmap.
-        /// </summary>
-        private int[,] tileTextureIds = new int[50, 30];
-
-        /// <summary>
         /// The grid of tiles.
         /// </summary>
         private Tile[,] mapTiles;
@@ -45,11 +38,15 @@ namespace SafeAndFree
         /// </summary>
         private Vector2[][] paths;
 
-        public static Vector2 TileDimensions
-        {
-            get; private set;
-        }
+        /// <summary>
+        /// The consistent size of tiles.
+        /// </summary>
+        public static Vector2 TileDimensions { get; private set; }
 
+        /// <summary>
+        /// The offset (X and Y) from a tile's top left position
+        /// that will give you the tile's center position.
+        /// </summary>
         public static Vector2 TileCenter;
 
         /// <summary>
@@ -89,6 +86,8 @@ namespace SafeAndFree
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MAP_0), new Vector2(0, 0), Color.White);
+
             // Draw all creeps.
             foreach (Creep c in creeps)
             {
@@ -101,28 +100,13 @@ namespace SafeAndFree
         /// </summary>
         private void LoadMap()
         {
-            Texture2D mapDefinition = TextureLibrary.GetTexture(MEDIA_ID.MAP_0);
-
-            Color[] bits = new Color[mapDefinition.Width * mapDefinition.Height];
-            mapDefinition.GetData<Color>(bits);
-
-            for (int i = 0; i < mapDefinition.Height; i++)
-            {
-                for (int j = 0; j < mapDefinition.Width; j++)
-                {
-                    tileTextureIds[j, i] = bits[i * mapDefinition.Width + j].R;
-                }
-            }
-
-            // TODO: Blit to a bitmap here, so that we don't draw
-            // a bitmap for each tile on the draw loop.
             mapTiles = new Tile[30, 50];
 
             for (int i = 0; i <= mapTiles.GetUpperBound(0); i++)
             {
                 for (int j = 0; j <= mapTiles.GetUpperBound(1); j++)
                 {
-                    mapTiles[i, j] = new Tile(new Vector2(j * Board.TileDimensions.X, i * Board.TileDimensions.Y), (MEDIA_ID)tileTextureIds[j, i]);
+                    mapTiles[i, j] = new Tile(new Vector2(j * Board.TileDimensions.X, i * Board.TileDimensions.Y));
                 }
             }
         }
@@ -179,6 +163,7 @@ namespace SafeAndFree
 
             creeps.Add(new Creep(basicStats, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_0, 0, 0));
         }
+
         ///
         ///Test load a tower
         ///
