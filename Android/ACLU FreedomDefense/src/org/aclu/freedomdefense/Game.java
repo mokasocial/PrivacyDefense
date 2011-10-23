@@ -41,6 +41,7 @@ public class Game implements ApplicationListener {
 	public Texture corporateCreepTexture;
 	public Texture defconZeplinTexture;
 	public Texture govHeliTexture;
+	public Texture tileset32Texture;
 	
 	private Texture mapData;
 	private BitmapFont mFont;
@@ -143,6 +144,7 @@ public class Game implements ApplicationListener {
 		corporateCreepTexture = new Texture(Gdx.files.internal("CorporateCreep32x32.png"));
 		defconZeplinTexture = new Texture(Gdx.files.internal("DefconZeppelin.png"));
 		govHeliTexture = new Texture(Gdx.files.internal("GovSearcherHeli.png"));
+		tileset32Texture = new Texture(Gdx.files.internal("Tileset32.png"));
 		
 		Pixmap mapData = new Pixmap(Gdx.files.internal("map2.png"));
 
@@ -344,15 +346,16 @@ public class Game implements ApplicationListener {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT); // clear the screen
 		batch.begin();
 
-		
+		TextureRegion tmpRegion = null;
 		
 		// Draw the terrain!
 		for (int x = 0; x < 30; ++x) {
 			for (int y = 0; y < 20; ++y) {
-				
+				tmpRegion = new TextureRegion( tileset32Texture, (tiles[x][y] - 4) * 32, 0, 32, 32);
+				//pause_button_region = new TextureRegion( spriteSheet, tiles[x][y] - 4, 0, 32, 32);
 				// switch to 32x32 sprite
 				//batch.draw(spriteSheet, x * 16, y * 16, tiles[x][y] * 16, 0, 16, 16);
-				batch.draw(spriteSheet, x * SQUARE_WIDTH, y * SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH, tiles[x][y] * 16, 0, 16, 16, false, false);
+				batch.draw(tmpRegion, x * SQUARE_WIDTH, y * SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH);
 
 				// Temporary, copy pasta
 				/*
