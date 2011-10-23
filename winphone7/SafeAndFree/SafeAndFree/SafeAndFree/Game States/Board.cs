@@ -288,7 +288,7 @@ namespace SafeAndFree
             towers = new List<Tower>();
             towers.Add(TowerFactory.GetTower(TowerTypes.Slow, new Vector2(70, 400)));
             towers.Add(TowerFactory.GetTower(TowerTypes.Normal, new Vector2(200, 300)));
-            towers.Add(TowerFactory.GetTower(TowerTypes.Normal, new Vector2(200, 400)));
+            towers.Add(TowerFactory.GetTower(TowerTypes.Fast, new Vector2(200, 400)));
         }
     }
 }

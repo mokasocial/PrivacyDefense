@@ -30,9 +30,9 @@ namespace SafeAndFree.Helpers
             switch (type)
             {
                 case TowerTypes.Fast://Base cost 15 min delay is 4
-                     towerStats = new TowerStats[7] { new TowerStats(15, 180, 25), new TowerStats(12, 190, 50), new TowerStats(9, 200, 90), 
+                    towerStats = new TowerStats[7] {new TowerStats(4, 250, -1) /*new TowerStats(15, 180, 25)*/, new TowerStats(12, 190, 50), new TowerStats(9, 200, 90), 
                          new TowerStats(7, 210, 200), new TowerStats(6, 220, 450),new TowerStats(5, 230, 700),new TowerStats(4, 250, -1) };
-                     weaponStats = new WeaponStats[7] { new WeaponStats(5, 10, 1), new WeaponStats(18, 10, 1), new WeaponStats(40, 10, 1), 
+                    weaponStats = new WeaponStats[7] { new WeaponStats(3000, 10, 1)/*new WeaponStats(5, 10, 1)*/, new WeaponStats(18, 10, 1), new WeaponStats(40, 10, 1), 
                          new WeaponStats(120, 10, 1), new WeaponStats(500, 10, 1),new WeaponStats(1500, 10, 1),new WeaponStats(3000, 10, 1) };
                 break;
                 //case TowerTypes.Splash:
