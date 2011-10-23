@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -17,9 +16,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-public class Game implements ApplicationListener, InputProcessor {
+public class Game implements ApplicationListener {
 	public static int screenWidth = 480;
 	public static int screenHeight = 320;
+	
+	public static final float TIME_BETWEEN_WAVES = 3;
+	
+	public static final int INITIAL_CREEP_SPEED = 32;
 
 	private SpriteBatch batch;
 	private Texture spriteSheet;
@@ -39,16 +42,26 @@ public class Game implements ApplicationListener, InputProcessor {
 	public int endingX;
 	public int endingY;
 	
+	public int current_creep_speed = INITIAL_CREEP_SPEED;
+	
 	public boolean isPaused = false;
 
+	public String debugtext = "";
+
+	public float wave_wait_timer = 0;
+	
 	// Circle sprites for tower ranges
 	HashMap<Float, Sprite> rangeSprites = new HashMap<Float, Sprite>();
+	public final int maxmoney = 9999;
+	public final int uiPanelWidth = 60;
 
 	public static Game instance;
 
 	@Override
 	public void create() {
 		instance = this;
+		
+		Gdx.input.setInputProcessor(new GameInputProcessor());
 
 		batch = new SpriteBatch();
 		spriteSheet = new Texture(Gdx.files.internal("sprite_sheet.png"));
@@ -75,7 +88,7 @@ public class Game implements ApplicationListener, InputProcessor {
 		mFont.setFixedWidthGlyphs("LifeMoney0123456789");
 
 		money = 100;
-		life = 100;
+		life = 49;
 
 		// Feel free to change this, it is confusing!
 		// Movement data is in the GREEN channel of the map:
@@ -130,8 +143,8 @@ public class Game implements ApplicationListener, InputProcessor {
 			}
 		}
 
-		for( int i = 1; i < 100; ++i )
-			creeps.add( new Creep( 100, 32, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
+		for( int i = 1; i < 50; ++i )
+			creeps.add( new Creep( 100, current_creep_speed, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
 		
 		projectiles.add( new Projectile( new Vector2( 0, 0 ), new Vector2( 32, 32 ) ) );
 
@@ -139,9 +152,9 @@ public class Game implements ApplicationListener, InputProcessor {
 	}
 
 	public void update() {
-		float dt = Gdx.graphics.getDeltaTime();
+		float dt =2* Gdx.graphics.getDeltaTime();
 
-		if (!isPaused) {
+		if (!isPaused && life > 0) {
 			
 			for (Projectile projectile : projectiles) {
 				projectile.update(dt);
@@ -164,7 +177,20 @@ public class Game implements ApplicationListener, InputProcessor {
 			for (Tower tower : towers) {
 				tower.update(dt);
 			}
+		
+			if (creeps.isEmpty() && wave_wait_timer < TIME_BETWEEN_WAVES) {
+			
+				wave_wait_timer += dt;
+			
+				System.out.println(wave_wait_timer);
+			
+			} else if (creeps.isEmpty() && wave_wait_timer >= TIME_BETWEEN_WAVES) {
+			
+				restart(current_creep_speed + 10);
+				wave_wait_timer = 0;
+			}
 		}
+		
 	}
 
 	@Override
@@ -216,12 +242,11 @@ public class Game implements ApplicationListener, InputProcessor {
 			batch.draw( spriteSheet, projCoords.x*16+8, projCoords.y*16+8, 0, 16*3, 16, 16 );
 		}
 
-		
-		
-		
+		// Draw the UI!
+
 		// Background
 		TextureRegion blackBox = new TextureRegion(spriteSheet, 0, 2 * 16, 16, 16);
-		batch.draw(blackBox, 0, 0, 60, screenHeight);
+		batch.draw(blackBox, 0, 0, uiPanelWidth , screenHeight);
 
 		// Draw the free towers.
 		for (int i = 1; i <= 4; i++) {
@@ -246,13 +271,44 @@ public class Game implements ApplicationListener, InputProcessor {
 		String uiString = "+: " + life + '\n' + "$: " + money;
 		TextBounds uiBounds = mFont.getMultiLineBounds(uiString);
 		mFont.drawWrapped(batch, uiString, 3, uiBounds.height + 3, uiBounds.width);
+
+		// DEBUG TE
+		mFont.drawWrapped(batch, debugtext, 60, uiBounds.height + 3, 1000);		
 		
-		// Towers		
+		// Render Paused String if needed in bottom right corner.
+		String center_string = null;
+		if (isPaused) {
+			center_string = "PAUSED";
+		} else if (life <= 0) {
+			center_string = "GAME OVER";
+		}
+		
+		if (center_string != null) {
+			TextBounds pausedBounds = mFont.getMultiLineBounds(center_string);
+			Color oldColor = mFont.getColor();
+			mFont.setColor(Color.RED);
+			mFont.drawWrapped(batch, center_string,
+					(screenWidth / 2) - (pausedBounds.width / 2),
+					(screenHeight / 2) - (pausedBounds.height / 2), pausedBounds.width );
+			mFont.setColor(oldColor);
+		}
+		
+		// Towers
 
 		batch.end();
-		money++;
 	}
 
+	public void restart(int creep_speed) {
+		
+		creeps = new ArrayList<Creep>();
+		
+		for( int i = 1; i < 100; ++i )
+			creeps.add( new Creep( 100, creep_speed, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
+		
+		life = 100;
+		
+	}
+	
 	public void drawSprite(int iconNum, int x, int y) {
 		batch.draw(spriteSheet, x * 16, y * 16, iconNum * 16, 0, 16, 16);
 	}
@@ -264,67 +320,19 @@ public class Game implements ApplicationListener, InputProcessor {
 
 	@Override
 	public void pause() {
-		isPaused = true;
+		if (life > 0) {
+			isPaused = !isPaused;
+		}
 	}
 
 	@Override
 	public void resume() {
-		isPaused = false;
+
 	}
 
 	@Override
 	public void dispose() {
 
-	}
-
-	@Override
-	public boolean keyDown(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyUp(int keycode) {
-		
-		System.out.println("Character: \"" + keycode + "\"");
-		return false;
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-
-		
-		return false;
-	}
-
-	@Override
-	public boolean touchDown(int x, int y, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchUp(int x, int y, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int x, int y, int pointer) {
-		// TODO Auto-generated method stub
-		System.out.println("test");
-		return false;
-	}
-
-	@Override
-	public boolean touchMoved(int x, int y) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public void drawCircle(float radius, Color color, Vector2 position) {
@@ -343,8 +351,9 @@ public class Game implements ApplicationListener, InputProcessor {
 		// * 2 (tower range goes both ways)
 		int powof2 = 1;
 		int shotRange = (int) Math.ceil(radius * 2);
-		while (powof2 < shotRange)
+		while (powof2 < shotRange){
 			powof2 <<= 1;
+		}
 
 		// Create a new pixmap with the appropriate size
 		Pixmap p = new Pixmap(powof2, powof2, Pixmap.Format.RGBA8888);
