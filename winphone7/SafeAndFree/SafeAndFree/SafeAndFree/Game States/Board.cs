@@ -27,10 +27,6 @@ namespace SafeAndFree
         private ProjectileManager projectileManager;
         private Player CurrentPlayer;
         private WaveManager waveManager;
-        /// <summary>
-        /// The grid of tiles.
-        /// </summary>
-        private Tile[,] mapTiles;
 
         /// <summary>
         /// List of towers on the map.
@@ -76,7 +72,6 @@ namespace SafeAndFree
         private void LoadResources()
         {
             LoadData();
-            LoadMap();
             LoadATowerTest();
         }
 
@@ -150,7 +145,7 @@ namespace SafeAndFree
                 }
                 if (check.Y >= 20 && check.Y < 110)
                 {
-                    BuyPlaceTower(TowerTypes.Judge);
+                    BuyPlaceTower(TowerTypes.Teacher);
                     return true;
                 }
                 else if (check.Y >= 120 && check.Y < 210)
@@ -160,7 +155,7 @@ namespace SafeAndFree
                 }
                 else if (check.Y >= 220 && check.Y < 310)
                 {
-                    BuyPlaceTower(TowerTypes.Teacher);
+                    BuyPlaceTower(TowerTypes.Judge);
                     return true;
                 }
             }
@@ -186,16 +181,8 @@ namespace SafeAndFree
                 {
                     if (!CheckButtonPress(touchLocation.Position))
                     {
-                        if (mapTiles[col, row].isSelectable)
-                        {
-                            selectedTile.X = col;
-                            selectedTile.Y = row;
-                        }
-                        else
-                        {
-                            selectedTile.X = -1;
-                            selectedTile.Y = -1;
-                        }
+                        selectedTile.X = col;
+                        selectedTile.Y = row;
                     }
                     else
                     {
@@ -283,7 +270,7 @@ namespace SafeAndFree
 
             foreach (Tower t in towers.Values)
             {
-                spriteBatch.Draw(TextureLibrary.GetTexture(t.TextureID), t.Position, new Rectangle(t.Level * (int)TileDimensions.X, 0, (int)TileDimensions.X, (int)TileDimensions.Y), Color.White);
+                spriteBatch.Draw(TextureLibrary.GetTexture(t.TextureID), t.Position, new Rectangle((t.Level <= 4 ? t.Level : 4) * (int)TileDimensions.X, 0, (int)TileDimensions.X, (int)TileDimensions.Y), Color.White);
             }
 
             foreach (Projectile p in projectileManager.Projectiles)
@@ -343,67 +330,6 @@ namespace SafeAndFree
             batch.DrawString(font, "Delay: " , new Vector2(5, 240), Color.DarkGreen);
             batch.DrawString(font,  cD + " ->" + (cC != -1 ? nD.ToString() : "None"), new Vector2(5, 260), Color.Red);
 
-        }
-
-        /// <summary>
-        /// Load the map information from xml.
-        /// </summary>
-        private void LoadMap()
-        {
-            mapTiles = new Tile[30, 50];
-            for (int i = 0; i <= mapTiles.GetUpperBound(0); i++)
-            {
-                for (int j = 0; j <= mapTiles.GetUpperBound(1); j++)
-                {
-                    mapTiles[i, j] = new Tile(new Vector2(j * Board.TileDimensions.X, i * Board.TileDimensions.Y));
-                    if ((i == mapTiles.GetUpperBound(1) || j == 0) && j != mapTiles.GetUpperBound(0))
-                    {
-                        mapTiles[i, j].isSelectable = false;
-                    }
-                }
-            }
-
-            for (int i = 0; i < paths.Length; i++)
-            {
-                for (int j = 0; j < paths[i].Length - 1; j++)
-                        {
-                int curCol = (int)Math.Round((paths[i][j].X - TileDimensions.X / 2) / TileDimensions.X);
-                int curRow = (int)Math.Round((paths[i][j].Y - TileDimensions.Y / 2) / TileDimensions.Y);
-
-                int nextCol = (int)Math.Round((paths[i][j + 1].X - TileDimensions.X / 2) / TileDimensions.X);
-                int nextRow = (int)Math.Round((paths[i][j + 1].Y - TileDimensions.Y / 2) / TileDimensions.Y);
-
-                
-                    if (curCol != nextCol)
-                    {
-                            for (int col = (int)Math.Min(curCol, nextCol) + j; col < (int)Math.Max(curCol, nextCol); col++)
-                            {
-                                if (col < 0 || col >= mapTiles.GetUpperBound(0) + 1 || curRow < 0 || curRow >= mapTiles.GetUpperBound(1) + 1)
-                                {
-                                    continue;
-                                }
-              // col and row mixed up.
-                                mapTiles[curRow, col].isSelectable = false;
-                            }
-                    }
-                    else if (curRow != nextRow)
-                    {
-                        //for (int j = 0; j < (int)Math.Max(curCol, nextCol) - (int)Math.Min(curCol, nextCol) - 1; j++)
-                        
-                            for (int row = (int)Math.Min(curRow, nextRow) + j; row < (int)Math.Max(curRow, nextRow); row++)
-                            {
-                                if (curCol < 0 || curCol >= mapTiles.GetUpperBound(0) + 1 || row < 0 || row >= mapTiles.GetUpperBound(1) + 1)
-                                {
-                                    continue;
-                                }
-                    
-              // col and row mixed up.
-                                mapTiles[row, curCol].isSelectable = false;
-                            }
-                        
-                    }
-                }
-            }
         }
 
         /// <summary>

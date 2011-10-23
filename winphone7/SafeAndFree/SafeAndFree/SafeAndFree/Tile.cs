@@ -5,7 +5,6 @@ namespace SafeAndFree
 {
     class Tile : Actor
     {
-        public bool isSelectable = true;
 
         public Tile()
         {
