@@ -293,8 +293,14 @@ namespace SafeAndFree
             {
                 towers.Add(TowerFactory.GetTower(type, location));
             }
+        }
 
-
+        private void UpdateTower(Tower theOneToOneUp)
+        {
+            if (theOneToOneUp.CanLevel && CurrentPlayer.WithdrawalMoney(theOneToOneUp.GetTowerStats().CostToNext))
+            {
+                theOneToOneUp.LevelUp();
+            }
         }
         ///
         /// Test load a tower
