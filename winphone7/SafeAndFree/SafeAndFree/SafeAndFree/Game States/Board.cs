@@ -13,14 +13,17 @@ using System.Windows.Resources;
 using Microsoft.Xna.Framework.Input;
 using SafeAndFree.Enumerations;
 using SafeAndFree.Helpers;
+using SafeAndFree.Game_States;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace SafeAndFree
 {
     /// <summary>
     /// Logic for the game board.
     /// </summary>
-    class Board : Screen
+    public class Board : Screen
     {
+        private ProjectileManager projectileManager;
         /// <summary>
         /// The grid of tiles.
         /// </summary>
@@ -54,20 +57,63 @@ namespace SafeAndFree
         /// </summary>
         public static Vector2 TileCenter;
 
+        public Vector2 selectedTile = new Vector2(-1, -1);
+
         /// <summary>
         /// Constructor.
         /// </summary>
         public Board()
         {
+            projectileManager = new ProjectileManager();
+            LoadResources();
+        }
+
+        private void LoadResources()
+        {
             LoadMap();
             LoadPaths();
             LoadCreeps();
+            LoadATowerTest();
         }
 
         /// <summary>
         /// The update loop.
         /// </summary>
         public void Update()
+        {
+            HandleCreepLoop();
+            HandleTowerLoop();
+            HandleProjectileLoop();
+            HandleInput();
+        }
+
+        protected void HandleInput()
+        {
+            TouchCollection touchCollection = TouchPanel.GetState();
+            foreach (TouchLocation touchLocation in touchCollection)
+            {
+                int col = (int)Math.Floor(touchLocation.Position.X / Board.TileDimensions.X);
+                int row = (int)Math.Floor(touchLocation.Position.Y / Board.TileDimensions.Y);
+
+                if (selectedTile.X == col && selectedTile.Y == row)
+                {
+                    //selectedTile.X = -1;
+                    //selectedTile.Y = -1;
+                }
+                else
+                {
+                    selectedTile.X = col;
+                    selectedTile.Y = row;
+                }
+            }
+        }
+
+        protected void HandleProjectileLoop()
+        {
+            projectileManager.Update();
+        }
+
+        protected void HandleCreepLoop()
         {
             for (int i = 0; i < creeps.Count; i++)
             {
@@ -85,6 +131,19 @@ namespace SafeAndFree
             }
         }
 
+        protected void HandleTowerLoop()
+        {
+            foreach (Tower t in towers)
+            {
+                Creep target;
+                if(Calculator.BestShootableCreep(creeps, t.Position, t.GetTowerStats().Range, out target))
+                {
+                    var proj = TowerFactory.GetTowerProjectile(t, target);
+                    projectileManager.AddProjectile(proj);
+                }
+            }
+        }
+
         /// <summary>
         /// Called every draw loop from the GameEngine.
         /// </summary>
@@ -93,10 +152,25 @@ namespace SafeAndFree
         {
             spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MAP_0), new Vector2(0, 0), Color.White);
 
+            if (selectedTile.X >= 0 && selectedTile.Y >= 0)
+            {
+                spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.TILE_SELCT), new Vector2(selectedTile.X * TileDimensions.X, selectedTile.Y * TileDimensions.Y), Color.White);
+            }
+
             // Draw all creeps.
             foreach (Creep c in creeps)
             {
                 spriteBatch.Draw(TextureLibrary.GetTexture(c.TextureID), c.Position, Color.White);
+            }
+
+            foreach (Tower t in towers)
+            {
+                spriteBatch.Draw(TextureLibrary.GetTexture(t.TextureID), t.Position, Color.White);
+            }
+
+            foreach (Projectile p in projectileManager.Projectiles)
+            {
+                spriteBatch.Draw(TextureLibrary.GetTexture(p.TextureID), p.CurrentPoint, Color.White) ;
             }
         }
 
@@ -170,11 +244,12 @@ namespace SafeAndFree
         }
 
         ///
-        ///Test load a tower
+        /// Test load a tower
         ///
         private void LoadATowerTest()
         {
-            towers.Add(TowerFactory.GetTower(TowerTypes.Normal));
+            towers = new List<Tower>();
+            towers.Add(TowerFactory.GetTower(TowerTypes.Normal, new Vector2(50, 400)));
         }
     }
 }

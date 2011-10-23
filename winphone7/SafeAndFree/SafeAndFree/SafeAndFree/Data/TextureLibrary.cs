@@ -14,7 +14,10 @@ namespace SafeAndFree.Data
    public enum MEDIA_ID
     {
         MAP_0,
-        CREEP_0
+        CREEP_0, 
+        TOWER_0,
+        PROJECTILE_0,
+        TILE_SELCT
     }
 
     /// <summary>
@@ -30,7 +33,7 @@ namespace SafeAndFree.Data
 
         private static Dictionary<MEDIA_ID, Texture2D> textures = new Dictionary<MEDIA_ID, Texture2D>();
 
-        private static string[] assetNames = new string[]{"drawmap", "creep0"};
+        private static string[] assetNames = new string[]{"drawmap", "creep0", "TestTower", "TestProjectile", "tileSelect"};
 
         public static Texture2D GetTexture(MEDIA_ID mediaId)
         {
