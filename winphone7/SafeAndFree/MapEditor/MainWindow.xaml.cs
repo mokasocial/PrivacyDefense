@@ -119,7 +119,6 @@ namespace MapEditor
                         imageVisual.Source = newImg;
                         imageVisual.Width = newImg.Width;
                         imageVisual.Height = newImg.Height;
-
                         tileList.Children.Add(imageVisual);
                     }*/
                 }

@@ -27,7 +27,7 @@ public class Game implements ApplicationListener {
 	
 	public static final int INITIAL_CREEP_SPEED = 32;
 
-	public static int maxProjectiles = 1000;
+	public static int maxProjectiles = 200;
 
 
 	private SpriteBatch batch;
@@ -37,8 +37,17 @@ public class Game implements ApplicationListener {
 	private int[][] tiles; // Our base map (paths and whatnot)
 	public char[][] movementDirs; // Our pathfinding, 'N' 'E' 'W' or 'S' (and
 									// can make different for flyers, woah!)
+	
+	// This is just to reduce the number of temporary objects
+	public int oldMoney;
+	public int oldLife;
+	
 	public int money;
 	public int life;
+	
+	String uiString;
+	TextBounds uiBounds;
+	
 	public ArrayList<Creep> creeps;
 	public Projectile projectiles[];
 	public ArrayList<Tower> towers;
@@ -112,7 +121,7 @@ public class Game implements ApplicationListener {
 		creeps = new ArrayList<Creep>();
 		projectiles = new Projectile[maxProjectiles];
 		
-		for( int i = 0; i < 1000; ++i )
+		for( int i = 0; i < maxProjectiles; ++i )
 		{
 			projectiles[i] = new Projectile( new Vector2( 0.0f, 0.0f ), new Vector2( 0.0f, 0.0f ), 0.0f );
 			projectiles[i].active = false;
@@ -120,12 +129,12 @@ public class Game implements ApplicationListener {
 		
 		towers = new ArrayList<Tower>();
 
-		towers.add(new Tower(TowerType.JUDGE, 6, 6));
+		/*towers.add(new Tower(TowerType.JUDGE, 6, 6));
 		towers.add(new Tower(TowerType.LAWSUIT, 12, 4));
 		towers.add(new Tower(TowerType.TEACHER, 19, 8));
 		towers.add(new Tower(TowerType.JUDGE, 8, 8));
 		towers.add(new Tower(TowerType.LAWSUIT, 4, 12));
-		towers.add(new Tower(TowerType.TEACHER, 8, 19));
+		towers.add(new Tower(TowerType.TEACHER, 8, 19));*/
 		
 		free_towers = new ArrayList<TowerType>();
 		free_towers.add(TowerType.JUDGE);
@@ -197,6 +206,17 @@ public class Game implements ApplicationListener {
 			}
 		}
 
+		for( int i = 1; i < 29; ++i )
+		{
+			for( int j = 1; j < 19; ++j )
+			{
+				if( tiles[i][j] == 4 &&
+					 ( tiles[i-1][j] != 4 || tiles[i+1][j] != 4 || tiles[i][j-1] != 4 || tiles[i][j+1] != 4 ) )
+				{
+					towers.add( new Tower( TowerType.LAWSUIT, i, j ) );
+				}
+			}
+		}
 
 		for( int i = 1; i < 50; ++i )
 			creeps.add( new Creep( 100, current_creep_speed, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
@@ -205,6 +225,11 @@ public class Game implements ApplicationListener {
 		
 		tower_region = new TextureRegion( spriteSheet, 0, 0, 16, 16 );
 		
+		oldMoney = 0;
+		oldLife = 0;
+		
+		uiString = "";
+		uiBounds = new TextBounds();
 		pause_button_region = new TextureRegion( spriteSheet, 0, 0, 16, 16);
 		
 		mapData.dispose();
@@ -212,7 +237,7 @@ public class Game implements ApplicationListener {
 
 
 	public void update() {
-		float dt =2* Gdx.graphics.getDeltaTime();
+		float dt = Gdx.graphics.getDeltaTime();
 
 		if (!isPaused && life > 0) {
 			
@@ -238,6 +263,10 @@ public class Game implements ApplicationListener {
 							}
 						}
 					}
+				}
+				else
+				{
+					projectile.active = false;
 				}
 				
 				if( projectile.active )
@@ -265,14 +294,14 @@ public class Game implements ApplicationListener {
 				}
 			}
 
-			for (Tower tower : towers) {
-				tower.update(dt);
+			for( int i = 0; i < towers.size(); ++i ) 
+			{
+				towers.get(i).update(dt);
 			}
 		
 			if (active_creeps <= 0 && wave_wait_timer < TIME_BETWEEN_WAVES) {
 			
 				wave_wait_timer += dt;
-				
 			} else if (active_creeps <= 0 && wave_wait_timer >= TIME_BETWEEN_WAVES) {
 				waveNumber++;
 				nextWave(current_creep_speed += 10);
@@ -350,7 +379,16 @@ public class Game implements ApplicationListener {
 			}
 		}
 				
-		
+
+		// Keep the GC in it's cage as long as possible. 
+		if( oldMoney != money || oldLife != life )
+		{
+			uiString = "+: " + life + '\n' + "$: " + money;
+			uiBounds = mFont.getMultiLineBounds(uiString);
+		}
+		oldMoney = money;
+		oldLife = life;
+				
 		// Draw droid pause button if on an android device.
 		if (runningDrd) {
 			
@@ -368,11 +406,11 @@ public class Game implements ApplicationListener {
 		// Text
 		String uiString = "+: " + life + '\n' + "$: " + money;
 		TextBounds uiBounds = mFont.getMultiLineBounds(uiString);
+		
 		mFont.drawWrapped(batch, uiString, 3, uiBounds.height + 3, uiBounds.width);
 
 		// DEBUG TEXT
 		mFont.drawWrapped(batch, debugtext, 60, uiBounds.height + 3, 1000);		
-		
 
 		// Draw the cursorTexture
 		if (cursorState != null) {
