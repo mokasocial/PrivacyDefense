@@ -8,7 +8,7 @@ public class Tower
 {
 	int m_x;
 	int m_y;
-	final TowerType m_type;
+	public final TowerType m_type;
 	public float m_speed;
 	public float m_timeToFire;
 	public float radius;

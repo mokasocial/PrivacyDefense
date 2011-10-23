@@ -26,6 +26,7 @@ public class Game implements ApplicationListener {
 	public static final Rectangle DRD_PAUSE_RECT = new Rectangle(3, 50, 54, 25);
 	public static final Rectangle START_RECT = new Rectangle(3, 77, 54, 25);
 	public static final Rectangle RESTART_RECT = new Rectangle(3, 77, 54, 25);
+	public static final Rectangle SELL_RECT = new Rectangle(3, 77, 54, 25);
 	
 	public static final float TIME_BETWEEN_WAVES = 3;
 	
@@ -36,6 +37,8 @@ public class Game implements ApplicationListener {
 
 	private SpriteBatch batch;
 	public Texture spriteSheet;
+	public Texture menuTexture;
+	
 	private Texture mapData;
 	private BitmapFont mFont;
 	public int[][] tiles; // Our base map (paths and whatnot)
@@ -108,6 +111,7 @@ public class Game implements ApplicationListener {
 	TextureRegion pause_button_region;
 	TextureRegion start_button_region;
 	TextureRegion restart_button_region;
+	TextureRegion sell_button_region;
 	
 
 	/**
@@ -132,6 +136,7 @@ public class Game implements ApplicationListener {
 		batch = new SpriteBatch();
 		spriteSheet = new Texture(Gdx.files.internal("sprite_sheet.png"));
 		selectionImg = new Texture(Gdx.files.internal("Selector32.png"));
+		menuTexture = new Texture(Gdx.files.internal("menu.png"));
 		
 		Pixmap mapData = new Pixmap(Gdx.files.internal("map2.png"));
 
@@ -239,6 +244,7 @@ public class Game implements ApplicationListener {
 		start_button_region = new TextureRegion( spriteSheet, 0, 0, 16, 16);
 		restart_button_region = new TextureRegion( spriteSheet, 0, 0, 16, 16);
 		selection_region = new TextureRegion( selectionImg, 0, 0, SQUARE_WIDTH, SQUARE_WIDTH);
+		sell_button_region = new TextureRegion(spriteSheet, 0, 0, 16, 16 );
 		
 		mapData.dispose();
 	}
@@ -392,23 +398,26 @@ public class Game implements ApplicationListener {
 		// Background
 		batch.draw(blackBox, 0, 0, uiPanelWidth , screenHeight);
 
+		// Draw the menu bar
+		batch.draw(menuTexture,-4,-190);
+		//batch.draw(menu_region, 0, -100);
+		
 		// Draw the free towers.
 		for (int i = 1; i <= 4; i++) 
 		{
 			if (free_towers.get(i-1) != null) 
 			{
 				tower_region.setRegion( free_towers.get(i-1).getSpriteLocX(), free_towers.get(i-1).getSpriteLocY(), 16, 16 );
-				batch.draw(tower_region, 40, screenHeight - 48 * i, 16, 16);
+				batch.draw(tower_region, 39, screenHeight - 39 * i, 16, 16);
 				
 				String towerPrice = "$" + free_towers.get(i-1).getPrice();
 				TextBounds priceBounds = mFont.getBounds(towerPrice);
-				mFont.drawWrapped(batch, towerPrice, 3, screenHeight - 48*i + priceBounds.height, priceBounds.width);
+				mFont.drawWrapped(batch, towerPrice, 3, screenHeight - 45*i + priceBounds.height, priceBounds.width);
 			}
 		}
 				
 
-		// Draw the menu bar
-		//batch.draw(menu_region, 0, -100);
+
 		
 		
 		
@@ -462,6 +471,22 @@ public class Game implements ApplicationListener {
 			mFont.drawWrapped(batch, start_button_string,
 							(32 - (startButtonBounds.width / 2)),
 							START_RECT.y + startButtonBounds.height + 4, startButtonBounds.width);
+			
+			
+		}
+		
+		// Draw the sell button if we are not paused or in build mode and a tower is selected.
+		if (!isPaused && !buildMode && selected != null) {
+			
+			sell_button_region.setRegion(7*17, 23, 2, 2);
+			batch.draw(sell_button_region, SELL_RECT.x, SELL_RECT.y, SELL_RECT.width, SELL_RECT.height);
+			
+			String sell_button_string = "Sell";
+			TextBounds sellButtonBounds = mFont.getBounds(sell_button_string);
+			mFont.drawWrapped(batch, sell_button_string,
+							(32 - (sellButtonBounds.width / 2)),
+							START_RECT.y + sellButtonBounds.height + 4, sellButtonBounds.width);
+			
 			
 			
 		}
