@@ -135,9 +135,10 @@ namespace SafeAndFree
         {
             foreach (Tower t in towers)
             {
+                t.Update();
                 Creep target;
 
-                if(Calculator.BestShootableCreep(creeps, t.Position, t.GetTowerStats().Range, out target))
+                if(t.CanFire && Calculator.BestShootableCreep(creeps, t.Position, t.GetTowerStats().Range, out target))
                 {
                     var proj = TowerFactory.GetTowerProjectile(t, target);
                     projectileManager.AddProjectile(proj);
