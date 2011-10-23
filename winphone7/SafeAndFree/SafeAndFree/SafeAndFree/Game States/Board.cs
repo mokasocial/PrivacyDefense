@@ -82,7 +82,7 @@ namespace SafeAndFree
         /// <summary>
         /// The update loop.
         /// </summary>
-        public void Update()
+        public override void Update()
         {
             if (null != waveManager)
             {
@@ -161,7 +161,7 @@ namespace SafeAndFree
         /// Called every draw loop from the GameEngine.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MAP_0), new Vector2(0, 0), Color.White);
 
@@ -186,7 +186,7 @@ namespace SafeAndFree
                 spriteBatch.Draw(TextureLibrary.GetTexture(p.TextureID), p.CurrentPoint, Color.White) ;
             }
 
-            spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MENU_LEFT), new Rectangle(0, 0, 60, 480), Color.White);
+            spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MENU_LEFT), new Rectangle(0, 0, 120, 480), Color.White);
         }
 
         /// <summary>

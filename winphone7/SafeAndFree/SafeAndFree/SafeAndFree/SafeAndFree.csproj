@@ -75,11 +75,13 @@
     <Compile Include="Enumerations\ProjectileTypes.cs" />
     <Compile Include="Enumerations\TowerTypes.cs" />
     <Compile Include="Exceptions\ContentNotDefinedException.cs" />
+    <Compile Include="Game States\BasicMenu.cs" />
     <Compile Include="Game States\Board.cs" />
     <Compile Include="Creep.cs" />
     <Compile Include="Game States\ProjectileManager.cs" />
     <Compile Include="Helpers\Calculator.cs" />
     <Compile Include="Helpers\TowerFactory.cs" />
+    <Compile Include="InputHandlers\Touch.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

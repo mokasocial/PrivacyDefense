@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
 using SafeAndFree.Data;
+using SafeAndFree.Game_States;
 
 namespace SafeAndFree
 {
@@ -30,6 +31,8 @@ namespace SafeAndFree
         /// </summary>
         Screen currentGameScreen = null;
 
+        public static GameEngine RunningEngine { get; private set; }
+
         public GameEngine()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -40,6 +43,8 @@ namespace SafeAndFree
 
             // Extend battery life under lock.
             InactiveSleepTime = TimeSpan.FromSeconds(1);
+
+            GameEngine.RunningEngine = this;
         }
 
         /// <summary>
@@ -69,7 +74,8 @@ namespace SafeAndFree
             TextureLibrary.Content = this.Content;
 
             // Load a new Board object.
-            Load(new Board());
+            // Load(Screens.TITLE);
+            Load(Screens.GAME);
         }
 
         /// <summary>
@@ -124,9 +130,23 @@ namespace SafeAndFree
         /// Only one screen can be active at any time.
         /// </summary>
         /// <param name="screenToLoad">The screen to set as active.</param>
-        public void Load(Screen screenToLoad)
+        public void Load(Screens screenToLoad)
         {
-            currentGameScreen = screenToLoad;
+            switch (screenToLoad)
+            {
+                case Screens.TITLE:
+                    currentGameScreen = new BasicMenu(MEDIA_ID.TITLESCREEN, Screens.GAME);
+                    break;
+                case Screens.GAME:
+                    currentGameScreen = new Board();
+                    break;
+                case Screens.LOSE:
+                    currentGameScreen = new BasicMenu(MEDIA_ID.LOSESCREEN, Screens.TITLE);
+                    break;
+                case Screens.WIN:
+                    currentGameScreen = new BasicMenu(MEDIA_ID.WINSCREEN, Screens.TITLE);
+                    break;
+            }
         }
     }
 }
