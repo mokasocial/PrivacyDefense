@@ -44,6 +44,8 @@ public class Game implements ApplicationListener {
 	public ArrayList<TowerType> free_towers; 
 	public int startingX, startingY;
 
+	public int waveNumber = 0;
+	
 	public int endingX;
 	public int endingY;
 	
@@ -225,11 +227,10 @@ public class Game implements ApplicationListener {
 			if (active_creeps <= 0 && wave_wait_timer < TIME_BETWEEN_WAVES) {
 			
 				wave_wait_timer += dt;
-				System.out.println(wave_wait_timer);
 				
 			} else if (active_creeps <= 0 && wave_wait_timer >= TIME_BETWEEN_WAVES) {
-			
-				restart(current_creep_speed + 10);
+				waveNumber++;
+				nextWave(current_creep_speed += 10);
 				wave_wait_timer = 0;
 			}
 		}
@@ -344,16 +345,31 @@ public class Game implements ApplicationListener {
 
 	public void restart(int creep_speed) {
 		
-		for (int i = 0; i < creeps.size(); i++) {
-			creeps.get(i).active = true;
-			creeps.get(i).Health = 100;
-			creeps.get(i).Speed = creep_speed;
-			creeps.get(i).x = startingX;
-			creeps.get(i).y = startingY + i;
-		}
+		money = 100;
 		
 		life = 100;
 		
+		waveNumber = 0;
+		
+		nextWave(INITIAL_CREEP_SPEED);
+		
+	}
+	
+	public void nextWave(int creep_speed) {
+		creeps = new ArrayList<Creep>();
+		
+		// Signal gc
+		System.gc();
+		
+		CreepType.seedWithWave(waveNumber);
+		
+		for (int i = 0; i < 100; i++) {
+			Creep newOne = new Creep( 100, creep_speed, 20, startingX, startingY + i, 0, 0, CreepType.getRandomCreepType() );
+			newOne.xOffset = 0;
+			newOne.yOffset = 0;
+			creeps.add(newOne);
+			
+		}
 	}
 	
 	public void drawSprite(int iconNum, int x, int y) {
