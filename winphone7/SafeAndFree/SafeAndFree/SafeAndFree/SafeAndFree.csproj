@@ -80,6 +80,7 @@
     <Compile Include="Game States\ProjectileManager.cs" />
     <Compile Include="Helpers\Calculator.cs" />
     <Compile Include="Helpers\TowerFactory.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Game States\Screen.cs" />
@@ -96,9 +97,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
-    <Resource Include="MapDefinitions.xml">
+    <Content Include="MapDefinitions.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </Content>
+    <Content Include="obsolete tile images\tile0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="obsolete tile images\tile1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="obsolete tile images\tile2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="obsolete tile images\tile3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="PhoneGameThumb.png">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </Content>

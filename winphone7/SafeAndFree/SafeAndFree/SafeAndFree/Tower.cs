@@ -8,6 +8,9 @@ using SafeAndFree.Enumerations;
 
 namespace SafeAndFree
 {
+    /// <summary>
+    /// Logic for tower objects.
+    /// </summary>
     public class Tower : Actor
     {
         public TowerTypes Type { get; private set; }
@@ -16,11 +19,13 @@ namespace SafeAndFree
         { get { return NextFire == 0; } }
         private TowerStats[] towerStats;
         private WeaponStats[] weaponStats;
+
         public int Level 
         { 
             get; 
             private set; 
         }
+
         public bool CanLevel 
         { 
             get 
@@ -38,10 +43,12 @@ namespace SafeAndFree
             Type = type;
             TextureID = textureID;
         }
+
         public TowerStats GetTowerStats()
         {
             return towerStats[Level];
         }
+
         public WeaponStats GetWeaponStats()
         {
             return weaponStats[Level];
