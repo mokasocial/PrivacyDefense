@@ -6,17 +6,23 @@ public class CreepType {
 
 	private static final Random rand = new Random();
 	private final String m_type;
+	public int m_worth;
 
-	private CreepType(String type) {
+	private CreepType(String type, int worth) {
 		m_type = type;
+		m_worth = worth;
 	}
 
-	public static CreepType CRIMINAL = new CreepType("CRIMINAL");
-	public static CreepType BOSS = new CreepType("BOSS");
-	public static CreepType GLOBAL_CORP = new CreepType("GLOBAL_CORP");
-	public static CreepType GOVERNMENT = new CreepType("GOVERNMENT");
-	public static CreepType PETTY = new CreepType("PETTY");
-	public static CreepType SEARCHER = new CreepType("SEARCHER");
+	public int getWorth() {
+		return m_worth;
+	}
+	
+	public static CreepType CRIMINAL = new CreepType("CRIMINAL", 2);
+	public static CreepType BOSS = new CreepType("BOSS", 3);
+	public static CreepType GLOBAL_CORP = new CreepType("GLOBAL_CORP", 4);
+	public static CreepType GOVERNMENT = new CreepType("GOVERNMENT", 4);
+	public static CreepType PETTY = new CreepType("PETTY",5);
+	public static CreepType SEARCHER = new CreepType("SEARCHER", 5);
 	
 	public static void seedWithWave(final long wave) {
 		rand.setSeed(wave);
