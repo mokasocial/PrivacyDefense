@@ -375,7 +375,8 @@ public class Game implements ApplicationListener {
 		// Draw the towers
 		for( int i = 0; i < towers.size(); ++i )
 		{
-			drawSprite(towers.get( i ).getIconNum(), towers.get(i).m_x, towers.get(i).m_y);
+			batch.draw(towers.get(i).m_type.getTextureRegion(), towers.get(i).m_x * SQUARE_WIDTH, (towers.get(i).m_y) * SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH);
+			//drawSprite(towers.get( i ).getIconNum(), towers.get(i).m_x, towers.get(i).m_y);
 			if (towers.get(i).selected) {
 				//batch.draw(spriteSheet, towers.get(i).m_x * SQUARE_WIDTH, towers.get(i).m_y * SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH, towers.get(i).m_type.getSpriteLocX(), towers.get(i).m_type.getSpriteLocY(), 16, 16, false, true);
 				//drawSprite(towers.get( i ).getIconNum(), towers.get(i).m_x, towers.get(i).m_y);
@@ -432,8 +433,9 @@ public class Game implements ApplicationListener {
 		{
 			if (free_towers.get(i-1) != null) 
 			{
-				tower_region.setRegion( free_towers.get(i-1).getSpriteLocX(), free_towers.get(i-1).getSpriteLocY(), 16, 16 );
-				batch.draw(tower_region, 33, screenHeight - 57 * i, 16, 16);
+				//tower_region.setRegion( free_towers.get(i-1).getSpriteLocX(), free_towers.get(i-1).getSpriteLocY(), 16, 16 );
+				batch.draw(free_towers.get(i-1).getTextureRegion(), 29, (screenHeight - 60 * i) + 5, SQUARE_WIDTH, SQUARE_WIDTH);
+				//batch.draw(tower_region, 33, screenHeight - 57 * i, 16, 16);
 				
 				String towerPrice = "$" + free_towers.get(i-1).getPrice();
 				TextBounds priceBounds = mFont.getBounds(towerPrice);

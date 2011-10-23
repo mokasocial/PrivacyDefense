@@ -146,10 +146,10 @@ public class GameInputProcessor implements InputProcessor {
 					}*/
 				
 					if (Game.instance.cursorState != null) {
-						Game.instance.cursorTexture = new TextureRegion(Game.instance.spriteSheet,
-								Game.instance.cursorState.getSpriteLocX(),
-								Game.instance.cursorState.getSpriteLocY(),
-								16, 16);
+						Game.instance.cursorTexture = new TextureRegion(Game.instance.cursorState.getTextureRegion(),
+								0,
+								0,
+								32, 32);
 					}
 				}
 				
