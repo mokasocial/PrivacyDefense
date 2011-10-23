@@ -78,6 +78,7 @@
     <Compile Include="Creep.cs" />
     <Compile Include="Helpers\Calculator.cs" />
     <Compile Include="Helpers\TowerFactory.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Game States\Screen.cs" />

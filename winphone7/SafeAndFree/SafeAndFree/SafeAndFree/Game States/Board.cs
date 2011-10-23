@@ -71,11 +71,14 @@ namespace SafeAndFree
             {
                 if (creeps[i].IsDead)
                 {
+                    // Creep was killed.
                     creeps.RemoveAt(i--);
                 }
                 else if (creeps[i].Update(this.paths))
                 {
+                    // Creep reached the end.
                     creeps.RemoveAt(i--);
+
                 }
             }
         }
@@ -172,6 +175,7 @@ namespace SafeAndFree
             Dictionary<CreepStats, int> basicStats = new Dictionary<CreepStats, int>();
             basicStats.Add(CreepStats.Health, 50);
             basicStats.Add(CreepStats.Speed, 3);
+            basicStats.Add(CreepStats.DamageToPlayer, 1);
 
             creeps.Add(new Creep(basicStats, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_0, 0, 0));
         }

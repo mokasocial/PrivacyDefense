@@ -23,8 +23,9 @@ namespace SafeAndFree
             }
         }
 
-        public virtual void Update()
+        public virtual bool Update()
         {
+            return false;
         }
     }
 }

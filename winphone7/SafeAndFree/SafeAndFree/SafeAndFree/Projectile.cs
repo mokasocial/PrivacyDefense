@@ -19,11 +19,12 @@ namespace SafeAndFree
             TargetCreep = targetCreep;
             CurrentPoint = startPoint;
         }
+
         /// <summary>
-        /// 
+        /// Update this Projectile instance.
         /// </summary>
-        /// <returns>Whether the projectile hit, and thus should be removed</returns>
-        public bool Tick()
+        /// <returns>True if the projectile should be removed.</returns>
+        override public bool Update()
         {
             bool result;
             CurrentPoint = Calculator.MovementTowardsPoint(CurrentPoint, TargetCreep.Position, Stats.Speed, out result);

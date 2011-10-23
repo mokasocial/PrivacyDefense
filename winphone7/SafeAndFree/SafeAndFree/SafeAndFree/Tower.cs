@@ -6,16 +6,21 @@ using SafeAndFree.Data;
 
 namespace SafeAndFree
 {
+    /// <summary>
+    /// Logic for tower objects.
+    /// </summary>
     public class Tower : Actor
     {
         public int NextFire { get; private set; }
         private TowerStats[] towerStats;
         private WeaponStats[] weaponStats;
+
         public int Level 
         { 
             get; 
             private set; 
         }
+
         public bool CanLevel 
         { 
             get 
@@ -23,6 +28,7 @@ namespace SafeAndFree
                 return Level < towerStats.Length && Level < weaponStats.Length && (towerStats[Level].CostToNext >= 0); 
             } 
         }
+
         public Tower(TowerStats[] tStats, WeaponStats[] wStats)
         {
             towerStats = tStats;
@@ -30,10 +36,12 @@ namespace SafeAndFree
             Level = 0;
             NextFire = 0;
         }
+
         public TowerStats GetTowerStats()
         {
             return towerStats[Level];
         }
+
         public WeaponStats GetWeaponStats()
         {
             return weaponStats[Level];
@@ -44,7 +52,6 @@ namespace SafeAndFree
             missile = weaponStats[Level];
             NextFire += towerStats[Level].Delay;
         }
-
 
         public void LevelUp()
         {
