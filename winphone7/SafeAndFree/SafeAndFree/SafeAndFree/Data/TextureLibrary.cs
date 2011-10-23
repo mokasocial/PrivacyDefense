@@ -28,7 +28,14 @@ namespace SafeAndFree.Data
         WINSCREEN,
         LOSESCREEN
     }
+   public enum BUTTON_MEDIA_ID
+   {
+       TEACHER,
+       LAWYER,
+       JUDGE,
+       UPGRADE
 
+   }
     /// <summary>
     /// 
     /// </summary>
@@ -41,8 +48,9 @@ namespace SafeAndFree.Data
         public static ContentManager Content = null;
 
         private static Dictionary<MEDIA_ID, Texture2D> textures = new Dictionary<MEDIA_ID, Texture2D>();
-
+        private static Dictionary<BUTTON_MEDIA_ID, Texture2D> btnTextures = new Dictionary<BUTTON_MEDIA_ID, Texture2D>();
         private static string[] assetNames = new string[] { "creep_dataminer", "creep_heli", "creep_defcon", "creep_corporate", "SafeAndFreeMap", "Judge", "TestProjectile", "tileSelect", "TestProjectile2", "menu", "tophud", "titlescreen", "winscreen", "screen_lose"};
+        private static string[] buttonNames = new string[] { "ButtonTeacher","ButtonLawyer","ButtonJudge", "ButtonUpgrade"};
         private static SpriteFont font;
         public static SpriteFont GetFont()
         {
@@ -56,6 +64,23 @@ namespace SafeAndFree.Data
                 font = newFont;
             }
             return font;
+        }
+        public static Texture2D GetButtonTexture(BUTTON_MEDIA_ID mediaId)
+        {
+            if (null == Content)
+            {
+                throw new ContentNotDefinedException();
+            }
+            if (btnTextures.ContainsKey(mediaId))
+            {
+                return btnTextures[mediaId];
+            }
+            else
+            {
+                Texture2D newTexture = Content.Load<Texture2D>(buttonNames[(int)mediaId]);
+                btnTextures.Add(mediaId, newTexture);
+                return newTexture;
+            }
         }
         public static Texture2D GetTexture(MEDIA_ID mediaId)
         {
