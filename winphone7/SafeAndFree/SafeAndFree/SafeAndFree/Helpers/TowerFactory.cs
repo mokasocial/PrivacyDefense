@@ -27,18 +27,24 @@ namespace SafeAndFree.Helpers
         }
         public static void GetStatsForTowerType(TowerTypes type, out TowerStats[] towerStats, out WeaponStats[] weaponStats)
         {
-            //switch (type)
-            //{            
-            //    case TowerTypes.Fast:
-            //    case TowerTypes.Slow:
-            //    case TowerTypes.Splash:
-            //    case TowerTypes.Normal:
-            //    case default :    
-            Debuff slow = new Debuff(CreepStats.Speed, 1, 10);
-            towerStats = new TowerStats[5] { new TowerStats(30, 100, 5), new TowerStats(15, 130, 10), new TowerStats(13, 150, 20), new TowerStats(11, 170, 40), new TowerStats(10, 190, -1) };
-            weaponStats = new WeaponStats[5] { new WeaponStats(10, 10, 1, slow), new WeaponStats(20, 10, 1), new WeaponStats(40, 10, 1), new WeaponStats(80, 10, 1), new WeaponStats(200, 10, 1) };
-            //break;
-            //}
+            switch (type)
+            {            
+                //case TowerTypes.Fast:
+                //case TowerTypes.Splash:
+                case TowerTypes.Slow:
+                    Debuff slow = new Debuff(CreepStats.Speed, 1, 10);
+                towerStats = new TowerStats[5] { new TowerStats(70, 70, 5), new TowerStats(60, 70, 10), 
+                    new TowerStats(50, 70, 20), new TowerStats(40, 70, 40), new TowerStats(30, 70, -1) };
+                weaponStats = new WeaponStats[5] { new WeaponStats(0, 10, 1, slow), new WeaponStats(0, 10, 1, slow), 
+                    new WeaponStats(0, 10, 1, slow), new WeaponStats(0, 10, 1, slow), new WeaponStats(0, 10, 1, slow) };
+                break;
+                //case TowerTypes.Normal:
+
+                default:    
+                towerStats = new TowerStats[5] { new TowerStats(30, 100, 5), new TowerStats(15, 130, 10), new TowerStats(13, 150, 20), new TowerStats(11, 170, 40), new TowerStats(10, 190, -1) };
+                weaponStats = new WeaponStats[5] { new WeaponStats(10, 10, 1), new WeaponStats(20, 10, 1), new WeaponStats(40, 10, 1), new WeaponStats(80, 10, 1), new WeaponStats(200, 10, 1) };
+                break;
+            }
         }
         /// <summary>
         /// Should eventually return an array, for different levels
@@ -52,7 +58,15 @@ namespace SafeAndFree.Helpers
         }
         public static MEDIA_ID GetProjectileMediaID(ProjectileTypes type)
         {
-            return MEDIA_ID.PROJECTILE_0;
+            switch(type)
+            {
+                case ProjectileTypes.Slow:
+                    return MEDIA_ID.PROJECTILE_1;
+                case ProjectileTypes.Normal:
+                    return MEDIA_ID.PROJECTILE_0;
+                default:
+                    return MEDIA_ID.PROJECTILE_0;
+             }
         }
         public static Projectile GetTowerProjectile(Tower tower, Creep target)
         {

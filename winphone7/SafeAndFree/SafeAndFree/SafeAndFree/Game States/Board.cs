@@ -184,7 +184,6 @@ namespace SafeAndFree
         private void LoadMap()
         {
             mapTiles = new Tile[30, 50];
-
             for (int i = 0; i <= mapTiles.GetUpperBound(0); i++)
             {
                 for (int j = 0; j <= mapTiles.GetUpperBound(1); j++)
@@ -253,7 +252,8 @@ namespace SafeAndFree
         private void LoadATowerTest()
         {
             towers = new List<Tower>();
-            towers.Add(TowerFactory.GetTower(TowerTypes.Normal, new Vector2(50, 400)));
+            towers.Add(TowerFactory.GetTower(TowerTypes.Slow, new Vector2(70, 400)));
+            towers.Add(TowerFactory.GetTower(TowerTypes.Normal, new Vector2(200, 300)));
         }
     }
 }

@@ -204,14 +204,17 @@ public class Game implements ApplicationListener {
 					
 					for( int i = 0; i < creeps.size(); ++i )
 					{
-						collisionRectB.x = ( creeps.get(i).x * 16 + creeps.get(i).xOffset ) + 8;
-						collisionRectB.y = ( creeps.get(i).y * 16 + creeps.get(i).yOffset ) + 8;
-						
-						if( collisionRectA.overlaps( collisionRectB ) )
+						if( creeps.get(i).active )
 						{
-							creeps.get(i).Health -= projectile.damage;
-							projectile.active = false;
-							break;
+							collisionRectB.x = ( creeps.get(i).x * 16 + creeps.get(i).xOffset ) + 8;
+							collisionRectB.y = ( creeps.get(i).y * 16 + creeps.get(i).yOffset ) + 8;
+							
+							if( collisionRectA.overlaps( collisionRectB ) )
+							{
+								creeps.get(i).Health -= projectile.damage;
+								projectile.active = false;
+								break;
+							}
 						}
 					}
 				}
@@ -222,16 +225,22 @@ public class Game implements ApplicationListener {
 				}
 			}
 	
+			int active_creeps = 0;
+			
 			// Handle projectile collision, creep update, creep death
 			for( int i = 0; i < creeps.size(); ++i )
 			{
-				if( creeps.get(i).active && creeps.get(i).Health > 0 )
+				if( creeps.get(i).active )
 				{
-					creeps.get(i).update( dt );
-				}
-				else
-				{
-					creeps.get(i).die();
+					if( creeps.get(i).Health > 0 )
+					{
+						creeps.get(i).update( dt );
+						active_creeps++;
+					}
+					else
+					{
+						creeps.get(i).die();
+					}
 				}
 			}
 
@@ -239,13 +248,12 @@ public class Game implements ApplicationListener {
 				tower.update(dt);
 			}
 		
-			if (creeps.isEmpty() && wave_wait_timer < TIME_BETWEEN_WAVES) {
+			if (active_creeps <= 0 && wave_wait_timer < TIME_BETWEEN_WAVES) {
 			
 				wave_wait_timer += dt;
-			
 				System.out.println(wave_wait_timer);
-			
-			} else if (creeps.isEmpty() && wave_wait_timer >= TIME_BETWEEN_WAVES) {
+				
+			} else if (active_creeps <= 0 && wave_wait_timer >= TIME_BETWEEN_WAVES) {
 			
 				restart(current_creep_speed + 10);
 				wave_wait_timer = 0;
@@ -309,7 +317,8 @@ public class Game implements ApplicationListener {
 		batch.draw(blackBox, 0, 0, uiPanelWidth , screenHeight);
 
 		// Draw the free towers.
-		for (int i = 1; i <= 4; i++) {
+		for (int i = 1; i <= 4; i++) 
+		{
 			if (free_towers.get(i-1) != null) 
 			{
 				tower_region.setRegion( free_towers.get(i-1).getSpriteLocX(), free_towers.get(i-1).getSpriteLocY(), 16, 16 );
@@ -358,10 +367,13 @@ public class Game implements ApplicationListener {
 
 	public void restart(int creep_speed) {
 		
-		creeps = new ArrayList<Creep>();
-		
-		for( int i = 1; i < 100; ++i )
-			creeps.add( new Creep( 100, creep_speed, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
+		for (int i = 0; i < creeps.size(); i++) {
+			creeps.get(i).active = true;
+			creeps.get(i).Health = 100;
+			creeps.get(i).Speed = creep_speed;
+			creeps.get(i).x = startingX;
+			creeps.get(i).y = startingY + i;
+		}
 		
 		life = 100;
 		
