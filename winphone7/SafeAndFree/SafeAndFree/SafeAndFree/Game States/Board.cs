@@ -102,7 +102,7 @@ namespace SafeAndFree
                     CreepTypeData creepNormal = new CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 16, Width = 16, Speed = 3};
                     CreepTypeData creepFast = new CreepTypeData(){DamageToPlayer = 1, Health =(int)boost * 4, Height = 32, Width = 32, Speed = 5};
                     CreepTypeData creepVariant = new  CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 32, Width = 32, Speed = 4};
-                    CreepTypeData creepBoss = new CreepTypeData(){DamageToPlayer = 2, Health = (int)boost * 25, Height = 32, Width = 32, Speed = 3};
+                    CreepTypeData creepBoss = new CreepTypeData(){DamageToPlayer = 2, Health = (int)boost * 40, Height = 32, Width = 32, Speed = 3};
                     
                     // What is this?
                     int thing = waveManager.BonusWave % 4;
@@ -178,12 +178,20 @@ namespace SafeAndFree
                     //selectedTile.X = -1;
                     //selectedTile.Y = -1;
                 }
-                else
+                else 
                 {
                     if (!CheckButtonPress(touchLocation.Position))
                     {
-                      selectedTile.X = col;
-                      selectedTile.Y = row;
+                        if (mapTiles[col, row].isSelectable)
+                        {
+                            selectedTile.X = col;
+                            selectedTile.Y = row;
+                        }
+                        else
+                        {
+                            selectedTile.X = -1;
+                            selectedTile.Y = -1;
+                        }
                     }
                 }
             }
@@ -311,6 +319,16 @@ namespace SafeAndFree
             }
         }
 
+        private void DrawUpgradeStuff()
+        {
+            var font = TextureLibrary.GetFont(FONT_ID.HUDINFO);
+            int cA, cR, cD, cC, nA, nR, nD;
+            this.towers[selectedTile].GetLevelInfo(out cA, out cR, out cD, out cC, out nA, out nR, out nD);
+            
+            //spriteBatch.DrawString(font, "Level: " + (1 + waveManager.BonusWave), new Vector2(5, 120), Color.DarkCyan);
+
+        }
+
         /// <summary>
         /// Load the map information from xml.
         /// </summary>
@@ -322,6 +340,52 @@ namespace SafeAndFree
                 for (int j = 0; j <= mapTiles.GetUpperBound(1); j++)
                 {
                     mapTiles[i, j] = new Tile(new Vector2(j * Board.TileDimensions.X, i * Board.TileDimensions.Y));
+                    if ((i == mapTiles.GetUpperBound(1) || j == 0) && j != mapTiles.GetUpperBound(0))
+                    {
+                        mapTiles[i, j].isSelectable = false;
+                    }
+                }
+            }
+
+            for (int i = 0; i < paths.Length; i++)
+            {
+                for (int j = 0; j < paths[i].Length - 1; j++)
+                        {
+                int curCol = (int)Math.Round((paths[i][j].X - TileDimensions.X / 2) / TileDimensions.X);
+                int curRow = (int)Math.Round((paths[i][j].Y - TileDimensions.Y / 2) / TileDimensions.Y);
+
+                int nextCol = (int)Math.Round((paths[i][j + 1].X - TileDimensions.X / 2) / TileDimensions.X);
+                int nextRow = (int)Math.Round((paths[i][j + 1].Y - TileDimensions.Y / 2) / TileDimensions.Y);
+
+                
+                    if (curCol != nextCol)
+                    {
+                            for (int col = (int)Math.Min(curCol, nextCol) + j; col < (int)Math.Max(curCol, nextCol); col++)
+                            {
+                                if (col < 0 || col >= mapTiles.GetUpperBound(0) + 1 || curRow < 0 || curRow >= mapTiles.GetUpperBound(1) + 1)
+                                {
+                                    continue;
+                                }
+              // col and row mixed up.
+                                mapTiles[curRow, col].isSelectable = false;
+                            }
+                    }
+                    else if (curRow != nextRow)
+                    {
+                        //for (int j = 0; j < (int)Math.Max(curCol, nextCol) - (int)Math.Min(curCol, nextCol) - 1; j++)
+                        
+                            for (int row = (int)Math.Min(curRow, nextRow) + j; row < (int)Math.Max(curRow, nextRow); row++)
+                            {
+                                if (curCol < 0 || curCol >= mapTiles.GetUpperBound(0) + 1 || row < 0 || row >= mapTiles.GetUpperBound(1) + 1)
+                                {
+                                    continue;
+                                }
+                    
+              // col and row mixed up.
+                                mapTiles[row, curCol].isSelectable = false;
+                            }
+                        
+                    }
                 }
             }
         }

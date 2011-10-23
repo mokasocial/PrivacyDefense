@@ -22,13 +22,13 @@ namespace SafeAndFree.InputHandlers
             Visible = vis;
             switch (towerType)
             {
-                case TowerTypes.Normal:
+                case TowerTypes.Teacher:
                     id = BUTTON_MEDIA_ID.TEACHER;
                     break;
-                case TowerTypes.Fast:
+                case TowerTypes.Lawyer:
                     id = BUTTON_MEDIA_ID.LAWYER;
                     break;
-                case TowerTypes.Slow:
+                case TowerTypes.Judge:
                     id = BUTTON_MEDIA_ID.JUDGE;
                     break;
                 default:
