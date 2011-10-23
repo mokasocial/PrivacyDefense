@@ -16,7 +16,7 @@ namespace SafeAndFree.Data
         CREEP_0,
         CREEP_1,
         CREEP_2,
-        CREEP_3, 
+        CREEP_3,
         MAP_0,
         TOWER_0,
         PROJECTILE_0,

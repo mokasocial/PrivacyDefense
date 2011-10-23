@@ -11,18 +11,7 @@ namespace SafeAndFree
 {
     public class Creep : Actor
     {
-        /// <summary>
-        /// The center position of this instance.
-        /// </summary>
-        public Vector2 CenterPosition;
-
         private List<Debuff> CurrentDebuffs;
-        public int DistanceTravelled { get; private set; }
-
-        public new bool IsDead
-        {
-            get { return Stats[CreepStats.Health] <= 0; }
-        }
 
         /// <summary>
         /// The index of the path to follow.
@@ -34,6 +23,8 @@ namespace SafeAndFree
         /// is walking towards.
         /// </summary>
         private int _nextWaypoint = 0;
+
+        private Dictionary<CreepStats, int> stats;
 
         /// <summary>
         /// Get the top-left position of this instance.
@@ -56,11 +47,24 @@ namespace SafeAndFree
                 return _path;
             }
         }
-        public Vector2 GetCenterPosition()
+
+        public int DistanceTravelled { get; private set; }
+
+        public new bool IsDead
         {
-            return CenterPosition;
+            get
+            { 
+                return Stats[CreepStats.Health] <= 0; 
+            }
         }
-        private Dictionary<CreepStats, int> stats;
+
+        /// <summary>
+        /// The center position of this instance.
+        /// </summary>
+        public Vector2 CenterPosition;
+
+        public float Rotation { get; private set; }
+
         /// <summary>
         /// A reference to the stats of this creep.
         /// </summary>
@@ -103,8 +107,8 @@ namespace SafeAndFree
             this.TextureID = textureID;
 
             DistanceTravelled = 0;
-            
 
+            Rotation = 0;
 
             this.stats = new Dictionary<CreepStats, int>();
             this.stats.Add(CreepStats.Width, creepData.Width);
@@ -144,18 +148,23 @@ namespace SafeAndFree
         public bool Update(Vector2[][] paths)
         {
             UpdateDebuffs();
+
             Vector2[] ourPath = paths[_path];
+
             int moveDistance = this.Stats[CreepStats.Speed];
             DistanceTravelled += moveDistance;
+
             if (Math.Abs(this.CenterPosition.X - ourPath[this._nextWaypoint].X) > moveDistance)
             {
                 if (ourPath[this._nextWaypoint].X > this.CenterPosition.X)
                 {
                     this.CenterPosition.X += moveDistance;
+                    this.Rotation = 0;
                 }
                 else if (ourPath[this._nextWaypoint].X < this.CenterPosition.X)
                 {
                     this.CenterPosition.X -= moveDistance;
+                    this.Rotation = 180;
                 }
             }
             else if (Math.Abs(this.CenterPosition.Y - ourPath[this._nextWaypoint].Y) > moveDistance)
@@ -163,10 +172,12 @@ namespace SafeAndFree
                 if (ourPath[this._nextWaypoint].Y > this.CenterPosition.Y)
                 {
                     this.CenterPosition.Y += moveDistance;
+                    this.Rotation = 90;
                 }
                 else if (ourPath[this._nextWaypoint].Y < this.CenterPosition.Y)
                 {
                     this.CenterPosition.Y -= moveDistance;
+                    this.Rotation = 270;
                 }
             }
             else
@@ -209,7 +220,7 @@ namespace SafeAndFree
         /// </summary>
         /// <param name="key">The CreepStat to retrieve a value of.</param>
         /// <returns>The value of the given CreepStat or null if given an invalid key.</returns>
-        public int? GetStat(CreepStats key)
+        public int GetStat(CreepStats key)
         {
             if (Stats.ContainsKey(key))
             {
@@ -217,7 +228,7 @@ namespace SafeAndFree
             }
             else
             {
-                return null;
+                return -1;
             }
         }
     }

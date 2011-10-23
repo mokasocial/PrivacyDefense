@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
 using SafeAndFree.Data;
 using SafeAndFree.Game_States;
+using SafeAndFree.InputHandlers;
 
 namespace SafeAndFree
 {
@@ -74,8 +75,8 @@ namespace SafeAndFree
             TextureLibrary.Content = this.Content;
 
             // Load a new Board object.
-            // Load(Screens.TITLE);
-            Load(Screens.GAME);
+             Load(Screens.TITLE);
+            //Load(Screens.GAME);
         }
 
         /// <summary>
@@ -97,6 +98,8 @@ namespace SafeAndFree
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
+
+            TouchHandler.Update();
 
             if (null != currentGameScreen)
                 currentGameScreen.Update();
