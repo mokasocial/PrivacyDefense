@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -17,7 +16,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-public class Game implements ApplicationListener, InputProcessor {
+public class Game implements ApplicationListener {
 	public static int screenWidth = 480;
 	public static int screenHeight = 320;
 
@@ -37,15 +36,21 @@ public class Game implements ApplicationListener, InputProcessor {
 
 	public int endingX;
 	public int endingY;
+	
+	public String debugtext = "";
 
 	// Circle sprites for tower ranges
 	HashMap<Float, Sprite> rangeSprites = new HashMap<Float, Sprite>();
+	private final int maxmoney = 9999;
+	private final int uiPanelWidth = 60;
 
 	public static Game instance;
 
 	@Override
 	public void create() {
 		instance = this;
+		
+		Gdx.input.setInputProcessor(new GameInputProcessor());
 
 		batch = new SpriteBatch();
 		spriteSheet = new Texture(Gdx.files.internal("sprite_sheet.png"));
@@ -199,21 +204,27 @@ public class Game implements ApplicationListener, InputProcessor {
 			// TODO: Change which sprite the projectile uses.
 			batch.draw(spriteSheet, proj_x * 16, proj_y * 16, 14 * 16, 0, 16, 16);
 		}
-
+		
 		// Draw the UI!
 		// Background
 		TextureRegion blackBox = new TextureRegion(spriteSheet, 0, 2 * 16, 16, 16);
-		batch.draw(blackBox, 0, 0, 60, screenHeight);
+		batch.draw(blackBox, 0, 0, uiPanelWidth , screenHeight);
 
 		// Text
 		String uiString = "+: " + life + '\n' + "$: " + money;
 		TextBounds uiBounds = mFont.getMultiLineBounds(uiString);
 		mFont.drawWrapped(batch, uiString, 3, uiBounds.height + 3, uiBounds.width);
+
+		// DEBUG TE
+		mFont.drawWrapped(batch, debugtext, 60, uiBounds.height + 3, 1000);		
 		
-		// Towers		
+		
+		// Towers
 
 		batch.end();
-		money++;
+		if (money < maxmoney) {
+			money++;
+		}
 	}
 
 	public void drawSprite(int iconNum, int x, int y) {
@@ -237,52 +248,6 @@ public class Game implements ApplicationListener, InputProcessor {
 
 	@Override
 	public void dispose() {
-
-	}
-
-	@Override
-	public boolean keyDown(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyUp(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDown(int x, int y, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchUp(int x, int y, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int x, int y, int pointer) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchMoved(int x, int y) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public void drawCircle(float radius, Color color, Vector2 position) {
@@ -301,8 +266,9 @@ public class Game implements ApplicationListener, InputProcessor {
 		// * 2 (tower range goes both ways)
 		int powof2 = 1;
 		int shotRange = (int) Math.ceil(radius * 2);
-		while (powof2 < shotRange)
+		while (powof2 < shotRange){
 			powof2 <<= 1;
+		}
 
 		// Create a new pixmap with the appropriate size
 		Pixmap p = new Pixmap(powof2, powof2, Pixmap.Format.RGBA8888);
