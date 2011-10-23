@@ -101,7 +101,7 @@ namespace SafeAndFree
                     double boost = Math.Pow(1.15, waveManager.BonusWave);
                     CreepTypeData creepNormal = new CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 32, Width = 32, Speed = 3};
                     CreepTypeData creepFast = new CreepTypeData(){DamageToPlayer = 1, Health =(int)boost * 4, Height = 32, Width = 32, Speed = 4};
-                    CreepTypeData creepBoss = new CreepTypeData(){DamageToPlayer = 2, Health = (int)boost * 70, Height = 32, Width = 32, Speed = 3};
+                    CreepTypeData creepBoss = new CreepTypeData(){DamageToPlayer = 2, Health = (int)boost * 25, Height = 32, Width = 32, Speed = 3};
                     int thing = waveManager.BonusWave % 3;
                     Creep newCreep;
                     switch (thing)

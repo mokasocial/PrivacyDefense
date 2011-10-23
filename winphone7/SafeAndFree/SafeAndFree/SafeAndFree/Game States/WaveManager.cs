@@ -10,13 +10,14 @@ namespace SafeAndFree
         public int[][][] waves;
         public int currentWave { get; private set; }
         public int nextSpawnIndex { get; private set; }
-
+        public int creepsLeft;
         private int delay;
 
         public bool GameWon { get; private set; }
         public int BonusWave{get; private set;}
         public WaveManager()
         {
+            creepsLeft = 0;
             BonusWave = 0;   
         }
 
@@ -25,14 +26,46 @@ namespace SafeAndFree
             this.waves = newWaves;
             currentWave = 0;
             nextSpawnIndex = 0;
+            creepsLeft = 10;
         }
         public bool InfiniteUpdate(bool canStartNewWave)
         {
+         
+          
             if (--delay <= 0)
             {
-                if (!canStartNewWave) return false;
-                BonusWave++;
-                return true;
+
+                if (!canStartNewWave)
+                {
+                    delay += 20; 
+                    if (creepsLeft > 0)
+                    {
+                        creepsLeft--;
+                    }
+                    else
+                    {
+                        delay += 50;
+                        return false;
+                    }
+                    
+                    return true;  
+                }
+                else
+                {
+                    BonusWave++;
+                    delay += 20;
+                    if (BonusWave % 3 != 2)
+                    {
+                        creepsLeft = 10;
+                    }
+                    else
+                    {
+                        creepsLeft = 1;
+                    }
+                             
+                    return true;
+                    
+                }
             }
 
             return false;
