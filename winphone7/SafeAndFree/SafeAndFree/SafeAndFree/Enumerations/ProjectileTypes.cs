@@ -7,6 +7,7 @@ namespace SafeAndFree.Enumerations
 {
     public enum ProjectileTypes
     {
-        Normal
+        Normal,
+        Slow
     }
 }
