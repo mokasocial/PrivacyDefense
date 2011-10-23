@@ -16,6 +16,12 @@ namespace SafeAndFree.Game_States
 
         Screens next;
 
+        Vector2 tapToGoPosition = new Vector2(294, 367);
+
+        int textFade = 255;
+        int fadeSpeed = 3;
+        bool isFading = false;
+
         public BasicMenu(MEDIA_ID textureId, Screens next)
         {
             this.textureId = textureId;
@@ -33,6 +39,33 @@ namespace SafeAndFree.Game_States
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(TextureLibrary.GetTexture(textureId), new Vector2(0, 0), Color.White);
+
+            if (isFading)
+            {
+                if (textFade - fadeSpeed <= 0)
+                {
+                    textFade = 0;
+                    isFading = false;
+                }
+                else
+                {
+                    textFade -= fadeSpeed;
+                }
+            }
+            else
+            {
+                if (textFade + fadeSpeed >= 255)
+                {
+                    textFade = 255;
+                    isFading = true;
+                }
+                else
+                {
+                    textFade += fadeSpeed;
+                }
+            }
+
+            spriteBatch.DrawString(TextureLibrary.GetFont(FONT_ID.TAPTOGO), "Tap to continue.", tapToGoPosition, new Color(0, 0, 0, (byte)textFade));
         }
     }
 }

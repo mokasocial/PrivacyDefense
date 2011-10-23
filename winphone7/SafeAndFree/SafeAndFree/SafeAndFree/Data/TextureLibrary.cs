@@ -32,6 +32,12 @@ namespace SafeAndFree.Data
         LOSESCREEN
     }
 
+   public enum FONT_ID
+   {
+       HUDINFO,
+       TAPTOGO
+   }
+
     /// <summary>
     /// 
     /// </summary>
@@ -47,6 +53,27 @@ namespace SafeAndFree.Data
 
         private static string[] assetNames = new string[] { "creep_dataminer", "creep_heli", "creep_defcon", "creep_corporate", "SafeAndFreeMap", "Judges", "Lawyers", "Teachers", "GavelSS", "Scroll", "apple", "tileMarker", "menu", "tophud", "titlescreen", "winscreen", "screen_lose" };
 
+        private static Dictionary<FONT_ID, SpriteFont> fonts = new Dictionary<FONT_ID, SpriteFont>();
+        private static string[] fontNames = new string[] { "DefaultFont", "TapToGo" };
+
+        public static SpriteFont GetFont(FONT_ID fontId)
+        {
+            if (null == Content)
+            {
+                throw new ContentNotDefinedException();
+            }
+
+            if (fonts.ContainsKey(fontId))
+            {
+                return fonts[fontId];
+            }
+
+            SpriteFont newFont = Content.Load<SpriteFont>(fontNames[(int)fontId]);
+            fonts.Add(fontId, newFont);
+
+            return newFont;
+        }
+
         public static Texture2D GetTexture(MEDIA_ID mediaId)
         {
             if(null == Content)
@@ -58,13 +85,11 @@ namespace SafeAndFree.Data
             {
                 return textures[mediaId];
             }
-            else
-            {
-                Texture2D newTexture = Content.Load<Texture2D>(assetNames[(int)mediaId]);
-                textures.Add(mediaId, newTexture);
 
-                return newTexture;
-            }
+            Texture2D newTexture = Content.Load<Texture2D>(assetNames[(int)mediaId]);
+            textures.Add(mediaId, newTexture);
+
+            return newTexture;
         }
     }
 }

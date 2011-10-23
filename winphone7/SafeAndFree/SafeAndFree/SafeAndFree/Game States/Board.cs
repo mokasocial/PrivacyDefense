@@ -26,7 +26,6 @@ namespace SafeAndFree
         private ProjectileManager projectileManager;
         private Player CurrentPlayer;
         private WaveManager waveManager;
-
         /// <summary>
         /// The grid of tiles.
         /// </summary>
@@ -98,12 +97,14 @@ namespace SafeAndFree
                 if (waveManager.InfiniteUpdate(creeps.Count == 0))
                 {
                     double boost = Math.Pow(1.2, waveManager.BonusWave);
+
                     CreepTypeData creepNormal = new CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 16, Width = 16, Speed = 3};
-                    CreepTypeData creepFast = new CreepTypeData(){DamageToPlayer = 1, Health =(int)boost * 4, Height = 32, Width = 32, Speed = 4};
+                    CreepTypeData creepFast = new CreepTypeData(){DamageToPlayer = 1, Health =(int)boost * 4, Height = 32, Width = 32, Speed = 5};
+                    CreepTypeData creepVariant = new  CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 32, Width = 32, Speed = 4};
                     CreepTypeData creepBoss = new CreepTypeData(){DamageToPlayer = 2, Health = (int)boost * 25, Height = 32, Width = 32, Speed = 3};
                     
                     // What is this?
-                    int thing = waveManager.BonusWave % 3;
+                    int thing = waveManager.BonusWave % 4;
                     Creep newCreep;
 
                     switch (thing)
@@ -114,8 +115,11 @@ namespace SafeAndFree
                         case 1:
                              newCreep = new Creep(creepFast, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_1);
                             break;
+                        case 2:
+                            newCreep = new Creep(creepVariant, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_2);
+                            break;
                         default:
-                            newCreep = new Creep(creepBoss, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_2);
+                            newCreep = new Creep(creepBoss, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_3);
                             break;
                     }
 
@@ -205,14 +209,21 @@ namespace SafeAndFree
             {
                 if (creeps[i].IsDead)
                 {
-                    // Creep was killed.
+                    // Creep was killed.creeps[i
+                    
+                    CurrentPlayer.AddScore(creeps[i].ScoreValue);
                     creeps.RemoveAt(i--);
-                    CurrentPlayer.AddMoney(waveManager.currentWave + 1);
+                    CurrentPlayer.AddMoney(waveManager.BonusWave + 1);
                 }
                 else if (creeps[i].Update(this.paths))
                 {
                     // Creep reached the end.
                     creeps.RemoveAt(i--);
+                    CurrentPlayer.LoseLife();
+                    if (CurrentPlayer.HasLost)
+                    {
+                        GameEngine.RunningEngine.Load(Screens.LOSE);
+                    }
                 }
             }
         }
@@ -284,6 +295,13 @@ namespace SafeAndFree
 
             spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MENU_TOP), new Rectangle(0, 0, 800, 20), Color.White);
             spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MENU_LEFT), new Rectangle(0, 0, 144, 480), Color.White);
+
+            // Lol, why use var?
+            SpriteFont font = TextureLibrary.GetFont(FONT_ID.HUDINFO);
+            spriteBatch.DrawString(font, "Level: " + waveManager.currentWave, new Vector2(125, 0), Color.LightGreen);
+            spriteBatch.DrawString(font, "Cash: " + CurrentPlayer.Moneys, new Vector2(250, 0), Color.LightGreen);
+            spriteBatch.DrawString(font, "Lives: " + CurrentPlayer.Lives, new Vector2(375, 0), Color.LightGreen);
+            spriteBatch.DrawString(font, "Score: " + CurrentPlayer.Score, new Vector2(500, 0), Color.LightGreen);
         }
 
         /// <summary>
