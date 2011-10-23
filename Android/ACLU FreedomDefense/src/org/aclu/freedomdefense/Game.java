@@ -68,10 +68,21 @@ public class Game implements ApplicationListener {
 	public final int uiPanelWidth = 60;
 
 	public static Game instance;
+	
+	public Rectangle collisionRectA;
+	public Rectangle collisionRectB;
+	
+	// I'm sorry this is getting cruddy, so sleepy
+	TextureRegion blackBox;
+	TextureRegion tower_region;
 
 	@Override
 	public void create() {
 		instance = this;
+		
+		// Our rects for collision detection
+		collisionRectA = new Rectangle( 0, 0, 8, 8 );
+		collisionRectB = new Rectangle( 0, 0, 8, 8 );
 		
 		Gdx.input.setInputProcessor(new GameInputProcessor());
 
@@ -171,6 +182,9 @@ public class Game implements ApplicationListener {
 		for( int i = 1; i < 50; ++i )
 			creeps.add( new Creep( 100, current_creep_speed, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
 
+		blackBox = new TextureRegion(spriteSheet, 0, 2 * 16, 16, 16);
+		
+		tower_region = new TextureRegion( spriteSheet, 0, 0, 16, 16 );
 		
 		mapData.dispose();
 	}
@@ -185,15 +199,17 @@ public class Game implements ApplicationListener {
 			{
 				if( projectile.active && projectile.my_coords.x > 0 && projectile.my_coords.y > 0 && projectile.my_coords.x * 16 < screenWidth && projectile.my_coords.y * 16 < screenHeight )
 				{
-					Rectangle projRect = new Rectangle( ( projectile.my_coords.x * 16 ) + 8, ( projectile.my_coords.y * 16 ) + 8, 8, 8 );
+					collisionRectA.x =  ( projectile.my_coords.x * 16 ) + 8;
+					collisionRectA.y = ( projectile.my_coords.y * 16 ) + 8;
 					
-					for( Creep creep : creeps )
+					for( int i = 0; i < creeps.size(); ++i )
 					{
-						Rectangle creepRect = new Rectangle( ( creep.x * 16 + creep.xOffset ) + 8, ( creep.y * 16 + creep.yOffset ) + 8, 8, 8 );
+						collisionRectB.x = ( creeps.get(i).x * 16 + creeps.get(i).xOffset ) + 8;
+						collisionRectB.y = ( creeps.get(i).y * 16 + creeps.get(i).yOffset ) + 8;
 						
-						if( projRect.overlaps( creepRect ) )
+						if( collisionRectA.overlaps( collisionRectB ) )
 						{
-							creep.Health -= projectile.damage;
+							creeps.get(i).Health -= projectile.damage;
 							projectile.active = false;
 							break;
 						}
@@ -207,11 +223,15 @@ public class Game implements ApplicationListener {
 			}
 	
 			// Handle projectile collision, creep update, creep death
-			for (Creep creep : creeps) {
-				if (creep.active && creep.Health > 0) {
-					creep.update(dt);
-				} else {
-					creep.die();
+			for( int i = 0; i < creeps.size(); ++i )
+			{
+				if( creeps.get(i).active && creeps.get(i).Health > 0 )
+				{
+					creeps.get(i).update( dt );
+				}
+				else
+				{
+					creeps.get(i).die();
 				}
 			}
 
@@ -286,17 +306,13 @@ public class Game implements ApplicationListener {
 		// Draw the UI!
 
 		// Background
-		TextureRegion blackBox = new TextureRegion(spriteSheet, 0, 2 * 16, 16, 16);
 		batch.draw(blackBox, 0, 0, uiPanelWidth , screenHeight);
 
 		// Draw the free towers.
 		for (int i = 1; i <= 4; i++) {
-			if (free_towers.get(i-1) != null) {
-
-				TextureRegion tower_region = new TextureRegion(spriteSheet,
-															   free_towers.get(i-1).getSpriteLocX(),
-															   free_towers.get(i-1).getSpriteLocY(),
-															   16, 16);
+			if (free_towers.get(i-1) != null) 
+			{
+				tower_region.setRegion( free_towers.get(i-1).getSpriteLocX(), free_towers.get(i-1).getSpriteLocY(), 16, 16 );
 				batch.draw(tower_region, 40, screenHeight - 48 * i, 16, 16);
 				
 				String towerPrice = "$" + free_towers.get(i-1).getPrice();
