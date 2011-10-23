@@ -93,10 +93,8 @@ public class GameInputProcessor implements InputProcessor {
 		Game.instance.debugtext = "touch dragged: " + x + ", " + y + ", pointer: " + pointer;
 
 		if (Game.instance.cursorState != null) {
-
 			Game.instance.cursorLocX = x;
 			Game.instance.cursorLocY = y;
-
 		}
 
 		return false;
