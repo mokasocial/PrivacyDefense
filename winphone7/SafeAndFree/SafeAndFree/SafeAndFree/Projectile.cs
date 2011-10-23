@@ -36,7 +36,7 @@ namespace SafeAndFree
         {
             bool result;
             CurrentPoint = Calculator.MovementTowardsPoint(CurrentPoint, TargetCreep.Position, Stats.Speed, out result);
-            return false;
+            return result;
         }
     }
 }

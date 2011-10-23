@@ -11,6 +11,7 @@ namespace SafeAndFree.Helpers
     /// </summary>
     static class Calculator
     {
+        public const double HIT_DISTANCE_THRESHOLD = 5.5;
         /// <summary>
         /// TODO: Is this necessary?
         /// </summary>
@@ -34,27 +35,19 @@ namespace SafeAndFree.Helpers
         {
             double totalDistance = GetDistance(start, end);
 
-
-            //double movementPercent =  totalDistance / (double)speed;
-            double movementPercent = 0;
-            if (movementPercent >= 1)
-            {
-                Connected = true;
-                return end;
-            }
-            Connected = false;
+            Connected = totalDistance < HIT_DISTANCE_THRESHOLD;
             
             double xDiff = Math.Abs(start.X - end.X);
             double yDiff = Math.Abs(start.Y - end.Y);
             double totalDiff = xDiff + yDiff;
             int xPos = start.X > end.X ? -1 : 1;
             int yPos = start.Y > end.Y ? -1 : 1;
-
             double xRatio = xDiff / yDiff; //x to y ratio
             double xSpeed = (double)speed * (xDiff / totalDiff);
             double ySpeed = (double) speed * (yDiff / totalDiff);
-
-            return new Vector2((float)(start.X + (xSpeed * xPos)), (float)(start.Y + ( ySpeed * yPos)));
+            Vector2 result = new Vector2((float)(start.X + (xSpeed * xPos)), (float)(start.Y + ( ySpeed * yPos)));
+            
+            return result;
         }
 
         /// <summary>
