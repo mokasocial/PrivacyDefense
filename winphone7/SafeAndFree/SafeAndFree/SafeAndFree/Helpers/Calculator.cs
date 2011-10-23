@@ -54,9 +54,12 @@ namespace SafeAndFree.Helpers
         /// <returns></returns>
         public static bool BestShootableCreep(List<Creep> targets, Vector2 towerPosition, int range, out Creep creep)
         {
-
             creep = null;
-            return false;
+            if (targets.Count > 0)
+            {
+                creep = targets[0];
+            }
+            return true;
         }
     }
 }

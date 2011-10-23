@@ -16,7 +16,7 @@ namespace SafeAndFree.Helpers
             WeaponStats[] wStats;
             TowerStats[] tStats;
             GetStatsForTowerType(type, out tStats, out wStats);
-            return new Tower(tStats, wStats, GetTowerMediaID(type), position);
+            return new Tower(tStats, wStats, GetTowerMediaID(type), position, type);
             //switch (type)
             //{
             //    case TowerTypes.Normal:
@@ -49,9 +49,13 @@ namespace SafeAndFree.Helpers
             return MEDIA_ID.TOWER_0;
             //switch(type) <-needs that eventually
         }
+        public static MEDIA_ID GetProjectileMediaID(ProjectileTypes type)
+        {
+            return MEDIA_ID.PROJECTILE_0;
+        }
         public static Projectile GetTowerProjectile(Tower tower, Creep target)
         {
-            return new Projectile(tower.GetWeaponStats(), target, tower.Position);
+            return new Projectile(tower.GetWeaponStats(), target, tower.Position, tower.Type);
         }
     }
 }

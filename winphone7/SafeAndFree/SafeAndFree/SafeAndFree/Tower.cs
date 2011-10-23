@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using SafeAndFree.Data;
 using Microsoft.Xna.Framework;
+using SafeAndFree.Enumerations;
 
 namespace SafeAndFree
 {
     public class Tower : Actor
     {
+        public TowerTypes Type { get; private set; }
         public int NextFire { get; private set; }
         private TowerStats[] towerStats;
         private WeaponStats[] weaponStats;
@@ -24,13 +26,14 @@ namespace SafeAndFree
                 return Level < towerStats.Length && Level < weaponStats.Length && (towerStats[Level].CostToNext >= 0); 
             } 
         }
-        public Tower(TowerStats[] tStats, WeaponStats[] wStats, MEDIA_ID textureID, Vector2 startPosition)
+        public Tower(TowerStats[] tStats, WeaponStats[] wStats, MEDIA_ID textureID, Vector2 startPosition, TowerTypes type)
         {
             towerStats = tStats;
             weaponStats = wStats;
             Level = 0;
             NextFire = 0;
             this._position = startPosition;
+            Type = type;
             TextureID = textureID;
         }
         public TowerStats GetTowerStats()

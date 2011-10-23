@@ -72,6 +72,7 @@
     <Compile Include="Data\TowerStats.cs" />
     <Compile Include="Data\WeaponStats.cs" />
     <Compile Include="Enumerations\CreepStats.cs" />
+    <Compile Include="Enumerations\ProjectileTypes.cs" />
     <Compile Include="Enumerations\TowerTypes.cs" />
     <Compile Include="Exceptions\ContentNotDefinedException.cs" />
     <Compile Include="Game States\Board.cs" />

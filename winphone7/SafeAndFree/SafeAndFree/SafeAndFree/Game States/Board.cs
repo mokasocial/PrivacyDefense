@@ -13,6 +13,7 @@ using System.Windows.Resources;
 using Microsoft.Xna.Framework.Input;
 using SafeAndFree.Enumerations;
 using SafeAndFree.Helpers;
+using SafeAndFree.Game_States;
 
 namespace SafeAndFree
 {
@@ -21,6 +22,7 @@ namespace SafeAndFree
     /// </summary>
     public class Board : Screen
     {
+        private ProjectileManager projectileManager;
         /// <summary>
         /// TODO: This shouldn't be kept,
         /// this should be loaded from the map image
@@ -58,13 +60,16 @@ namespace SafeAndFree
         /// </summary>
         public Board()
         {
-
+            projectileManager = new ProjectileManager();
+            LoadResources();
+        }
+        private void LoadResources()
+        {
             LoadMap();
             LoadPaths();
             LoadCreeps();
             LoadATowerTest();
         }
-
         /// <summary>
         /// The update loop.
         /// </summary>
@@ -72,9 +77,13 @@ namespace SafeAndFree
         {
             HandleCreepLoop();
             HandleTowerLoop();
+            HandleProjectileLoop();
         }
 
-
+        protected void HandleProjectileLoop()
+        {
+            projectileManager.Update();
+        }
         protected void HandleCreepLoop()
         {
             for (int i = 0; i < creeps.Count; i++)
@@ -97,7 +106,7 @@ namespace SafeAndFree
                 if(Calculator.BestShootableCreep(creeps, t.Position, t.GetTowerStats().Range, out target))
                 {
                     var proj = TowerFactory.GetTowerProjectile(t, target);
-
+                    projectileManager.AddProjectile(proj);
                 }
             }
         }
@@ -115,6 +124,10 @@ namespace SafeAndFree
             foreach (Tower t in towers)
             {
                 spriteBatch.Draw(TextureLibrary.GetTexture(t.TextureID), t.Position, Color.White);
+            }
+            foreach (Projectile p in projectileManager.Projectiles)
+            {
+                spriteBatch.Draw(TextureLibrary.GetTexture(p.TextureID), p.CurrentPoint, Color.White) ;
             }
 
         }
