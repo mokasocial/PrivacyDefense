@@ -281,9 +281,10 @@ namespace SafeAndFree
             spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MENU_TOP), new Rectangle(0, 0, 800, 20), Color.White);
             spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MENU_LEFT), new Rectangle(0, 0, 144, 480), Color.White);
             var font = TextureLibrary.GetFont();
-            spriteBatch.DrawString(font, "Cash: " + CurrentPlayer.Moneys, new Vector2(125, 0), Color.LightGreen);
-            spriteBatch.DrawString(font, "Lives: " + CurrentPlayer.Lives, new Vector2(250, 0), Color.LightGreen);
-            spriteBatch.DrawString(font, "Score: " + CurrentPlayer.Score, new Vector2(375, 0), Color.LightGreen);
+            spriteBatch.DrawString(font, "Level: " + waveManager.currentWave, new Vector2(125, 0), Color.LightGreen);
+            spriteBatch.DrawString(font, "Cash: " + CurrentPlayer.Moneys, new Vector2(250, 0), Color.LightGreen);
+            spriteBatch.DrawString(font, "Lives: " + CurrentPlayer.Lives, new Vector2(375, 0), Color.LightGreen);
+            spriteBatch.DrawString(font, "Score: " + CurrentPlayer.Score, new Vector2(500, 0), Color.LightGreen);
         }
 
         /// <summary>
