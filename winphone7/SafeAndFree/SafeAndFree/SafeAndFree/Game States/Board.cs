@@ -97,13 +97,16 @@ namespace SafeAndFree
                 //}
                 if (waveManager.InfiniteUpdate(creeps.Count == 0))
                 {
-
                     double boost = Math.Pow(1.2, waveManager.BonusWave);
                     CreepTypeData creepNormal = new CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 32, Width = 32, Speed = 3};
-                    CreepTypeData creepFast = new CreepTypeData(){DamageToPlayer = 1, Health =(int)boost * 4, Height = 32, Width = 32, Speed = 4};
+                    CreepTypeData creepFast = new CreepTypeData(){DamageToPlayer = 1, Health =(int)boost * 4, Height = 32, Width = 32, Speed = 5};
+                    CreepTypeData creepVariant = new  CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 32, Width = 32, Speed = 4};
                     CreepTypeData creepBoss = new CreepTypeData(){DamageToPlayer = 2, Health = (int)boost * 25, Height = 32, Width = 32, Speed = 3};
-                    int thing = waveManager.BonusWave % 3;
+                    
+                    // What is this?
+                    int thing = waveManager.BonusWave % 4;
                     Creep newCreep;
+
                     switch (thing)
                     {
                         case 0:
@@ -112,10 +115,14 @@ namespace SafeAndFree
                         case 1:
                              newCreep = new Creep(creepFast, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_1);
                             break;
+                        case 2:
+                            newCreep = new Creep(creepVariant, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_2);
+                            break;
                         default:
-                            newCreep = new Creep(creepBoss, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_2);
+                            newCreep = new Creep(creepBoss, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_3);
                             break;
                     }
+
                     creeps.Add(newCreep);
                 }
             }
@@ -147,13 +154,18 @@ namespace SafeAndFree
                 }
                 else
                 {
-                    if (towers.ContainsKey(selectedTile)) 
-                    UpdateTower(towers[selectedTile]);
+                    if (towers.ContainsKey(selectedTile))
+                    {
+                        UpdateTower(towers[selectedTile]);
+                    }
+
                     return true;
                 }
             }
+
             return false;
         }
+
         protected void HandleInput()
         {
             TouchCollection touchCollection = TouchPanel.GetState();
@@ -177,8 +189,6 @@ namespace SafeAndFree
                       selectedTile.X = col;
                       selectedTile.Y = row;
                     }
-
-                    
                 }
             }
         }
@@ -187,12 +197,12 @@ namespace SafeAndFree
         {
             projectileManager.Update();
         }
+
         public void HandleClick(TowerTypes towerType) 
         {
-            
             BuyPlaceTower(towerType);
-             
         }
+
         protected void HandleCreepLoop()
         {
             for (int i = 0; i < creeps.Count; i++)
@@ -200,13 +210,19 @@ namespace SafeAndFree
                 if (creeps[i].IsDead)
                 {
                     // Creep was killed.
+                    CurrentPlayer.AddScore(creeps[i].Stats[CreepStats.Health]);
                     creeps.RemoveAt(i--);
-                    CurrentPlayer.AddMoney(waveManager.currentWave + 1);
+                    CurrentPlayer.AddMoney(waveManager.BonusWave + 1);
                 }
                 else if (creeps[i].Update(this.paths))
                 {
                     // Creep reached the end.
                     creeps.RemoveAt(i--);
+                    CurrentPlayer.LoseLife();
+                    if (CurrentPlayer.HasLost)
+                    {
+                        GameEngine.RunningEngine.Load(Screens.LOSE);
+                    }
                 }
             }
         }
@@ -262,7 +278,8 @@ namespace SafeAndFree
                 spriteBatch.Draw(TextureLibrary.GetTexture(p.TextureID), p.CurrentPoint, Color.White) ;
             }
 
-            spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MENU_LEFT), new Rectangle(0, 0, 120, 480), Color.White);
+            spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MENU_TOP), new Rectangle(0, 0, 800, 20), Color.White);
+            spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MENU_LEFT), new Rectangle(0, 0, 144, 480), Color.White);
         }
 
         /// <summary>
@@ -318,14 +335,16 @@ namespace SafeAndFree
                     }
                     else if (reader.Name.Equals("creepDefinition"))
                     {
-                        CreepDefinitions.CreepStats.Add((CreepType)lastCreepDefinition++, new CreepTypeData 
-                        { 
+                        CreepTypeData creepData = new CreepTypeData
+                        {
                             Width = Int32.Parse(reader.GetAttribute("width")),
                             Height = Int32.Parse(reader.GetAttribute("height")),
                             Health = Int32.Parse(reader.GetAttribute("health")),
                             Speed = Int32.Parse(reader.GetAttribute("speed")),
                             DamageToPlayer = Int32.Parse(reader.GetAttribute("damageToPlayer"))
-                        });
+                        };
+
+                        CreepDefinitions.CreepStats.Add((CreepType)(lastCreepDefinition++), creepData);
                     }
                     else if (reader.Name.Equals("paths"))
                     {

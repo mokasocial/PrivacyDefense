@@ -28,7 +28,7 @@ namespace SafeAndFree
         {
             get
             {
-                return Lives > 0;
+                return Lives <= 0;
             }
         }
         

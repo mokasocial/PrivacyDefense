@@ -1,16 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <definitions>
   <map path="\\Content\\winphone.png" tileWidth="48" tileHeight="48"/>
-  <creepDefinition width="16" height="16" health="50" speed="2" damageToPlayer="1"/>
-  <creepDefinition width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
-  <creepDefinition width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
-  <creepDefinition width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
+  <creepDefinition name="dataMiner" width="16" height="16" health="50" speed="2" damageToPlayer="1"/>
+  <creepDefinition name="blackHeli" width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
+  <creepDefinition name="hackerDefcon" width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
+  <creepDefinition name="corporate" width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
+  <towerDefinition name="judge" levels="5" width="48" height="48">
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+  </towerDefinition>
+  <towerDefinition name="lawyer" levels="5" width="48" height="48">
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+  </towerDefinition>
+  <towerDefinition name="teacher" levels="5" width="48" height="48">
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+    <level delay="5" range="5" costToNext="5"/>
+  </towerDefinition>
+  <projectile name="apple" numFrames="1" width="8" height="8"/>
+  <projectile name="gavel" numFrames="6" width="8" height="8" spinDelay="2"/>
   <paths numPaths="1">
-    <path index="0" numWaypoints="4">
-      <waypoint column="4" row="-1"/>
-      <waypoint column="4" row="8"/>
+    <path index="0" numWaypoints="8">
+      <waypoint column="3" row="-1"/>
+      <waypoint column="3" row="8"/>
       <waypoint column="15" row="8"/>
-      <waypoint column="15" row="-1"/>
+      <waypoint column="15" row="5"/>
+      <waypoint column="7" row="5"/>
+      <waypoint column="7" row="1"/>
+      <waypoint column="16" row="1"/>
+      <waypoint column="16" row="-1"/>
     </path>
   </paths>
   <waves numWaves="7">

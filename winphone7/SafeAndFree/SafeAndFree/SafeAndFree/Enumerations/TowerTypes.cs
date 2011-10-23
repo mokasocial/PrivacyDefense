@@ -8,9 +8,8 @@ namespace SafeAndFree.Enumerations
     public enum TowerTypes
     {
         Normal, 
-        Splash,
         Fast,
-        Slow
-
+        Slow,
+        Splash
     }
 }

@@ -10,6 +10,7 @@ namespace SafeAndFree
         public int[][][] waves;
         public int currentWave { get; private set; }
         public int nextSpawnIndex { get; private set; }
+
         public int creepsLeft;
         private int delay;
 
@@ -30,12 +31,11 @@ namespace SafeAndFree
         }
         public bool InfiniteUpdate(bool canStartNewWave)
         {
-         
           
             if (--delay <= 0)
             {
 
-                if (!canStartNewWave)
+                if (!canStartNewWave || creepsLeft > 0)
                 {
                     delay += 20; 
                     if (creepsLeft > 0)
@@ -54,7 +54,7 @@ namespace SafeAndFree
                 {
                     BonusWave++;
                     delay += 20;
-                    if (BonusWave % 3 != 2)
+                    if (BonusWave % 4 != 3)
                     {
                         creepsLeft = 10;
                     }
