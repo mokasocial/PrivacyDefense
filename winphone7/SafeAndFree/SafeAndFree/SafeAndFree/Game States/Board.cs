@@ -185,6 +185,8 @@ namespace SafeAndFree
             {
                 spriteBatch.Draw(TextureLibrary.GetTexture(p.TextureID), p.CurrentPoint, Color.White) ;
             }
+
+            spriteBatch.Draw(TextureLibrary.GetTexture(MEDIA_ID.MENU_LEFT), new Rectangle(0, 0, 60, 480), Color.White);
         }
 
         /// <summary>
