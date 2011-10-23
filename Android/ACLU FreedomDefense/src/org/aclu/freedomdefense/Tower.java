@@ -26,25 +26,25 @@ public class Tower
 		
 		if (type.equals(TowerType.JUDGE))
 		{
-			m_speed = 0.1f;
+			m_speed = 0.3f;
 			radius = 5;
 			bullet_damage = 20;
 		}
 		else if (type.equals(TowerType.FIREWALL))
 		{
-			m_speed = 0.1f;
+			m_speed = 0.25f;
 			radius = 6;
 			bullet_damage = 15;
 		}
 		else if (type.equals(TowerType.TEACHER))
 		{
-			m_speed = 0.1f;
+			m_speed = 0.15f;
 			radius = 7;
 			bullet_damage = 10;
 		}
 		else 
 		{
-			m_speed = 1.0f;
+			m_speed = 0.1f;
 			radius = 5;
 			bullet_damage = 10.0f;
 		}

@@ -45,6 +45,19 @@ public class GameInputProcessor implements InputProcessor {
 		}
 		Game.instance.debugtext = "touch down: " + x + ", " + y + ", button: " + getButtonString(button);
 
+		if (Game.instance.buildMode) {
+			
+			if (x >=  Game.START_RECT.x && x <= Game.START_RECT.x + Game.START_RECT.width &&
+					(Game.screenHeight - y) >=  Game.START_RECT.y && (Game.screenHeight - y) <= Game.START_RECT.y + Game.START_RECT.height) {
+				Game.instance.debugtext = "touch down on START rect";
+				Game.instance.buildMode = false;
+				Game.instance.cursorLocX = x;
+				Game.instance.cursorLocY = y;
+				return false;
+			}
+			
+		}
+		
 		// Check for touch down on the pause button.
 		if (Game.instance.runningDrd &&
 				x >=  Game.DRD_PAUSE_RECT.x && x <= Game.DRD_PAUSE_RECT.x + Game.DRD_PAUSE_RECT.width &&
@@ -81,10 +94,12 @@ public class GameInputProcessor implements InputProcessor {
 					Game.instance.cursorLocY = y;
 				}
 			
-				Game.instance.cursorTexture = new TextureRegion(Game.instance.spriteSheet,
-						Game.instance.cursorState.getSpriteLocX(),
-						Game.instance.cursorState.getSpriteLocY(),
-						16, 16);
+				if (Game.instance.cursorState != null) {
+					Game.instance.cursorTexture = new TextureRegion(Game.instance.spriteSheet,
+							Game.instance.cursorState.getSpriteLocX(),
+							Game.instance.cursorState.getSpriteLocY(),
+							16, 16);
+				}
 			}
 			
 			
@@ -128,7 +143,11 @@ public class GameInputProcessor implements InputProcessor {
 			
 			if (!tileContainsTower(gameCoordX, gameCoordY)) {
 				
-				Game.instance.towers.add(new Tower(Game.instance.cursorState, gameCoordX, gameCoordY));
+				// Check to make sure there is enough money to buy the tower.
+				if (Game.instance.money >= Game.instance.cursorState.getPrice()) {
+					Game.instance.towers.add(new Tower(Game.instance.cursorState, gameCoordX, gameCoordY));
+					Game.instance.money -= Game.instance.cursorState.getPrice();
+				}
 				
 			}
 			

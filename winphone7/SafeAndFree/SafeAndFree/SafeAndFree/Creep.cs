@@ -177,7 +177,7 @@ namespace SafeAndFree
             Stats[CreepStats.Health] -= bullet.Stats.Damage;
             if (bullet.Stats.Gift != null)
             {
-                CurrentDebuffs.Add(bullet.Stats.Gift);
+                CurrentDebuffs.Add(bullet.Stats.GetCopy().Gift);
             }
             if (Stats[CreepStats.Health] <= 0)
             {

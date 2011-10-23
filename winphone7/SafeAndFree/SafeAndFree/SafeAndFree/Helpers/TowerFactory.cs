@@ -30,22 +30,27 @@ namespace SafeAndFree.Helpers
             switch (type)
             {            
                 case TowerTypes.Fast:
-                     towerStats = new TowerStats[5] { new TowerStats(30, 250, 5), new TowerStats(15, 250, 10), new TowerStats(13, 250, 20), new TowerStats(11, 250, 40), new TowerStats(10, 250, -1) };
-                     weaponStats = new WeaponStats[5] { new WeaponStats(5, 10, 1), new WeaponStats(15, 10, 1), new WeaponStats(40, 10, 1), new WeaponStats(80, 10, 1), new WeaponStats(200, 10, 1) };
+                     towerStats = new TowerStats[5] { new TowerStats(30, 250, 5), new TowerStats(15, 250, 10), new TowerStats(13, 250, 20), 
+                         new TowerStats(11, 250, 40), new TowerStats(10, 250, -1) };
+                     weaponStats = new WeaponStats[5] { new WeaponStats(5, 10, 1), new WeaponStats(15, 10, 1), new WeaponStats(40, 10, 1), 
+                         new WeaponStats(80, 10, 1), new WeaponStats(200, 10, 1) };
                 break;
                 //case TowerTypes.Splash:
                 case TowerTypes.Slow:
                     Debuff slow = new Debuff(CreepStats.Speed, 1, 10);
-                towerStats = new TowerStats[5] { new TowerStats(70, 100, 5), new TowerStats(60, 100, 10), 
-                    new TowerStats(50, 100, 20), new TowerStats(40, 100, 40), new TowerStats(30, 100, -1) };
-                weaponStats = new WeaponStats[5] { new WeaponStats(0, 10, 1, slow), new WeaponStats(0, 10, 1, slow), 
-                    new WeaponStats(0, 10, 1, slow), new WeaponStats(0, 10, 1, slow), new WeaponStats(0, 10, 1, slow) };
+                    Debuff slow2 = new Debuff(CreepStats.Speed, 2, 20);
+                towerStats = new TowerStats[5] { new TowerStats(70, 150, 40), new TowerStats(50, 160, 60), 
+                    new TowerStats(30, 170, 100), new TowerStats(20, 190, 200), new TowerStats(10, 210, -1) };
+                weaponStats = new WeaponStats[5] { new WeaponStats(20, 10, 1, slow), new WeaponStats(40, 10, 1, slow), 
+                    new WeaponStats(80, 10, 1, slow), new WeaponStats(200, 10, 1, slow2), new WeaponStats(500, 10, 1, slow2) };
                 break;
                 //case TowerTypes.Normal:
 
-                default:
-                towerStats = new TowerStats[5] { new TowerStats(30, 250, 5), new TowerStats(15, 250, 10), new TowerStats(13, 250, 20), new TowerStats(11, 250, 40), new TowerStats(10, 250, -1) };
-                weaponStats = new WeaponStats[5] { new WeaponStats(10, 10, 1), new WeaponStats(20, 10, 1), new WeaponStats(40, 10, 1), new WeaponStats(80, 10, 1), new WeaponStats(200, 10, 1) };
+                default: //normal for now (judge) Base 10;
+                towerStats = new TowerStats[6] { new TowerStats(13, 200, 30), new TowerStats(12, 230, 50), new TowerStats(10, 250, 100), 
+                    new TowerStats(10, 260, 180), new TowerStats(9, 275, 400), new TowerStats(8, 300, -1) };
+                weaponStats = new WeaponStats[6] { new WeaponStats(5, 10, 1), new WeaponStats(20, 10, 1), new WeaponStats(50, 10, 1), 
+                    new WeaponStats(150, 10, 1), new WeaponStats(700, 10, 1), new WeaponStats(2000, 10, 1) };
                 break;
             }
         }
