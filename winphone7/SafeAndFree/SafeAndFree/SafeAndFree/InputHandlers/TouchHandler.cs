@@ -6,16 +6,16 @@ using Microsoft.Xna.Framework.Input.Touch;
 
 namespace SafeAndFree.InputHandlers
 {
-    class Touch
+    static class TouchHandler
     {
-        private TouchCollection touches;
+        private static TouchCollection touches;
 
-        private bool wasDown = false;
+        private static bool wasDown = false;
 
         /// <summary>
         /// Evaluates to true if the touches have started.
         /// </summary>
-        public bool IsDown
+        public static bool IsDown
         {
             get
             {
@@ -26,7 +26,7 @@ namespace SafeAndFree.InputHandlers
         /// <summary>
         /// Evaluates to true if the touch just ended.
         /// </summary>
-        public bool IsClicked
+        public static bool IsClicked
         {
             get
             {
@@ -37,7 +37,7 @@ namespace SafeAndFree.InputHandlers
         /// <summary>
         /// Evaluates to true if the touch just started.
         /// </summary>
-        public bool IsPressed
+        public static bool IsPressed
         {
             get
             {
@@ -45,7 +45,7 @@ namespace SafeAndFree.InputHandlers
             }
         }
 
-        public void Update()
+        public static void Update()
         {
             wasDown = IsDown;
 

@@ -6,6 +6,7 @@ using SafeAndFree.Data;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework;
+using SafeAndFree.InputHandlers;
 
 namespace SafeAndFree.Game_States
 {
@@ -23,9 +24,7 @@ namespace SafeAndFree.Game_States
 
         public override void Update()
         {
-            TouchCollection touches = TouchPanel.GetState();
-
-            if (touches.Count > 0)
+            if (TouchHandler.IsClicked)
             {
                 GameEngine.RunningEngine.Load(next);
             }

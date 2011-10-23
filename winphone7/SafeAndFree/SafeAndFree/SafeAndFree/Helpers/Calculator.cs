@@ -12,6 +12,17 @@ namespace SafeAndFree.Helpers
     static class Calculator
     {
         public const double HIT_DISTANCE_THRESHOLD = 5.5;
+
+        public static float ToRadians(float degrees)
+        {
+            return degrees * (float)Math.PI / 180;
+        }
+
+        public static float ToDegrees(float radians)
+        {
+            return radians * (float)Math.PI / 180;
+        }
+
         /// <summary>
         /// Get the distance between two points.
         /// </summary>

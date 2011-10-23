@@ -86,9 +86,16 @@ namespace SafeAndFree
         {
             if (null != waveManager)
             {
-                if (!waveManager.GameWon && waveManager.Update(creeps.Count == 0))
+                if (waveManager.Update(creeps.Count == 0))
                 {
                     creeps.Add(new Creep(CreepDefinitions.CreepStats[(CreepType)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0]], new Vector2(paths[0][0].X, paths[0][0].Y), (MEDIA_ID)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0], 0, 0));
+
+                    if (waveManager.GameWon)
+                    {
+                        GameEngine.RunningEngine.Load(Screens.WIN);
+
+                        return;
+                    }
                 }
             }
 
@@ -173,7 +180,14 @@ namespace SafeAndFree
             // Draw all creeps.
             foreach (Creep c in creeps)
             {
-                spriteBatch.Draw(TextureLibrary.GetTexture(c.TextureID), c.Position, Color.White);
+                if (0 != c.Rotation)
+                {
+                    spriteBatch.Draw(TextureLibrary.GetTexture(c.TextureID), new Vector2(c.Position.X + (int)c.GetStat(CreepStats.Width) / 2, c.Position.Y + (int)c.GetStat(CreepStats.Height) / 2), new Rectangle(0, 0, c.GetStat(CreepStats.Width), c.GetStat(CreepStats.Height)), Color.White, Calculator.ToRadians(c.Rotation), new Vector2(c.GetStat(CreepStats.Width) / 2, c.GetStat(CreepStats.Height) / 2), 1, SpriteEffects.None, 0);
+                }
+                else
+                {
+                    spriteBatch.Draw(TextureLibrary.GetTexture(c.TextureID), c.Position, Color.White);
+                }
             }
 
             foreach (Tower t in towers)
