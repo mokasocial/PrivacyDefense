@@ -53,7 +53,7 @@ namespace SafeAndFree
         /// The consistent size of tiles.
         /// </summary>
         public static Vector2 TileDimensions { get; private set; }
-
+        private int clickDelay;
         /// <summary>
         /// The offset (X and Y) from a tile's top left position
         /// that will give you the tile's center position.
@@ -67,6 +67,7 @@ namespace SafeAndFree
         /// </summary>
         public Board()
         {
+            clickDelay = 0;
             CurrentPlayer = new Player();
             projectileManager = new ProjectileManager();
             LoadResources();
@@ -84,6 +85,7 @@ namespace SafeAndFree
         /// </summary>
         public override void Update()
         {
+            if (clickDelay > 0) clickDelay--;
             if (null != waveManager)
             {
                 //if (waveManager.Update(creeps.Count == 0))
@@ -136,6 +138,8 @@ namespace SafeAndFree
 
         protected bool CheckButtonPress(Vector2 check)
         {
+            if (clickDelay > 0) return true;
+
             if (check.X >= 5 && check.X <= 99)
             {
                 if (towers.ContainsKey(selectedTile) && check.Y >= 20 && check.Y < 110)
@@ -192,6 +196,10 @@ namespace SafeAndFree
                             selectedTile.X = -1;
                             selectedTile.Y = -1;
                         }
+                    }
+                    else
+                    {
+                        clickDelay += 5;
                     }
                 }
             }
@@ -310,6 +318,7 @@ namespace SafeAndFree
             if (towers.ContainsKey(selectedTile))
             {
                 spriteBatch.Draw(TextureLibrary.GetButtonTexture(BUTTON_MEDIA_ID.UPGRADE), new Rectangle(5, 20, 94, 90), Color.White);
+                DrawUpgradeStuff(spriteBatch);
             }
             else
             {
@@ -319,13 +328,20 @@ namespace SafeAndFree
             }
         }
 
-        private void DrawUpgradeStuff()
+        private void DrawUpgradeStuff(SpriteBatch batch)
         {
             var font = TextureLibrary.GetFont(FONT_ID.HUDINFO);
             int cA, cR, cD, cC, nA, nR, nD;
             this.towers[selectedTile].GetLevelInfo(out cA, out cR, out cD, out cC, out nA, out nR, out nD);
-            
-            //spriteBatch.DrawString(font, "Level: " + (1 + waveManager.BonusWave), new Vector2(5, 120), Color.DarkCyan);
+
+            batch.DrawString(font, "Cost:  " , new Vector2(5, 120), Color.DarkGreen);
+            batch.DrawString(font, (cC != -1 ? cC.ToString() : "None"), new Vector2(5, 140), Color.Red);
+            batch.DrawString(font, "Attack: ", new Vector2(5, 160), Color.DarkGreen);
+            batch.DrawString(font, cA + " ->" + (cC != -1 ? nA.ToString() : "None"), new Vector2(5, 180), Color.Red);
+            batch.DrawString(font, "Range: " , new Vector2(5, 200), Color.DarkGreen);
+            batch.DrawString(font, cR + " ->" + (cC != -1 ? nR.ToString() : "None"), new Vector2(5, 220), Color.Red);
+            batch.DrawString(font, "Delay: " , new Vector2(5, 240), Color.DarkGreen);
+            batch.DrawString(font,  cD + " ->" + (cC != -1 ? nD.ToString() : "None"), new Vector2(5, 260), Color.Red);
 
         }
 
