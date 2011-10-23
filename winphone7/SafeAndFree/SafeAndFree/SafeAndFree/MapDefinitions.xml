@@ -17,4 +17,84 @@
       <waypoint column="30" row="5"/>
     </path>
   </paths>
+  <waves>
+	<wave>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+	</wave>
+	<wave>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+	</wave>
+	<wave>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+	</wave>
+	<wave>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+	</wave>
+	<wave>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+	</wave>
+	<wave>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+	</wave>
+	<wave>
+		<enemy type="2" delay="5"/>
+	</wave>
+  </waves>
 </definitions>

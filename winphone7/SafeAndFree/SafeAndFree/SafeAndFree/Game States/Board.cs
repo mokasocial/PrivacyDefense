@@ -25,6 +25,8 @@ namespace SafeAndFree
     {
         private ProjectileManager projectileManager;
 
+        private WaveManager waveManager;
+
         /// <summary>
         /// The grid of tiles.
         /// </summary>
