@@ -38,6 +38,8 @@ public class Game implements ApplicationListener, InputProcessor {
 
 	public int endingX;
 	public int endingY;
+	
+	public boolean isPaused = false;
 
 	// Circle sprites for tower ranges
 	HashMap<Float, Sprite> rangeSprites = new HashMap<Float, Sprite>();
@@ -139,26 +141,29 @@ public class Game implements ApplicationListener, InputProcessor {
 	public void update() {
 		float dt = Gdx.graphics.getDeltaTime();
 
-		for (Projectile projectile : projectiles) {
-			projectile.update(dt);
-		}
-
-		// Handle projectile collision, creep update, creep death
-		ArrayList<Creep> livingCreeps = new ArrayList<Creep>();
-
-		for (Creep creep : creeps) {
-			if (creep.Health > 0) {
-				creep.update(dt);
-				livingCreeps.add(creep);
-			} else {
-				creep.die();
+		if (!isPaused) {
+			
+			for (Projectile projectile : projectiles) {
+				projectile.update(dt);
 			}
-		}
-
-		creeps = livingCreeps;
-
-		for (Tower tower : towers) {
-			tower.update(dt);
+	
+			// Handle projectile collision, creep update, creep death
+			ArrayList<Creep> livingCreeps = new ArrayList<Creep>();
+	
+			for (Creep creep : creeps) {
+				if (creep.Health > 0) {
+					creep.update(dt);
+					livingCreeps.add(creep);
+				} else {
+					creep.die();
+				}
+			}
+	
+			creeps = livingCreeps;
+	
+			for (Tower tower : towers) {
+				tower.update(dt);
+			}
 		}
 	}
 
@@ -259,12 +264,12 @@ public class Game implements ApplicationListener, InputProcessor {
 
 	@Override
 	public void pause() {
-
+		isPaused = true;
 	}
 
 	@Override
 	public void resume() {
-
+		isPaused = false;
 	}
 
 	@Override
@@ -279,11 +284,15 @@ public class Game implements ApplicationListener, InputProcessor {
 
 	@Override
 	public boolean keyUp(int keycode) {
+		
+		System.out.println("Character: \"" + keycode + "\"");
 		return false;
 	}
 
 	@Override
 	public boolean keyTyped(char character) {
+
+		
 		return false;
 	}
 
@@ -302,6 +311,7 @@ public class Game implements ApplicationListener, InputProcessor {
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
 		// TODO Auto-generated method stub
+		System.out.println("test");
 		return false;
 	}
 
