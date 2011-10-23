@@ -253,9 +253,10 @@ public class Game implements ApplicationListener {
 				wave_wait_timer += dt;
 				System.out.println(wave_wait_timer);
 				
-			} else if (active_creeps <= 0 && wave_wait_timer >= TIME_BETWEEN_WAVES) {
-			
-				restart(current_creep_speed + 10);
+			} else if (active_creeps <= 0 && wave_wait_timer >= TIME_BETWEEN_WAVES) 
+			{
+				current_creep_speed += 10;
+				restart(current_creep_speed);
 				wave_wait_timer = 0;
 			}
 		}

@@ -18,6 +18,7 @@ public class Creep {
 		this.y = y;
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
+		direction = 'S';
 		active = true;
 	}
 
