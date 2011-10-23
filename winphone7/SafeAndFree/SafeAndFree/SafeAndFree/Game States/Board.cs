@@ -53,7 +53,7 @@ namespace SafeAndFree
         /// The consistent size of tiles.
         /// </summary>
         public static Vector2 TileDimensions { get; private set; }
-
+        private int clickDelay;
         /// <summary>
         /// The offset (X and Y) from a tile's top left position
         /// that will give you the tile's center position.
@@ -67,6 +67,7 @@ namespace SafeAndFree
         /// </summary>
         public Board()
         {
+            clickDelay = 0;
             CurrentPlayer = new Player();
             projectileManager = new ProjectileManager();
             LoadResources();
@@ -84,6 +85,7 @@ namespace SafeAndFree
         /// </summary>
         public override void Update()
         {
+            if (clickDelay > 0) clickDelay--;
             if (null != waveManager)
             {
                 //if (waveManager.Update(creeps.Count == 0))
@@ -135,6 +137,8 @@ namespace SafeAndFree
 
         protected bool CheckButtonPress(Vector2 check)
         {
+            if (clickDelay > 0) return true;
+
             if (check.X >= 5 && check.X <= 99)
             {
                 if (towers.ContainsKey(selectedTile) && check.Y >= 20 && check.Y < 110)
@@ -181,8 +185,12 @@ namespace SafeAndFree
                 {
                     if (!CheckButtonPress(touchLocation.Position))
                     {
-                      selectedTile.X = col;
-                      selectedTile.Y = row;
+                        selectedTile.X = col;
+                        selectedTile.Y = row;
+                    }
+                    else
+                    {
+                        clickDelay += 5;
                     }
                 }
             }
