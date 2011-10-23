@@ -150,6 +150,7 @@ namespace SafeAndFree
                 }
                 else
                 {
+                    if (towers.ContainsKey(selectedTile)) 
                     UpdateTower(towers[selectedTile]);
                     return true;
                 }

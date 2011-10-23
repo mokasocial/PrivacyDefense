@@ -38,6 +38,10 @@ public class Game implements ApplicationListener {
 	private SpriteBatch batch;
 	public Texture spriteSheet;
 	public Texture menuTexture;
+	public Texture corporateCreepTexture;
+	public Texture defconZeplinTexture;
+	public Texture govHeliTexture;
+	public Texture tileset32Texture;
 	
 	private Texture mapData;
 	private BitmapFont mFont;
@@ -60,7 +64,7 @@ public class Game implements ApplicationListener {
 	public ArrayList<Creep> creeps;
 	public Projectile projectiles[];
 	public ArrayList<Tower> towers;
-	public ArrayList<TowerType> free_towers; 
+	public ArrayList<TowerType> free_towers;
 	public int startingX, startingY;
 
 	public Tower selected = null;
@@ -84,11 +88,9 @@ public class Game implements ApplicationListener {
 
 	public float wave_wait_timer = 0;
 	
-
 	public TowerType cursorState;
 	public int cursorLocX = 0;
 	public int cursorLocY = 0;
-
 
 	// Circle sprites for tower ranges
 	HashMap<Float, Sprite> rangeSprites = new HashMap<Float, Sprite>();
@@ -136,7 +138,11 @@ public class Game implements ApplicationListener {
 		batch = new SpriteBatch();
 		spriteSheet = new Texture(Gdx.files.internal("sprite_sheet.png"));
 		selectionImg = new Texture(Gdx.files.internal("Selector32.png"));
-		menuTexture = new Texture(Gdx.files.internal("menu.png"));
+		menuTexture = new Texture(Gdx.files.internal("menu2.png"));
+		corporateCreepTexture = new Texture(Gdx.files.internal("CorporateCreep32x32.png"));
+		defconZeplinTexture = new Texture(Gdx.files.internal("DefconZeppelin.png"));
+		govHeliTexture = new Texture(Gdx.files.internal("GovSearcherHeli.png"));
+		tileset32Texture = new Texture(Gdx.files.internal("Tileset32.png"));
 		
 		Pixmap mapData = new Pixmap(Gdx.files.internal("map2.png"));
 
@@ -145,24 +151,17 @@ public class Game implements ApplicationListener {
 		
 		for( int i = 0; i < maxProjectiles; ++i )
 		{
-			projectiles[i] = new Projectile( new Vector2( 0.0f, 0.0f ), new Vector2( 0.0f, 0.0f ), 0.0f );
+			projectiles[i] = new Projectile( new Vector2( 0.0f, 0.0f ), new Vector2( 0.0f, 0.0f ), 0.0f, "test");
 			projectiles[i].active = false;
 		}
-		
+
 		towers = new ArrayList<Tower>();
 
-		/*towers.add(new Tower(TowerType.JUDGE, 6, 6));
-		towers.add(new Tower(TowerType.LAWSUIT, 12, 4));
-		towers.add(new Tower(TowerType.TEACHER, 19, 8));
-		towers.add(new Tower(TowerType.JUDGE, 8, 8));
-		towers.add(new Tower(TowerType.LAWSUIT, 4, 12));
-		towers.add(new Tower(TowerType.TEACHER, 8, 19));*/
-		
 		free_towers = new ArrayList<TowerType>();
 		free_towers.add(TowerType.JUDGE);
 		free_towers.add(TowerType.FIREWALL);
 		free_towers.add(TowerType.TEACHER);
-		free_towers.add(TowerType.LAWSUIT);
+		//free_towers.add(TowerType.LAWSUIT);
 		
 		cursorState = null;
 
@@ -292,6 +291,7 @@ public class Game implements ApplicationListener {
 					projectile.update(dt);
 				}
 			}
+
 	
 			int active_creeps = 0;
 			
@@ -338,15 +338,16 @@ public class Game implements ApplicationListener {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT); // clear the screen
 		batch.begin();
 
-		
+		TextureRegion tmpRegion = null;
 		
 		// Draw the terrain!
 		for (int x = 0; x < 30; ++x) {
 			for (int y = 0; y < 20; ++y) {
-				
+				tmpRegion = new TextureRegion( tileset32Texture, (tiles[x][y] - 4) * 32, 0, 32, 32);
+				//pause_button_region = new TextureRegion( spriteSheet, tiles[x][y] - 4, 0, 32, 32);
 				// switch to 32x32 sprite
 				//batch.draw(spriteSheet, x * 16, y * 16, tiles[x][y] * 16, 0, 16, 16);
-				batch.draw(spriteSheet, x * SQUARE_WIDTH, y * SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH, tiles[x][y] * 16, 0, 16, 16, false, false);
+				batch.draw(tmpRegion, x * SQUARE_WIDTH, y * SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH);
 
 				// Temporary, copy pasta
 				/*
@@ -360,13 +361,12 @@ public class Game implements ApplicationListener {
 				
 			}
 		}
-		
-		
 
 		// Draw the towers
 		for( int i = 0; i < towers.size(); ++i )
 		{
-			drawSprite(towers.get( i ).getIconNum(), towers.get(i).m_x, towers.get(i).m_y);
+			batch.draw(towers.get(i).m_type.getTextureRegion(), towers.get(i).m_x * SQUARE_WIDTH, (towers.get(i).m_y) * SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH);
+			//drawSprite(towers.get( i ).getIconNum(), towers.get(i).m_x, towers.get(i).m_y);
 			if (towers.get(i).selected) {
 				//batch.draw(spriteSheet, towers.get(i).m_x * SQUARE_WIDTH, towers.get(i).m_y * SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH, towers.get(i).m_type.getSpriteLocX(), towers.get(i).m_type.getSpriteLocY(), 16, 16, false, true);
 				//drawSprite(towers.get( i ).getIconNum(), towers.get(i).m_x, towers.get(i).m_y);
@@ -379,8 +379,23 @@ public class Game implements ApplicationListener {
 		// Draw the creeps!
 		for( int i = 0; i < creeps.size(); ++i)
 		{
-			if( creeps.get(i).active )
-				batch.draw(spriteSheet, creeps.get(i).x * SQUARE_WIDTH + creeps.get(i).xOffset, creeps.get(i).y * SQUARE_WIDTH + creeps.get(i).yOffset, SQUARE_WIDTH, SQUARE_WIDTH, 0, 16, 16, 16, false, false);
+
+			if( creeps.get(i).active ) {
+				TextureRegion toUse = null;
+				//TextureRegion toUse = new TextureRegion(corporateCreepTexture);
+				if (creeps.get(i).m_type == CreepType.GLOBAL_CORP) {
+					toUse = new TextureRegion(corporateCreepTexture);
+				} else if (creeps.get(i).m_type == CreepType.SEARCHER) {
+					toUse = new TextureRegion(defconZeplinTexture);
+				} else if (creeps.get(i).m_type == CreepType.GOVERNMENT) {
+					toUse = new TextureRegion(govHeliTexture);
+				} else {
+					// TODO: Change this to difference art.
+					toUse = new TextureRegion(corporateCreepTexture);
+				}
+				batch.draw(toUse, creeps.get(i).x * SQUARE_WIDTH + creeps.get(i).xOffset, creeps.get(i).y * SQUARE_WIDTH + creeps.get(i).yOffset, SQUARE_WIDTH, SQUARE_WIDTH);
+				//batch.draw(toUse, creeps.get(i).x * SQUARE_WIDTH + creeps.get(i).xOffset, creeps.get(i).y * SQUARE_WIDTH + creeps.get(i).yOffset, SQUARE_WIDTH, SQUARE_WIDTH, 0, 32, 32, 32, false, false);
+			}
 		}
 
 		// Draw the projectiles!
@@ -396,6 +411,7 @@ public class Game implements ApplicationListener {
 		// Draw the UI!
 
 		// Background
+
 		batch.draw(blackBox, 0, 0, uiPanelWidth , screenHeight);
 
 		// Draw the menu bar
@@ -403,25 +419,25 @@ public class Game implements ApplicationListener {
 		//batch.draw(menu_region, 0, -100);
 		
 		// Draw the free towers.
-		for (int i = 1; i <= 4; i++) 
+		
+		for (int i = 1; i <= 3; i++) 
 		{
 			if (free_towers.get(i-1) != null) 
 			{
-				tower_region.setRegion( free_towers.get(i-1).getSpriteLocX(), free_towers.get(i-1).getSpriteLocY(), 16, 16 );
-				batch.draw(tower_region, 39, screenHeight - 39 * i, 16, 16);
+				//tower_region.setRegion( free_towers.get(i-1).getSpriteLocX(), free_towers.get(i-1).getSpriteLocY(), 16, 16 );
+				batch.draw(free_towers.get(i-1).getTextureRegion(), 29, (screenHeight - 60 * i) + 5, SQUARE_WIDTH, SQUARE_WIDTH);
+				//batch.draw(tower_region, 33, screenHeight - 57 * i, 16, 16);
 				
 				String towerPrice = "$" + free_towers.get(i-1).getPrice();
 				TextBounds priceBounds = mFont.getBounds(towerPrice);
-				mFont.drawWrapped(batch, towerPrice, 3, screenHeight - 45*i + priceBounds.height, priceBounds.width);
+				Color oldColor = mFont.getColor();
+				mFont.setColor(Color.RED);
+				mFont.drawWrapped(batch, towerPrice, 10, 33 + screenHeight - 58*i + priceBounds.height, priceBounds.width);
+				mFont.setColor(oldColor);
 			}
-		}
-				
-
-
+		}		
 		
-		
-		
-		// Keep the GC in it's cage as long as possible. 
+		// Keep the GC in its cage as long as possible. 
 		if( oldMoney != money || oldLife != life )
 		{
 			uiString = "+: " + life + '\n' + "$: " + money;
@@ -486,27 +502,23 @@ public class Game implements ApplicationListener {
 			mFont.drawWrapped(batch, sell_button_string,
 							(32 - (sellButtonBounds.width / 2)),
 							START_RECT.y + sellButtonBounds.height + 4, sellButtonBounds.width);
-			
-			
-			
 		}
 		
 		// Text
-		String uiString = "+: " + life + '\n' + "$: " + money;
+		String uiString = "+  " + life + '\n' + "$  " + money;
 		TextBounds uiBounds = mFont.getMultiLineBounds(uiString);
-		
+		Color oldColor = mFont.getColor();
+		mFont.setColor(Color.RED);
 		mFont.drawWrapped(batch, uiString, 3, uiBounds.height + 3, uiBounds.width);
+		mFont.setColor(oldColor);
 
 		// DEBUG TEXT
 		//mFont.drawWrapped(batch, debugtext, 60, uiBounds.height + 3, 1000);		
 
 		// Draw the cursorTexture
 		if (cursorState != null && cursorTexture != null) {
-		
 			batch.draw(cursorTexture, cursorLocX - 8, screenHeight - cursorLocY - 8);
-			
 		}
-		
 		
 		// Render Paused String if needed in bottom right corner.
 		String center_string = null;
@@ -518,17 +530,12 @@ public class Game implements ApplicationListener {
 		
 		if (center_string != null) {
 			TextBounds pausedBounds = mFont.getMultiLineBounds(center_string);
-			Color oldColor = mFont.getColor();
+			Color oldColor2 = mFont.getColor();
 			mFont.setColor(Color.RED);
 			mFont.drawWrapped(batch, center_string,
 					(screenWidth / 2) - (pausedBounds.width / 2),
 					(screenHeight / 2) - (pausedBounds.height / 2), pausedBounds.width );
-			mFont.setColor(oldColor);
-		}
-		// is the player dragging a tower?
-		if (cursorState != null){
-			batch.draw(spriteSheet, cursorLocX, uiBounds.height - cursorLocY, 0, 16, 16, 16);
-
+			mFont.setColor(oldColor2);
 		}
 		
 		batch.end();
@@ -545,6 +552,10 @@ public class Game implements ApplicationListener {
 		nextWave(INITIAL_CREEP_SPEED);
 		
 		towers.clear();
+		
+		for (int i = 0; i < projectiles.length; i++) {
+			projectiles[i].active = false;
+		}
 		
 	}
 	
@@ -566,8 +577,21 @@ public class Game implements ApplicationListener {
 	}
 	
 	public void drawSprite(int iconNum, int x, int y) {
-		batch.draw(spriteSheet, x * SQUARE_WIDTH, y * SQUARE_WIDTH, SQUARE_WIDTH, SQUARE_WIDTH, iconNum * 16, 16, 16, 16,false,false);
-		//batch.draw(spriteSheet, 4 * 32, 0, SQUARE_WIDTH, SQUARE_WIDTH, iconNum * 16, 0, 16, 16);
+		int rownum = 0;
+		while (iconNum > 16) {
+			iconNum -= 16;
+			rownum++;
+		}
+		batch.draw(spriteSheet, x * 16, y * 16, iconNum * 16, rownum * 16, 16, 16);
+	}
+
+	public void drawSpriteFloatcoords(int iconNum, int x, int y) {
+		int rownum = 0;
+		while (iconNum > 16) {
+			iconNum -= 16;
+			rownum++;
+		}
+		batch.draw(spriteSheet, x, y, iconNum * 16, rownum * 16, 16, 16);
 	}
 
 	@Override
@@ -608,7 +632,7 @@ public class Game implements ApplicationListener {
 		// * 2 (tower range goes both ways)
 		int powof2 = 1;
 		int shotRange = (int) Math.ceil(radius * 2);
-		while (powof2 < shotRange){
+		while (powof2 < shotRange) {
 			powof2 <<= 1;
 		}
 

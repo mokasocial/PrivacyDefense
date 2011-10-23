@@ -1,0 +1,91 @@
+// !$*UTF8*$!
+{
+	1D6058900D05DD3D006BFB54 /* PrivacyDefense */ = {
+		activeExec = 0;
+		executables = (
+			4B867A7A1453AAAB00D7DF20 /* PrivacyDefense */,
+		);
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = 4B867A7A1453AAAB00D7DF20 /* PrivacyDefense */;
+		activeTarget = 1D6058900D05DD3D006BFB54 /* PrivacyDefense */;
+		codeSenseManager = 4B867AA81453AAC700D7DF20 /* Code sense */;
+		executables = (
+			4B867A7A1453AAAB00D7DF20 /* PrivacyDefense */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					833,
+					20,
+					48.16259765625,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 341027500;
+			PBXWorkspaceStateSaveDate = 341027500;
+		};
+		sourceControlManager = 4B867AA71453AAC700D7DF20 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	4B867A7A1453AAAB00D7DF20 /* PrivacyDefense */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = PrivacyDefense;
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	4B867AA71453AAC700D7DF20 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	4B867AA81453AAC700D7DF20 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	506EE05D10304ED200A389B3 /* cocos2d libraries */ = {
+		activeExec = 0;
+	};
+}

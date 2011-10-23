@@ -4,14 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class GameInputProcessor implements InputProcessor {
 
 	public static final int DEFAULT_WIN_PAUSE_KEY = Input.Keys.SPACE;
 	public static final int DEFAULT_DRD_PAUSE_KEY = Input.Keys.BACK;
-	
+
 	public GameInputProcessor() {
 		Gdx.input.setInputProcessor(this);
 		// other constructor stuff here...
@@ -24,7 +23,7 @@ public class GameInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean keyTyped(char character) {
-		//Game.instance.debugtext = "key typed: '" + character + "'";
+		// Game.instance.debugtext = "key typed: '" + character + "'";
 		return false;
 	}
 
@@ -43,6 +42,7 @@ public class GameInputProcessor implements InputProcessor {
 		if (pointer != 0 || button != Buttons.LEFT) {
 			return false;
 		}
+
 		Game.instance.debugtext = "touch down: " + x + ", " + y + ", button: " + getButtonString(button);
 
 		if (Game.instance.buildMode) {
@@ -102,8 +102,6 @@ public class GameInputProcessor implements InputProcessor {
 					
 					Game.instance.towers.get(i).selected = true;
 					Game.instance.selected = Game.instance.towers.get(i);
-					
-
 				}
 			}
 			
@@ -123,37 +121,35 @@ public class GameInputProcessor implements InputProcessor {
 		
 			for (TowerType towerType : Game.instance.free_towers) {
 				if (x <= Game.instance.uiPanelWidth && x >= 35) {
-					if (y >= (20) && y <= (40)) {
+					if (y >= (30) && y <= (60)) {
 						Game.instance.debugtext = "touch down on tower 1";
 						Game.instance.cursorState = Game.instance.free_towers.get(0);					
 						Game.instance.cursorLocX = x;
 						Game.instance.cursorLocY = y;
-					} else if (y >= (60) && y <= (80)) {
+					} else if (y >= (90) && y <= (120)) {
 						Game.instance.debugtext = "touch down on tower 2";
 						Game.instance.cursorState = Game.instance.free_towers.get(1);
 						Game.instance.cursorLocX = x;
 						Game.instance.cursorLocY = y;
-					} else if (y >= (100) && y <= (120)) {
+					} else if (y >= (150) && y <= (180)) {
 						Game.instance.debugtext = "touch down on tower 3";
 						Game.instance.cursorState = Game.instance.free_towers.get(2);
 						Game.instance.cursorLocX = x;
 						Game.instance.cursorLocY = y;
-					} else if (y >= (140) && y <= (160)) {
+					} /*else if (y >= (140) && y <= (160)) {
 						Game.instance.debugtext = "touch down on tower 4";
 						Game.instance.cursorState = Game.instance.free_towers.get(3);
 						Game.instance.cursorLocX = x;
 						Game.instance.cursorLocY = y;
-					}
+					}*/
 				
 					if (Game.instance.cursorState != null) {
-						Game.instance.cursorTexture = new TextureRegion(Game.instance.spriteSheet,
-								Game.instance.cursorState.getSpriteLocX(),
-								Game.instance.cursorState.getSpriteLocY(),
-								16, 16);
+						Game.instance.cursorTexture = new TextureRegion(Game.instance.cursorState.getTextureRegion(),
+								0,
+								0,
+								32, 32);
 					}
-				}
-				
-				
+				}				
 			}
 		}
 		return false;
@@ -162,14 +158,12 @@ public class GameInputProcessor implements InputProcessor {
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
 		Game.instance.debugtext = "touch dragged: " + x + ", " + y + ", pointer: " + pointer;
-		
+
 		if (Game.instance.cursorState != null) {
-		
 			Game.instance.cursorLocX = x;
 			Game.instance.cursorLocY = y;
-			
 		}
-		
+
 		return false;
 	}
 
@@ -182,45 +176,42 @@ public class GameInputProcessor implements InputProcessor {
 		}
 		return flag;
 	}
-	
+
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
-		
-		// If the cursor state is not null then place a tower of that type in the location
+
+		// If the cursor state is not null then place a tower of that type in
+		// the location
 		if (Game.instance.cursorState != null) {
-			
+
 			// Calculate the closest available square.
+
 			int gameCoordX = (x ) / Game.instance.SQUARE_WIDTH;
 			int gameCoordY = (Game.instance.screenHeight - y) / Game.instance.SQUARE_WIDTH;
 			
 			//System.out.println(Game.instance.tiles[gameCoordX][gameCoordY]);
-			
 			if (!tileContainsTower(gameCoordX, gameCoordY) &&
-					!(Game.instance.tiles[gameCoordX][gameCoordY] == 6 ||
-					  Game.instance.tiles[gameCoordX][gameCoordY] == 5)) {
+					!(Game.instance.tiles[gameCoordX][gameCoordY] >= 5 &&
+					  Game.instance.tiles[gameCoordX][gameCoordY] <= 10)) {
 				
 				// Check to make sure there is enough money to buy the tower.
 				if (Game.instance.money >= Game.instance.cursorState.getPrice()) {
 					Game.instance.towers.add(new Tower(Game.instance.cursorState, gameCoordX, gameCoordY));
 					Game.instance.money -= Game.instance.cursorState.getPrice();
 				}
-				
 			}
-			
 		}
-		
+
 		Game.instance.cursorLocX = 0;
 		Game.instance.cursorLocY = 0;
 		Game.instance.cursorState = null;
-		
+
 		if (Buttons.LEFT != button || pointer != 0) {
 			return false;
 		}
 		// Game.instance.debugtext = "touch up: " + x + ", " + y + ", button: "
 		// + getButtonString(button);
-		
-		
-		
+
 		return false;
 	}
 
