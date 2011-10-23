@@ -97,8 +97,8 @@ namespace SafeAndFree
                 //}
                 if (waveManager.InfiniteUpdate(creeps.Count == 0))
                 {
-                    double boost = Math.Pow(1.15, waveManager.BonusWave);
-                    CreepTypeData creepNormal = new CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 16, Width = 16, Speed = 3};
+                    double boost = Math.Pow(1.2, waveManager.BonusWave);
+                    CreepTypeData creepNormal = new CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 32, Width = 32, Speed = 3};
                     CreepTypeData creepFast = new CreepTypeData(){DamageToPlayer = 1, Health =(int)boost * 4, Height = 32, Width = 32, Speed = 4};
                     CreepTypeData creepBoss = new CreepTypeData(){DamageToPlayer = 2, Health = (int)boost * 25, Height = 32, Width = 32, Speed = 3};
                     
@@ -222,6 +222,7 @@ namespace SafeAndFree
                 if(t.CanFire && Calculator.BestShootableCreep(creeps, t.Position, t.GetTowerStats().Range, out target))
                 {
                     var proj = TowerFactory.GetTowerProjectile(t, target);
+                    target.DeathForecast += proj.Stats.Damage;
                     projectileManager.AddProjectile(proj);
                 }
             }
