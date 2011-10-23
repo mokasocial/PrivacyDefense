@@ -141,7 +141,11 @@ public class GameInputProcessor implements InputProcessor {
 			int gameCoordX = (x ) / 16;
 			int gameCoordY = (Game.instance.screenHeight - y) / 16;
 			
-			if (!tileContainsTower(gameCoordX, gameCoordY)) {
+			System.out.println(Game.instance.tiles[gameCoordX][gameCoordY]);
+			
+			if (!tileContainsTower(gameCoordX, gameCoordY) &&
+					!(Game.instance.tiles[gameCoordX][gameCoordY] == 6 ||
+					  Game.instance.tiles[gameCoordX][gameCoordY] == 5)) {
 				
 				// Check to make sure there is enough money to buy the tower.
 				if (Game.instance.money >= Game.instance.cursorState.getPrice()) {
