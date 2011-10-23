@@ -14,7 +14,7 @@ namespace SafeAndFree
         /// <summary>
         /// The center position of this instance.
         /// </summary>
-        private Vector2 CenterPosition;
+        public Vector2 CenterPosition;
         private List<Debuff> CurrentDebuffs;
         public new bool IsDead
         {
@@ -41,7 +41,7 @@ namespace SafeAndFree
                 return new Vector2(CenterPosition.X - Board.TileCenter.X, CenterPosition.Y - Board.TileCenter.Y);
             }
         }
-
+        
         /// <summary>
         /// The index of the path this creep travels.
         /// </summary>
@@ -52,12 +52,16 @@ namespace SafeAndFree
                 return _path;
             }
         }
-
+        public Vector2 GetCenterPosition()
+        {
+            return CenterPosition;
+        }
         private Dictionary<CreepStats, int> stats;
         /// <summary>
         /// A reference to the stats of this creep.
         /// </summary>
-        public Dictionary<CreepStats, int> Stats { 
+        public Dictionary<CreepStats, int> Stats 
+        { 
             get 
             { 
                 if(CurrentDebuffs.Count>0)
@@ -90,7 +94,7 @@ namespace SafeAndFree
         public Creep(Dictionary<CreepStats, int> stats, Vector2 position, MEDIA_ID textureID)
         {
             CurrentDebuffs = new List<Debuff>();
-            this.CenterPosition = new Vector2(position.X + Board.TileCenter.X, position.Y + Board.TileCenter.Y);
+            this.CenterPosition = new Vector2(position.X , position.Y);
             this.TextureID = textureID;
 
             this.Stats = stats;
