@@ -74,7 +74,7 @@ namespace SafeAndFree
         private void LoadResources()
         {
             LoadMap();
-            LoadPaths();
+            LoadData();
             LoadCreeps();
             LoadATowerTest();
         }
@@ -84,15 +84,23 @@ namespace SafeAndFree
         /// </summary>
         public void Update()
         {
+            if (null != waveManager)
+            {
+                if (!waveManager.GameWon && waveManager.Update(creeps.Count == 0))
+                {
+                    Dictionary<CreepStats, int> basicStats = new Dictionary<CreepStats, int>();
+                    basicStats.Add(CreepStats.Health, 50);
+                    basicStats.Add(CreepStats.Speed, 3);
+                    basicStats.Add(CreepStats.DamageToPlayer, 1);
+
+                    creeps.Add(new Creep(basicStats, new Vector2(paths[0][0].X, paths[0][0].Y), (MEDIA_ID)waveManager.waves[waveManager.currentWave][waveManager.nextSpawnIndex - 1][0], 0, 0));
+                }
+            }
+
             HandleCreepLoop();
             HandleTowerLoop();
             HandleProjectileLoop();
             HandleInput();
-
-            if (null != waveManager)
-            {
-                waveManager.Update();
-            }
         }
 
         protected void HandleInput()
@@ -136,7 +144,6 @@ namespace SafeAndFree
                 {
                     // Creep reached the end.
                     creeps.RemoveAt(i--);
-
                 }
             }
         }
@@ -201,15 +208,16 @@ namespace SafeAndFree
         }
 
         /// <summary>
-        /// Load the paths and waypoints information from xml.
+        /// Load the paths, waypoints and wave data from xml.
         /// </summary>
-        private void LoadPaths()
+        private void LoadData()
         {
             XmlReader reader = XmlReader.Create("MapDefinitions.xml");
 
             int lastPath = -1;
             int lastWaypoint = 0;
 
+            waveManager = new WaveManager();
             int[][][] waves = null;
             int lastWave = -1;
             int lastCreep = -1;
@@ -268,12 +276,8 @@ namespace SafeAndFree
         {
             // Hard-coded for now.
             creeps = new List<Creep>();
-            Dictionary<CreepStats, int> basicStats = new Dictionary<CreepStats, int>();
-            basicStats.Add(CreepStats.Health, 50);
-            basicStats.Add(CreepStats.Speed, 3);
-            basicStats.Add(CreepStats.DamageToPlayer, 1);
 
-            creeps.Add(new Creep(basicStats, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_0, 0, 0));
+            //creeps.Add(new Creep(basicStats, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_0, 0, 0));
         }
 
         ///
@@ -284,6 +288,7 @@ namespace SafeAndFree
             towers = new List<Tower>();
             towers.Add(TowerFactory.GetTower(TowerTypes.Slow, new Vector2(70, 400)));
             towers.Add(TowerFactory.GetTower(TowerTypes.Normal, new Vector2(200, 300)));
+            towers.Add(TowerFactory.GetTower(TowerTypes.Normal, new Vector2(200, 400)));
         }
     }
 }

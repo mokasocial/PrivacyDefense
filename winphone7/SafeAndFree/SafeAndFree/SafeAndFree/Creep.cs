@@ -57,7 +57,8 @@ namespace SafeAndFree
         /// <summary>
         /// A reference to the stats of this creep.
         /// </summary>
-        public Dictionary<CreepStats, int> Stats { 
+        public Dictionary<CreepStats, int> Stats 
+        { 
             get 
             { 
                 if(CurrentDebuffs.Count>0)
@@ -90,7 +91,7 @@ namespace SafeAndFree
         public Creep(Dictionary<CreepStats, int> stats, Vector2 position, MEDIA_ID textureID)
         {
             CurrentDebuffs = new List<Debuff>();
-            this.CenterPosition = new Vector2(position.X + Board.TileCenter.X, position.Y + Board.TileCenter.Y);
+            this.CenterPosition = new Vector2(position.X , position.Y);
             this.TextureID = textureID;
 
             this.Stats = stats;

@@ -27,27 +27,40 @@ namespace SafeAndFree
             nextSpawnIndex = 0;
         }
 
-        public bool Update()
+        public bool Update(bool canStartNewWave)
         {
             if (--delay <= 0)
             {
-                if (++nextSpawnIndex > waves.GetUpperBound(1))
+                if (nextSpawnIndex + 1 > waves[currentWave].Length)
                 {
-                    if (++currentWave > waves.GetUpperBound(0))
+                    if (!canStartNewWave)
+                    {
+                        return false;
+                    }
+                    else if (currentWave + 1 >= waves.Length)
                     {
                         // Game won!
                         GameWon = true;
 
                         return false;
                     }
+                    else 
+                    {
+                        nextSpawnIndex = 0;
+                        currentWave++;
 
-                    nextSpawnIndex = 0;
-
-                    // Next delay + 5 seconds (@ 30 FPS).
-                    delay = waves[currentWave][nextSpawnIndex][1] + 150;
+                        // Next delay + 1.5 seconds (@ 30 FPS).
+                        delay = waves[currentWave][nextSpawnIndex][1] * 6 + 45;
+                    }
                 }
+                else
+                {
+                    delay = waves[currentWave][nextSpawnIndex][1] * 6;
 
-                return true;
+                    nextSpawnIndex++;
+
+                    return true;
+                }
             }
 
             return false;

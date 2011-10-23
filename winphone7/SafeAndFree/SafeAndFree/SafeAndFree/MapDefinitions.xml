@@ -12,9 +12,9 @@
     <path index="0" numWaypoints="5">
       <waypoint column="5" row="0"/>
       <waypoint column="5" row="12"/>
-      <waypoint column="25" row="12"/>
-      <waypoint column="25" row="5"/>
-      <waypoint column="30" row="5"/>
+      <waypoint column="20" row="12"/>
+      <waypoint column="20" row="5"/>
+      <waypoint column="24" row="5"/>
     </path>
   </paths>
   <waves numWaves="7">
