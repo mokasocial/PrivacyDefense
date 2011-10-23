@@ -140,7 +140,6 @@ namespace SafeAndFree
             {
                 t.Update();
                 Creep target;
-
                 if(t.CanFire && Calculator.BestShootableCreep(creeps, t.Position, t.GetTowerStats().Range, out target))
                 {
                     var proj = TowerFactory.GetTowerProjectile(t, target);

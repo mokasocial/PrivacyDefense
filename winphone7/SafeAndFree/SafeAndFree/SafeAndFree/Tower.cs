@@ -59,7 +59,6 @@ namespace SafeAndFree
             NextFire += towerStats[Level].Delay;
             return GetWeaponStats();  
         }
-
         public void Update()
         {
             if (NextFire > 0)
