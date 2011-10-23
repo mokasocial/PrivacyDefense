@@ -86,6 +86,7 @@
     <Compile Include="Game States\Screen.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="Tower.cs" />
+    <Compile Include="WaveManager.cs" />
     <None Include="Properties\AppManifest.xml">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </None>
@@ -98,18 +99,6 @@
   <ItemGroup>
     <Content Include="Game.ico" />
     <Content Include="MapDefinitions.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="obsolete tile images\tile0.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="obsolete tile images\tile1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="obsolete tile images\tile2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="obsolete tile images\tile3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="PhoneGameThumb.png">

@@ -4,9 +4,6 @@ Content\drawmap.xnb
 Content\TestTower.xnb
 Content\TestProjectile.xnb
 Content\tileSelect.xnb
+Content\TestProjectile2.xnb
 Content\winphonemap.png
 MapDefinitions.xml
-obsolete tile images\tile0.png
-obsolete tile images\tile1.png
-obsolete tile images\tile2.png
-obsolete tile images\tile3.png

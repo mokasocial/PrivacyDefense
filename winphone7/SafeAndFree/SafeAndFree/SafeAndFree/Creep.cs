@@ -16,7 +16,7 @@ namespace SafeAndFree
         /// </summary>
         private Vector2 CenterPosition;
         private List<Debuff> CurrentDebuffs;
-        public bool IsDead
+        public new bool IsDead
         {
             get { return Stats[CreepStats.Health] <= 0; }
         }
@@ -71,7 +71,7 @@ namespace SafeAndFree
                     {
                         if(newStats.ContainsKey(cd.Target))
                         {
-                            newStats[cd.Target] -= Math.Min(newStats[cd.Target], stats[cd.Target] - cd.Amount);
+                            newStats[cd.Target] = Math.Min(newStats[cd.Target], stats[cd.Target] - cd.Amount);
                         }
                     });
                     return newStats;
@@ -89,6 +89,7 @@ namespace SafeAndFree
         /// <param name="textureID">The MEDIA_ID for this creep's texture.</param>
         public Creep(Dictionary<CreepStats, int> stats, Vector2 position, MEDIA_ID textureID)
         {
+            CurrentDebuffs = new List<Debuff>();
             this.CenterPosition = new Vector2(position.X + Board.TileCenter.X, position.Y + Board.TileCenter.Y);
             this.TextureID = textureID;
 

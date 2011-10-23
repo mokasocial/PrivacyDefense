@@ -1,10 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <definitions>
   <map path="\\Content\\winphonemap.png" tileWidth="32" tileHeight="32"/>
-  <tile index="0" path="\\Content\\tile0.png"/>
-  <tile index="1" path="\\Content\\tile1.png"/>
-  <tile index="2" path="\\Content\\tile2.png"/>
-  <tile index="3" path="\\Content\\tile3.png"/>
+  <tile index="0"/>
+  <tile index="1"/>
+  <tile index="2"/>
+  <tile index="3"/>
+  <tile index="4"/>
+  <tile index="5"/>
+  <tile index="6"/>
   <paths numPaths="1">
     <path index="0" numWaypoints="5">
       <waypoint column="5" row="0"/>
@@ -14,4 +17,84 @@
       <waypoint column="30" row="5"/>
     </path>
   </paths>
+  <waves>
+	<wave>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+	</wave>
+	<wave>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+	</wave>
+	<wave>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+	</wave>
+	<wave>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+	</wave>
+	<wave>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+	</wave>
+	<wave>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="1" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+		<enemy type="0" delay="5"/>
+	</wave>
+	<wave>
+		<enemy type="2" delay="5"/>
+	</wave>
+  </waves>
 </definitions>
