@@ -15,6 +15,8 @@ namespace SafeAndFree
     {
         public TowerTypes Type { get; private set; }
         public int NextFire { get; private set; }
+        public bool CanFire
+        { get { return NextFire == 0; } }
         private TowerStats[] towerStats;
         private WeaponStats[] weaponStats;
 
@@ -52,10 +54,17 @@ namespace SafeAndFree
             return weaponStats[Level];
         }
 
-        public void Fire(out WeaponStats missile)
+        public WeaponStats Fire()
         {
-            missile = weaponStats[Level];
             NextFire += towerStats[Level].Delay;
+            return GetWeaponStats();  
+        }
+        public void Update()
+        {
+            if (NextFire > 0)
+            {
+                NextFire--;
+            }
         }
 
         public void LevelUp()
