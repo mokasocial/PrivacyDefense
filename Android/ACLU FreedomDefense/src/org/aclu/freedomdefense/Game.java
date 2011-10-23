@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Game implements ApplicationListener, InputProcessor {
@@ -131,17 +132,36 @@ public class Game implements ApplicationListener, InputProcessor {
 		for( int i = 1; i < 100; ++i )
 			creeps.add( new Creep( 100, 32, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
 		
-		projectiles.add( new Projectile( new Vector2( 0, 0 ), new Vector2( 32, 32 ) ) );
-
 		mapData.dispose();
 	}
 
 	public void update() {
 		float dt = Gdx.graphics.getDeltaTime();
 
-		for (Projectile projectile : projectiles) {
-			projectile.update(dt);
+		ArrayList<Projectile> livingProjectiles = new ArrayList<Projectile>();
+		for (Projectile projectile : projectiles) 
+		{
+			if( projectile.my_coords.x > 0 && projectile.my_coords.y > 0 && projectile.my_coords.x * 16 < screenWidth && projectile.my_coords.y * 16 < screenHeight )
+			{
+				Rectangle projRect = new Rectangle( projectile.my_coords.x * 16, projectile.my_coords.y * 16, 16, 16 );
+				
+				for( Creep creep : creeps )
+				{
+					Rectangle creepRect = new Rectangle( creep.x * 16 + creep.xOffset, creep.y * 16 + creep.yOffset, 16, 16 );
+					
+					if( projRect.overlaps( creepRect ) )
+					{
+						creep.Health -= projectile.damage;
+					}
+					else
+					{
+						projectile.update(dt);
+						livingProjectiles.add( projectile );
+					}
+				}
+			}
 		}
+		livingProjectiles = projectiles;
 
 		// Handle projectile collision, creep update, creep death
 		ArrayList<Creep> livingCreeps = new ArrayList<Creep>();
@@ -210,13 +230,10 @@ public class Game implements ApplicationListener, InputProcessor {
 			// TODO: Change which sprite the projectile uses based on something in the projectile
 			batch.draw( spriteSheet, projCoords.x*16+8, projCoords.y*16+8, 0, 16*3, 16, 16 );
 		}
-
-		
-		
 		
 		// Background
-		TextureRegion blackBox = new TextureRegion(spriteSheet, 0, 2 * 16, 16, 16);
-		batch.draw(blackBox, 0, 0, 60, screenHeight);
+		//TextureRegion blackBox = new TextureRegion(spriteSheet, 0, 2 * 16, 16, 16);
+		//batch.draw(blackBox, 0, 0, 60, screenHeight);
 
 		// Draw the free towers.
 		for (int i = 1; i <= 4; i++) {
