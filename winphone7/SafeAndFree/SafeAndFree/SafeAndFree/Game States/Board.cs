@@ -99,11 +99,12 @@ namespace SafeAndFree
                 {
                     double boost = Math.Pow(1.2, waveManager.BonusWave);
                     CreepTypeData creepNormal = new CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 32, Width = 32, Speed = 3};
-                    CreepTypeData creepFast = new CreepTypeData(){DamageToPlayer = 1, Health =(int)boost * 4, Height = 32, Width = 32, Speed = 4};
+                    CreepTypeData creepFast = new CreepTypeData(){DamageToPlayer = 1, Health =(int)boost * 4, Height = 32, Width = 32, Speed = 5};
+                    CreepTypeData creepVariant = new  CreepTypeData(){DamageToPlayer = 1, Health = (int)boost * 5, Height = 32, Width = 32, Speed = 4};
                     CreepTypeData creepBoss = new CreepTypeData(){DamageToPlayer = 2, Health = (int)boost * 25, Height = 32, Width = 32, Speed = 3};
                     
                     // What is this?
-                    int thing = waveManager.BonusWave % 3;
+                    int thing = waveManager.BonusWave % 4;
                     Creep newCreep;
 
                     switch (thing)
@@ -114,8 +115,11 @@ namespace SafeAndFree
                         case 1:
                              newCreep = new Creep(creepFast, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_1);
                             break;
+                        case 2:
+                            newCreep = new Creep(creepVariant, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_2);
+                            break;
                         default:
-                            newCreep = new Creep(creepBoss, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_2);
+                            newCreep = new Creep(creepBoss, new Vector2(paths[0][0].X, paths[0][0].Y), MEDIA_ID.CREEP_3);
                             break;
                     }
 
@@ -203,13 +207,19 @@ namespace SafeAndFree
                 if (creeps[i].IsDead)
                 {
                     // Creep was killed.
+                    CurrentPlayer.AddScore(creeps[i].Stats[CreepStats.Health]);
                     creeps.RemoveAt(i--);
-                    CurrentPlayer.AddMoney(waveManager.currentWave + 1);
+                    CurrentPlayer.AddMoney(waveManager.BonusWave + 1);
                 }
                 else if (creeps[i].Update(this.paths))
                 {
                     // Creep reached the end.
                     creeps.RemoveAt(i--);
+                    CurrentPlayer.LoseLife();
+                    if (CurrentPlayer.HasLost)
+                    {
+                        GameEngine.RunningEngine.Load(Screens.LOSE);
+                    }
                 }
             }
         }
