@@ -33,15 +33,15 @@ namespace SafeAndFree.Helpers
                 //case TowerTypes.Splash:
                 case TowerTypes.Slow:
                     Debuff slow = new Debuff(CreepStats.Speed, 1, 10);
-                towerStats = new TowerStats[5] { new TowerStats(70, 70, 5), new TowerStats(60, 70, 10), 
-                    new TowerStats(50, 70, 20), new TowerStats(40, 70, 40), new TowerStats(30, 70, -1) };
+                towerStats = new TowerStats[5] { new TowerStats(70, 100, 5), new TowerStats(60, 100, 10), 
+                    new TowerStats(50, 100, 20), new TowerStats(40, 100, 40), new TowerStats(30, 100, -1) };
                 weaponStats = new WeaponStats[5] { new WeaponStats(0, 10, 1, slow), new WeaponStats(0, 10, 1, slow), 
                     new WeaponStats(0, 10, 1, slow), new WeaponStats(0, 10, 1, slow), new WeaponStats(0, 10, 1, slow) };
                 break;
                 //case TowerTypes.Normal:
 
-                default:    
-                towerStats = new TowerStats[5] { new TowerStats(30, 100, 5), new TowerStats(15, 130, 10), new TowerStats(13, 150, 20), new TowerStats(11, 170, 40), new TowerStats(10, 190, -1) };
+                default:
+                towerStats = new TowerStats[5] { new TowerStats(30, 250, 5), new TowerStats(15, 250, 10), new TowerStats(13, 250, 20), new TowerStats(11, 250, 40), new TowerStats(10, 250, -1) };
                 weaponStats = new WeaponStats[5] { new WeaponStats(10, 10, 1), new WeaponStats(20, 10, 1), new WeaponStats(40, 10, 1), new WeaponStats(80, 10, 1), new WeaponStats(200, 10, 1) };
                 break;
             }
