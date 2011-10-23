@@ -34,12 +34,12 @@ public class Game implements ApplicationListener {
 	public ArrayList<Creep> creeps;
 	public Projectile projectiles[];
 	public ArrayList<Tower> towers;
-	public ArrayList<TowerType> free_towers; 
+	public ArrayList<TowerType> free_towers;
 	public int startingX, startingY;
 
 	public int endingX;
 	public int endingY;
-	
+
 	public String debugtext = "";
 
 	public TowerType cursorState;
@@ -56,7 +56,7 @@ public class Game implements ApplicationListener {
 	@Override
 	public void create() {
 		instance = this;
-		
+
 		Gdx.input.setInputProcessor(new GameInputProcessor());
 
 		batch = new SpriteBatch();
@@ -65,13 +65,12 @@ public class Game implements ApplicationListener {
 
 		creeps = new ArrayList<Creep>();
 		projectiles = new Projectile[maxProjectiles];
-		
-		for( int i = 0; i < 1000; ++i )
-		{
-			projectiles[i] = new Projectile( new Vector2( 0.0f, 0.0f ), new Vector2( 0.0f, 0.0f ), 0.0f );
+
+		for (int i = 0; i < 1000; ++i) {
+			projectiles[i] = new Projectile(new Vector2(0.0f, 0.0f), new Vector2(0.0f, 0.0f), 0.0f);
 			projectiles[i].active = false;
 		}
-		
+
 		towers = new ArrayList<Tower>();
 
 		towers.add(new Tower(TowerType.JUDGE, 6, 6));
@@ -80,13 +79,13 @@ public class Game implements ApplicationListener {
 		towers.add(new Tower(TowerType.JUDGE, 8, 8));
 		towers.add(new Tower(TowerType.LAWSUIT, 4, 12));
 		towers.add(new Tower(TowerType.TEACHER, 8, 19));
-		
+
 		free_towers = new ArrayList<TowerType>();
 		free_towers.add(TowerType.JUDGE);
 		free_towers.add(TowerType.FIREWALL);
 		free_towers.add(TowerType.TEACHER);
 		free_towers.add(TowerType.LAWSUIT);
-		
+
 		cursorState = null;
 
 		tiles = new int[30][20];
@@ -151,37 +150,31 @@ public class Game implements ApplicationListener {
 			}
 		}
 
-		for( int i = 1; i < 20; ++i )
-			creeps.add( new Creep( 100, 32, 20, startingX, startingY + i, 0, 0, CreepType.PETTY ) );
-		
+		for (int i = 1; i < 20; ++i)
+			creeps.add(new Creep(100, 32, 20, startingX, startingY + i, 0, 0, CreepType.PETTY));
+
 		mapData.dispose();
 	}
 
-	public void update() 
-	{
+	public void update() {
 		float dt = Gdx.graphics.getDeltaTime();
 
-		for (Projectile projectile : projectiles) 
-		{
-			if( projectile.active && projectile.my_coords.x > 0 && projectile.my_coords.y > 0 && projectile.my_coords.x * 16 < screenWidth && projectile.my_coords.y * 16 < screenHeight )
-			{
-				Rectangle projRect = new Rectangle( ( projectile.my_coords.x * 16 ) + 8, ( projectile.my_coords.y * 16 ) + 8, 8, 8 );
-				
-				for( Creep creep : creeps )
-				{
-					Rectangle creepRect = new Rectangle( ( creep.x * 16 + creep.xOffset ) + 8, ( creep.y * 16 + creep.yOffset ) + 8, 8, 8 );
-					
-					if( projRect.overlaps( creepRect ) )
-					{
+		for (Projectile projectile : projectiles) {
+			if (projectile.active && projectile.my_coords.x > 0 && projectile.my_coords.y > 0 && projectile.my_coords.x * 16 < screenWidth && projectile.my_coords.y * 16 < screenHeight) {
+				Rectangle projRect = new Rectangle((projectile.my_coords.x * 16) + 8, (projectile.my_coords.y * 16) + 8, 8, 8);
+
+				for (Creep creep : creeps) {
+					Rectangle creepRect = new Rectangle((creep.x * 16 + creep.xOffset) + 8, (creep.y * 16 + creep.yOffset) + 8, 8, 8);
+
+					if (projRect.overlaps(creepRect)) {
 						creep.Health -= projectile.damage;
 						projectile.active = false;
 						break;
 					}
 				}
 			}
-			
-			if( projectile.active )
-			{
+
+			if (projectile.active) {
 				projectile.update(dt);
 			}
 		}
@@ -226,25 +219,22 @@ public class Game implements ApplicationListener {
 		}
 
 		// Draw the towers
-		for( int i = 0; i < towers.size(); ++i )
-		{
-			drawSprite(towers.get( i ).getIconNum(), towers.get(i).m_x, towers.get(i).m_y);
+		for (int i = 0; i < towers.size(); ++i) {
+			drawSprite(towers.get(i).getIconNum(), towers.get(i).m_x, towers.get(i).m_y);
 		}
 
 		// Draw the creeps!
-		for( int i = 0; i < creeps.size(); ++i)
-		{
-			if( creeps.get(i).active )
+		for (int i = 0; i < creeps.size(); ++i) {
+			if (creeps.get(i).active)
 				batch.draw(spriteSheet, creeps.get(i).x * 16 + creeps.get(i).xOffset, creeps.get(i).y * 16 + creeps.get(i).yOffset, 0, 16, 16, 16);
 		}
 
 		// Draw the projectiles!
-		for( int i = 0; i < maxProjectiles; ++i )
-		{
-			if( projectiles[i].active )
-			{
-				// TODO: Change which sprite the projectile uses based on something in the projectile
-				batch.draw( spriteSheet, projectiles[i].my_coords.x*16, projectiles[i].my_coords.y*16, 0, 16*3, 16, 16 );
+		for (int i = 0; i < maxProjectiles; ++i) {
+			if (projectiles[i].active) {
+				// TODO: Change which sprite the projectile uses based on
+				// something in the projectile
+				batch.draw(spriteSheet, projectiles[i].my_coords.x * 16, projectiles[i].my_coords.y * 16, 0, 16 * 3, 16, 16);
 			}
 		}
 
@@ -252,42 +242,54 @@ public class Game implements ApplicationListener {
 
 		// Background
 		TextureRegion blackBox = new TextureRegion(spriteSheet, 0, 2 * 16, 16, 16);
-		batch.draw(blackBox, 0, 0, uiPanelWidth , screenHeight);
+		batch.draw(blackBox, 0, 0, uiPanelWidth, screenHeight);
 
 		// Draw the free towers.
 		for (int i = 1; i <= 4; i++) {
-			if (free_towers.get(i-1) != null) {
+			if (free_towers.get(i - 1) != null) {
 
-				TextureRegion tower_region = new TextureRegion(spriteSheet,
-															   free_towers.get(i-1).getSpriteLocX(),
-															   free_towers.get(i-1).getSpriteLocY(),
-															   16, 16);
+				TextureRegion tower_region = new TextureRegion(spriteSheet, free_towers.get(i - 1).getSpriteLocX(), free_towers.get(i - 1).getSpriteLocY(), 16, 16);
 				batch.draw(tower_region, 40, screenHeight - 48 * i, 16, 16);
-				
-				String towerPrice = "$" + free_towers.get(i-1).getPrice();
+
+				String towerPrice = "$" + free_towers.get(i - 1).getPrice();
 				TextBounds priceBounds = mFont.getBounds(towerPrice);
-				mFont.drawWrapped(batch, towerPrice, 3, screenHeight - 48*i + priceBounds.height, priceBounds.width);
+				mFont.drawWrapped(batch, towerPrice, 3, screenHeight - 48 * i + priceBounds.height, priceBounds.width);
 			}
 		}
-				
+
 		// Text
 		String uiString = "+: " + life + '\n' + "$: " + money;
 		TextBounds uiBounds = mFont.getMultiLineBounds(uiString);
 		mFont.drawWrapped(batch, uiString, 3, uiBounds.height + 3, uiBounds.width);
 
 		// DEBUG TEXT
-		mFont.drawWrapped(batch, debugtext, 60, uiBounds.height + 3, 1000);		
-		
+		mFont.drawWrapped(batch, debugtext, 60, uiBounds.height + 3, 1000);
+
 		// is the player dragging a tower?
-		if (cursorState != null){
-			batch.draw(spriteSheet, cursorLocX, uiBounds.height - cursorLocY, 0, 16, 16, 16);
+		if (cursorState != null) {
+			batch.setColor(128, 255, 128, 128);
+			batch.draw(spriteSheet, cursorLocX, screenHeight - cursorLocY, 160, 16, 16, 16);
 		}
-		
+
 		batch.end();
 	}
 
 	public void drawSprite(int iconNum, int x, int y) {
-		batch.draw(spriteSheet, x * 16, y * 16, iconNum * 16, 0, 16, 16);
+		int rownum = 0;
+		while (iconNum > 16) {
+			iconNum -= 16;
+			rownum++;
+		}
+		batch.draw(spriteSheet, x * 16, y * 16, iconNum * 16, rownum * 16, 16, 16);
+	}
+
+	public void drawSpriteFloatcoords(int iconNum, int x, int y) {
+		int rownum = 0;
+		while (iconNum > 16) {
+			iconNum -= 16;
+			rownum++;
+		}
+		batch.draw(spriteSheet, x, y, iconNum * 16, rownum * 16, 16, 16);
 	}
 
 	@Override
@@ -325,7 +327,7 @@ public class Game implements ApplicationListener {
 		// * 2 (tower range goes both ways)
 		int powof2 = 1;
 		int shotRange = (int) Math.ceil(radius * 2);
-		while (powof2 < shotRange){
+		while (powof2 < shotRange) {
 			powof2 <<= 1;
 		}
 

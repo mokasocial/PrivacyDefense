@@ -34,6 +34,7 @@ public class GameInputProcessor implements InputProcessor {
 		if (pointer != 0 || button != Buttons.LEFT) {
 			return false;
 		}
+		
 		Game.instance.debugtext = "touch down: " + x + ", " + y + ", button: " + getButtonString(button);
 
 		for (TowerType towerType : Game.instance.free_towers) {
