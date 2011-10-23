@@ -1,13 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <definitions>
-  <map path="\\Content\\winphonemap.png" tileWidth="32" tileHeight="32"/>
-  <tile index="0"/>
-  <tile index="1"/>
-  <tile index="2"/>
-  <tile index="3"/>
-  <tile index="4"/>
-  <tile index="5"/>
-  <tile index="6"/>
+  <map path="\\Content\\winphone.png" tileWidth="48" tileHeight="48"/>
+  <creepDefinition width="16" height="16" health="50" speed="2" damageToPlayer="1"/>
+  <creepDefinition width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
+  <creepDefinition width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
+  <creepDefinition width="32" height="32" health="50" speed="2" damageToPlayer="1"/>
   <paths numPaths="1">
     <path index="0" numWaypoints="5">
       <waypoint column="5" row="0"/>

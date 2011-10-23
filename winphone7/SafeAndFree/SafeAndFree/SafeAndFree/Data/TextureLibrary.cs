@@ -37,7 +37,7 @@ namespace SafeAndFree.Data
 
         private static Dictionary<MEDIA_ID, Texture2D> textures = new Dictionary<MEDIA_ID, Texture2D>();
 
-        private static string[] assetNames = new string[] { "creep_dataminer", "creep_heli", "creep_defcon", "creep_corporate", "drawmap", "TestTower", "TestProjectile", "tileSelect", "TestProjectile2" };
+        private static string[] assetNames = new string[] { "creep_dataminer", "creep_heli", "creep_defcon", "creep_corporate", "SafeAndFreeMap", "TestTower", "TestProjectile", "tileSelect", "TestProjectile2" };
 
         public static Texture2D GetTexture(MEDIA_ID mediaId)
         {
