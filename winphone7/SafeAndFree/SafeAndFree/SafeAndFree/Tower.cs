@@ -73,7 +73,7 @@ namespace SafeAndFree
             currAtkDelay = towerStats[Level].Delay;
             currAtk = weaponStats[Level].Damage;
             cost = towerStats[Level].CostToNext; 
-            if (cost != -1)
+            if (cost == -1)
             {
                 nextRange = -1;
                 nextAtk = -1;

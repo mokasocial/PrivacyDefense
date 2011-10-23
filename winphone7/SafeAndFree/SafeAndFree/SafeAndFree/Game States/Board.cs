@@ -285,6 +285,7 @@ namespace SafeAndFree
             {
 
                 spriteBatch.Draw(TextureLibrary.GetButtonTexture(BUTTON_MEDIA_ID.UPGRADE), new Rectangle(5, 20, 94, 90), Color.White);
+                DrawUpgradeStuff(spriteBatch);
             }
             else
             {
@@ -294,13 +295,19 @@ namespace SafeAndFree
             }
         }
 
-        private void DrawUpgradeStuff()
+        private void DrawUpgradeStuff(SpriteBatch batch)
         {
             var font = TextureLibrary.GetFont();
             int cA, cR, cD, cC, nA, nR, nD;
             this.towers[selectedTile].GetLevelInfo(out cA, out cR, out cD, out cC, out nA, out nR, out nD);
-            
-            spriteBatch.DrawString(font, "Level: " + (1 + waveManager.BonusWave), new Vector2(5, 120), Color.DarkCyan);
+            batch.DrawString(font, "Cost:  " , new Vector2(5, 120), Color.DarkGreen);
+            batch.DrawString(font, (cC != -1 ? cC.ToString() : "None"), new Vector2(5, 140), Color.Red);
+            batch.DrawString(font, "Attack: ", new Vector2(5, 160), Color.DarkGreen);
+            batch.DrawString(font, cA + " ->" + (cC != -1 ? nA.ToString() : "None"), new Vector2(5, 180), Color.Red);
+            batch.DrawString(font, "Range: " , new Vector2(5, 200), Color.DarkGreen);
+            batch.DrawString(font, cR + " ->" + (cC != -1 ? nR.ToString() : "None"), new Vector2(5, 220), Color.Red);
+            batch.DrawString(font, "Delay: " , new Vector2(5, 240), Color.DarkGreen);
+            batch.DrawString(font,  cD + " ->" + (cC != -1 ? nD.ToString() : "None"), new Vector2(5, 260), Color.Red);
 
         }
         /// <summary>
