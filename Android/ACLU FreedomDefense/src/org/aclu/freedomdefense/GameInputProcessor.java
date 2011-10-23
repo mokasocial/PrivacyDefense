@@ -43,6 +43,18 @@ public class GameInputProcessor implements InputProcessor {
 		}
 		Game.instance.debugtext = "touch down: " + x + ", " + y + ", button: " + getButtonString(button);
 
+		// Check for touch down on the pause button.
+		if (Game.instance.runningDrd &&
+				x >=  Game.DRD_PAUSE_RECT.x && x <= Game.DRD_PAUSE_RECT.x + Game.DRD_PAUSE_RECT.width &&
+				(Game.screenHeight - y) >=  Game.DRD_PAUSE_RECT.y && (Game.screenHeight - y) <= Game.DRD_PAUSE_RECT.y + Game.DRD_PAUSE_RECT.height) {
+			Game.instance.debugtext = "touch down on pause rect";
+			Game.instance.cursorState = null;
+			Game.instance.cursorLocX = x;
+			Game.instance.cursorLocY = y;
+			Game.instance.pause();
+			return false;
+		}
+		
 		for (TowerType towerType : Game.instance.free_towers) {
 			if (x <= Game.instance.uiPanelWidth) {
 				if (y >= (32) && y <= (48)) {
