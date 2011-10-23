@@ -13,6 +13,9 @@ namespace SafeAndFree
     {
         private List<Debuff> CurrentDebuffs;
 
+
+
+        public int ScoreValue { get; private set; }
         /// <summary>
         /// The index of the path to follow.
         /// </summary>
@@ -116,7 +119,7 @@ namespace SafeAndFree
             this.stats.Add(CreepStats.Health, creepData.Health);
             this.stats.Add(CreepStats.DamageToPlayer, creepData.DamageToPlayer);
             this.stats.Add(CreepStats.Speed, creepData.Speed);
-
+            this.ScoreValue = creepData.Health;
         }
 
         /// <summary>

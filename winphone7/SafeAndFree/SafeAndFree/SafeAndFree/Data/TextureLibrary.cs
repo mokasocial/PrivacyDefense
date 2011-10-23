@@ -42,8 +42,21 @@ namespace SafeAndFree.Data
 
         private static Dictionary<MEDIA_ID, Texture2D> textures = new Dictionary<MEDIA_ID, Texture2D>();
 
-        private static string[] assetNames = new string[] { "creep_dataminer", "creep_heli", "creep_defcon", "creep_corporate", "SafeAndFreeMap", "Judge", "TestProjectile", "tileSelect", "TestProjectile2", "menu", "tophud", "titlescreen", "winscreen", "screen_lose" };
-
+        private static string[] assetNames = new string[] { "creep_dataminer", "creep_heli", "creep_defcon", "creep_corporate", "SafeAndFreeMap", "Judge", "TestProjectile", "tileSelect", "TestProjectile2", "menu", "tophud", "titlescreen", "winscreen", "screen_lose"};
+        private static SpriteFont font;
+        public static SpriteFont GetFont()
+        {
+            if (null == Content)
+            {
+                throw new ContentNotDefinedException();
+            }
+            if (font == null)
+            {
+                SpriteFont newFont = Content.Load<SpriteFont>("DefaultFont");
+                font = newFont;
+            }
+            return font;
+        }
         public static Texture2D GetTexture(MEDIA_ID mediaId)
         {
             if(null == Content)
