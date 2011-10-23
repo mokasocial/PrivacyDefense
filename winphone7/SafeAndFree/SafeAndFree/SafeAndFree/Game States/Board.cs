@@ -24,6 +24,7 @@ namespace SafeAndFree
     public class Board : Screen
     {
         private ProjectileManager projectileManager;
+
         /// <summary>
         /// The grid of tiles.
         /// </summary>
@@ -97,6 +98,8 @@ namespace SafeAndFree
 
                 if (selectedTile.X == col && selectedTile.Y == row)
                 {
+                    // Getting multiple touch presses.
+                    // To select and unselect by tapping, you
                     //selectedTile.X = -1;
                     //selectedTile.Y = -1;
                 }
