@@ -11,7 +11,7 @@ namespace SafeAndFree.Helpers
     /// </summary>
     static class Calculator
     {
-        public const double HIT_DISTANCE_THRESHOLD = 5.5;
+        public const double HIT_DISTANCE_THRESHOLD = 10.5;
 
         public static float ToRadians(float degrees)
         {
