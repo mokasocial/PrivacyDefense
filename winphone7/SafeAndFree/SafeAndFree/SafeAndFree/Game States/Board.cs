@@ -43,7 +43,7 @@ namespace SafeAndFree
         /// The first rank are paths,
         /// the second rank are waypoints.
         /// </summary>
-        private Vector2[][] paths;
+        private static Vector2[][] paths;
 
         /// <summary>
         /// The consistent size of tiles.
@@ -59,7 +59,7 @@ namespace SafeAndFree
         public Vector2 selectedTile = new Vector2(-1, -1);
 
         // Doing work after? Fix this.
-        private bool hasLoaded = false;
+        private static bool hasLoaded = false;
 
         /// <summary>
         /// Constructor.
@@ -69,17 +69,24 @@ namespace SafeAndFree
             CurrentPlayer = new Player();
             projectileManager = new ProjectileManager();
 
+            InitInstanceData();
+
             if (!hasLoaded)
             {
                 hasLoaded = true;
-                LoadResources();
+                LoadData();
             }
         }
 
-        private void LoadResources()
+        private void InitInstanceData()
         {
-            LoadData();
-            LoadATowerTest();
+            // Initialize creep data.
+            creeps = new List<Creep>();
+
+            // Initialize wave data.
+            waveManager = new WaveManager();
+
+            towers = new Dictionary<Vector2, Tower>();
         }
 
         /// <summary>
@@ -216,7 +223,7 @@ namespace SafeAndFree
                     creeps.RemoveAt(i--);
                     CurrentPlayer.AddMoney(waveManager.BonusWave + 1);
                 }
-                else if (creeps[i].Update(this.paths))
+                else if (creeps[i].Update(paths))
                 {
                     // Creep reached the end.
                     creeps.RemoveAt(i--);
@@ -342,15 +349,11 @@ namespace SafeAndFree
             // Get the XML file with our data.
             XmlReader reader = XmlReader.Create("MapDefinitions.xml");
 
-            // Initialize creep data.
-            creeps = new List<Creep>();
-
             // Initialize path data.
             int lastPath = -1;
             int lastWaypoint = 0;
 
             // Initialize wave data.
-            waveManager = new WaveManager();
             int[][][] waves = null;
             int lastWave = -1;
             int lastCreep = -1;
@@ -449,15 +452,6 @@ namespace SafeAndFree
                 theOneToOneUp.LevelUp();
             }
         }
-        ///
-        /// Test load a tower
-        ///
-        private void LoadATowerTest()
-        {
-            towers = new Dictionary<Vector2, Tower>();
-            //towers.Add(selectedTile, TowerFactory.GetTower(TowerTypes.Teacher, new Vector2(70, 400)));
-            //towers.Add(TowerFactory.GetTower(TowerTypes.Gavel, new Vector2(200, 300)));
-            //towers.Add(TowerFactory.GetTower(TowerTypes.Lawyer, new Vector2(200, 400)));
-        }
+
     }
 }
