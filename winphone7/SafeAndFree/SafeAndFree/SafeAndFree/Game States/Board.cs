@@ -279,7 +279,7 @@ namespace SafeAndFree
                 {
                     spriteBatch.Draw(TextureLibrary.GetTexture(p.TextureID),
                         new Vector2(p.Position.X + (int)ProjectileDefinitions.ProjectileStats[p.type].Width / 2, p.Position.Y + (int)ProjectileDefinitions.ProjectileStats[p.type].Height / 2),
-                        new Rectangle(0, 0, ProjectileDefinitions.ProjectileStats[p.type].Width, ProjectileDefinitions.ProjectileStats[p.type].Height), 
+                        new Rectangle(0, 0, ProjectileDefinitions.ProjectileStats[p.type].Width+12, ProjectileDefinitions.ProjectileStats[p.type].Height+12), 
                         Color.White, 
                         Calculator.ToRadians(p.Rotation),
                         new Vector2(ProjectileDefinitions.ProjectileStats[p.type].Width / 2, ProjectileDefinitions.ProjectileStats[p.type].Height / 2),
