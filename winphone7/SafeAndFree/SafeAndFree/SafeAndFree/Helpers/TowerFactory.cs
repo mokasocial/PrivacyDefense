@@ -54,8 +54,8 @@ namespace SafeAndFree.Helpers
                     Debuff slow2 = new Debuff(CreepStats.Speed, 2, 20);
                 towerStats = new TowerStats[5] { new TowerStats(70, 140, 40), new TowerStats(50, 150, 60), 
                     new TowerStats(30, 150, 100), new TowerStats(20, 160, 200), new TowerStats(10, 170, -1) };
-                weaponStats = new WeaponStats[5] { new WeaponStats(20, 10, 1, slow), new WeaponStats(40, 10, 1, slow), 
-                    new WeaponStats(80, 10, 1, slow), new WeaponStats(200, 10, 1, slow2), new WeaponStats(500, 10, 1, slow2) };
+                weaponStats = new WeaponStats[5] { new WeaponStats(20, 6, 1, slow), new WeaponStats(40, 6, 1, slow), 
+                    new WeaponStats(80, 6, 1, slow), new WeaponStats(200, 6, 1, slow2), new WeaponStats(500, 6, 1, slow2) };
                 break;
                 //case TowerTypes.Gavel:
 

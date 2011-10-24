@@ -96,11 +96,14 @@ namespace SafeAndFree
                 // Math.Atan2 gives the angle between two points in RADIANS. We need to convert to degrees.
                 this.Rotation = Calculator.ToDegrees((float)Math.Atan2(TargetCreep.CenterPosition.Y - this.CenterPosition.Y, TargetCreep.CenterPosition.X - this.CenterPosition.X));
             }
-
-            if (Calculator.GetDistance(this.CenterPosition, TargetCreep.CenterPosition) <= Math.Abs(ProjectileDefinitions.ProjectileStats[type].Width/2 - TargetCreep.GetStat(CreepStats.Width)/2))
+            if (result)
             {
                 TargetCreep.TakeHit(this);
             }
+            //if (Calculator.GetDistance(this.CenterPosition, TargetCreep.CenterPosition) <= Math.Abs(ProjectileDefinitions.ProjectileStats[type].Width/2 - TargetCreep.GetStat(CreepStats.Width)/2))
+            //{
+            //    result = TargetCreep.TakeHit(this);
+            //}
 
             if (numFrames > 1)
             {
