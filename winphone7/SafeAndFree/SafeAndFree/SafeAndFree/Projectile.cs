@@ -108,8 +108,10 @@ namespace SafeAndFree
                 {
                     if (++Frame >= numFrames)
                     {
-                        numFrames = 0;
+                        Frame = 0;
                     }
+
+                    CurrentDelay = ProjectileDefinitions.ProjectileStats[this.type].AnimationDelay;
                 }
             }
 
