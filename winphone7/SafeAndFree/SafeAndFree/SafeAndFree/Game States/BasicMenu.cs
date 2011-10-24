@@ -38,7 +38,7 @@ namespace SafeAndFree.Game_States
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(TextureLibrary.GetTexture(textureId), new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(TextureLibrary.GetTexture(textureId), new Rectangle(0, 0, 800, 480), Color.White);
 
             if (isFading)
             {

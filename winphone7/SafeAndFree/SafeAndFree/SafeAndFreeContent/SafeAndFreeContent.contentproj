@@ -85,13 +85,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="screen_lose.png">
-      <Name>screen_lose</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="tophud.png">
       <Name>tophud</Name>
       <Importer>TextureImporter</Importer>
@@ -186,6 +179,13 @@
   <ItemGroup>
     <Compile Include="winscreen.png">
       <Name>winscreen</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="losescreen.png">
+      <Name>losescreen</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

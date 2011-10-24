@@ -49,7 +49,7 @@ namespace SafeAndFree
         /// The consistent size of tiles.
         /// </summary>
         public static Vector2 TileDimensions { get; private set; }
-        private int clickDelay;
+
         /// <summary>
         /// The offset (X and Y) from a tile's top left position
         /// that will give you the tile's center position.
@@ -58,15 +58,22 @@ namespace SafeAndFree
 
         public Vector2 selectedTile = new Vector2(-1, -1);
 
+        // Doing work after? Fix this.
+        private bool hasLoaded = false;
+
         /// <summary>
         /// Constructor.
         /// </summary>
         public Board()
         {
-            clickDelay = 0;
             CurrentPlayer = new Player();
             projectileManager = new ProjectileManager();
-            LoadResources();
+
+            if (!hasLoaded)
+            {
+                hasLoaded = true;
+                LoadResources();
+            }
         }
 
         private void LoadResources()
@@ -80,7 +87,6 @@ namespace SafeAndFree
         /// </summary>
         public override void Update()
         {
-            if (clickDelay > 0) clickDelay--;
             if (null != waveManager)
             {
                 //if (waveManager.Update(creeps.Count == 0))
@@ -133,32 +139,32 @@ namespace SafeAndFree
 
         protected bool CheckButtonPress(Vector2 check)
         {
-            if (clickDelay > 0) return true;
-
-            if (check.X >= 5 && check.X <= 99)
+            if (check.X < 144)
             {
-                if (towers.ContainsKey(selectedTile) && check.Y >= 20 && check.Y < 110)
+                if (TouchHandler.IsPressed)
                 {
-                
+                    if (towers.ContainsKey(selectedTile) && check.Y >= 20 && check.Y < 110)
+                    {
                         UpdateTower(towers[selectedTile]);
+                    }
+                    if (check.Y >= 20 && check.Y < 110)
+                    {
+                        BuyPlaceTower(TowerTypes.Teacher);
+                    }
+                    else if (check.Y >= 120 && check.Y < 210)
+                    {
+                        BuyPlaceTower(TowerTypes.Lawyer);
                         return true;
+                    }
+                    else if (check.Y >= 220 && check.Y < 310)
+                    {
+                        BuyPlaceTower(TowerTypes.Judge);
+                    }
                 }
-                if (check.Y >= 20 && check.Y < 110)
-                {
-                    BuyPlaceTower(TowerTypes.Teacher);
-                    return true;
-                }
-                else if (check.Y >= 120 && check.Y < 210)
-                {
-                    BuyPlaceTower(TowerTypes.Lawyer);
-                    return true;
-                }
-                else if (check.Y >= 220 && check.Y < 310)
-                {
-                    BuyPlaceTower(TowerTypes.Judge);
-                    return true;
-                }
+
+                return true;
             }
+
             return false;
         }
 
@@ -183,10 +189,6 @@ namespace SafeAndFree
                     {
                         selectedTile.X = col;
                         selectedTile.Y = row;
-                    }
-                    else
-                    {
-                        clickDelay += 5;
                     }
                 }
             }

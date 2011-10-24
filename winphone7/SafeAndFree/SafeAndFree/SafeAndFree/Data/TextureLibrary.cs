@@ -59,7 +59,7 @@ namespace SafeAndFree.Data
 
         private static Dictionary<MEDIA_ID, Texture2D> textures = new Dictionary<MEDIA_ID, Texture2D>();
 
-        private static string[] assetNames = new string[] { "creep_dataminer", "creep_heli", "creep_defcon", "creep_corporate", "SafeAndFreeMap", "Judges", "Lawyers", "Teachers", "GavelSS", "Scroll", "apple", "tileMarker", "menu", "tophud", "titlescreen", "winscreen", "screen_lose" };
+        private static string[] assetNames = new string[] { "creep_dataminer", "creep_heli", "creep_defcon", "creep_corporate", "SafeAndFreeMap", "Judges", "Lawyers", "Teachers", "GavelSS", "Scroll", "apple", "tileMarker", "menu", "tophud", "titlescreen", "winscreen", "losescreen" };
 
         private static Dictionary<FONT_ID, SpriteFont> fonts = new Dictionary<FONT_ID, SpriteFont>();
         private static string[] fontNames = new string[] { "DefaultFont", "TapToGo" };
