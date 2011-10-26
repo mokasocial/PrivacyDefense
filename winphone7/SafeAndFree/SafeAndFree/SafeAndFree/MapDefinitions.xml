@@ -9,10 +9,10 @@
   <towerDefinition name="judge" levels="5" width="48" height="48" projectile="gavel"/>
   <towerDefinition name="lawyer" levels="5" width="48" height="48" projectile="scroll"/>
   <towerDefinition name="teacher" levels="5" width="48" height="48" projectile="apple"/>
-  
-  <projectileDefinition name="apple" numFrames="1" width="8" height="8" delay="0"/>
+
   <projectileDefinition name="gavel" numFrames="6" width="8" height="8" delay="2"/>
   <projectileDefinition name="scroll" numFrames="1" width="8" height="8" delay="0"/>
+  <projectileDefinition name="apple" numFrames="1" width="8" height="8" delay="0"/>
   <paths numPaths="1">
     <path index="0" numWaypoints="8">
       <waypoint column="3" row="-1"/>
